@@ -237,24 +237,19 @@ private val BottomNavDestinations = listOf(
         icon = ExpressiveIcons.Folder
     ),
     BottomNavDestination(
-        route = "recents",
-        label = "Recents", // TODO: localize
-        iconRes = R.drawable.ic_expressive_history
-    ),
-    BottomNavDestination(
         route = "favorites",
         label = "Favorites", // TODO: localize
         iconRes = R.drawable.ic_expressive_star_filled
     ),
     BottomNavDestination(
-        route = "search",
-        label = "Search", // TODO: localize
-        iconRes = R.drawable.ic_expressive_search
-    ),
-    BottomNavDestination(
         route = "locations",
         label = "Locations", // TODO: localize
         iconRes = R.drawable.device_icon_white_24dp
+    ),
+    BottomNavDestination(
+        route = "settings",
+        label = "Settings", // TODO: localize
+        iconRes = R.drawable.settings_icon_white_24dp
     )
 )
 

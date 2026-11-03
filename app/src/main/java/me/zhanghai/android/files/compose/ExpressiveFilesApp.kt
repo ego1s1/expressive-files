@@ -21,8 +21,15 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -98,7 +105,6 @@ import me.zhanghai.android.files.compose.model.PropertyRowUi
 import me.zhanghai.android.files.compose.model.PropertySectionUi
 import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
-import me.zhanghai.android.files.compose.state.RecentsStore
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
 import me.zhanghai.android.files.compose.state.mapFileListState
 import me.zhanghai.android.files.file.FileItem
@@ -126,7 +132,6 @@ import me.zhanghai.android.files.util.valueCompat
 import me.zhanghai.android.files.util.withChooser
 
 private const val ROUTE_FILES = "files"
-private const val ROUTE_RECENTS = "recents"
 private const val ROUTE_FAVORITES = "favorites"
 private const val ROUTE_SETTINGS = "settings"
 private const val ROUTE_ABOUT = "about"
@@ -169,14 +174,12 @@ fun ExpressiveFilesApp() {
 
     LaunchedEffect(hasStorageAccess) {
         FavoritesStore.initialize(context)
-        RecentsStore.initialize(context)
         if (hasStorageAccess) {
             viewModel.reload()
         }
     }
 
     val favorites by FavoritesStore.favorites.collectAsStateWithLifecycle()
-    val recents by RecentsStore.recents.collectAsStateWithLifecycle()
 
     val currentPath by viewModel.currentPathLiveData.observeAsState()
     val breadcrumb by viewModel.breadcrumbLiveData.observeAsState()
@@ -286,12 +289,12 @@ fun ExpressiveFilesApp() {
         )
     }
 
-    val navigationState = remember(route, currentPath, favorites, recents) {
+    val navigationState = remember(route, currentPath, favorites) {
         NavigationStateBuilder.build(context, currentPath)
     }
 
     val predictiveBackTarget = when (route) {
-        ROUTE_SETTINGS, ROUTE_ABOUT -> ROUTE_LOCATIONS
+        ROUTE_ABOUT -> ROUTE_SETTINGS
         else -> ROUTE_FILES
     }
     val predictiveBackEnabled = imageViewerFile == null && propertiesFile == null &&
@@ -334,7 +337,7 @@ fun ExpressiveFilesApp() {
             }
 
             selectedCount > 0 -> viewModel.clearSelectedFiles()
-            route == ROUTE_SETTINGS || route == ROUTE_ABOUT -> route = ROUTE_LOCATIONS
+            route == ROUTE_ABOUT -> route = ROUTE_SETTINGS
             route != ROUTE_FILES -> route = ROUTE_FILES
             else -> viewModel.navigateUp()
         }
@@ -372,7 +375,7 @@ fun ExpressiveFilesApp() {
     }
 
     val showNavigation = selectedCount == 0 && imageViewerFile == null &&
-        propertiesFile == null && textEditorFile == null
+        propertiesFile == null && textEditorFile == null && route != ROUTE_SEARCH
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= 600.dp
@@ -444,28 +447,18 @@ fun ExpressiveFilesApp() {
                 },
                 onBack = { propertiesFile = null }
             )
-        } else when (route) {
-            ROUTE_RECENTS -> HomeScreen(
-                title = "Recents", // TODO: localize
-                state = HomeUiState(recents = recents, favorites = favorites),
-                onOpen = { shortcut ->
-                    if (shortcut.isDirectory) {
-                        openPath(viewModel, shortcut.path)
-                    } else {
-                        openFileIntent(context, shortcut.path)
-                    }
-                    route = ROUTE_FILES
-                },
-                onToggleFavorite = { shortcut ->
-                    runCatching { Paths.get(shortcut.path) }
-                        .getOrNull()
-                        ?.let(FavoritesStore::remove)
-                },
-            )
-
+        } else AnimatedContent(
+            targetState = route,
+            transitionSpec = {
+                (fadeIn(tween(220)) + slideInHorizontally(tween(220)) { it / 12 }) togetherWith
+                    (fadeOut(tween(160)) + slideOutHorizontally(tween(160)) { -it / 12 })
+            },
+            label = "route"
+        ) { animatedRoute ->
+            when (animatedRoute) {
             ROUTE_FAVORITES -> HomeScreen(
                 title = "Favorites", // TODO: localize
-                state = HomeUiState(recents = recents, favorites = favorites),
+                state = HomeUiState(favorites = favorites),
                 onOpen = { shortcut ->
                     if (shortcut.isDirectory) {
                         openPath(viewModel, shortcut.path)
@@ -499,15 +492,9 @@ fun ExpressiveFilesApp() {
                             route = ROUTE_FILES
                         }
 
-                        file.mimeType.type == "image" -> {
-                            RecentsStore.record(file)
-                            imageViewerFile = file
-                        }
+                        file.mimeType.type == "image" -> imageViewerFile = file
 
-                        file.isEditableText() -> {
-                            RecentsStore.record(file)
-                            textEditorFile = file
-                        }
+                        file.isEditableText() -> textEditorFile = file
 
                         else -> openEntry(context, viewModel, file)
                     }
@@ -519,17 +506,9 @@ fun ExpressiveFilesApp() {
             ROUTE_LOCATIONS -> LocationsScreen(
                 state = navigationState,
                 onEntryClick = { entry ->
-                    when (entry.id) {
-                        NavigationStateBuilder.ACTION_SETTINGS -> route = ROUTE_SETTINGS
-                        NavigationStateBuilder.ACTION_ABOUT -> route = ROUTE_ABOUT
-                        else -> {
-                            openPath(viewModel, entry.id)
-                            route = ROUTE_FILES
-                        }
-                    }
-                },
-                onSettings = { route = ROUTE_SETTINGS },
-                onAbout = { route = ROUTE_ABOUT }
+                    openPath(viewModel, entry.id)
+                    route = ROUTE_FILES
+                }
             )
 
             ROUTE_SETTINGS -> {
@@ -543,17 +522,18 @@ fun ExpressiveFilesApp() {
                         applySetting(context, item.key, item.checked == true)
                         settingsTick++
                     },
-                    onBack = { route = ROUTE_LOCATIONS },
+                    onBack = { route = ROUTE_FILES },
                     onOpenLegacySettings = {
                         context.startActivity(Intent(context, SettingsActivity::class.java))
-                    }
+                    },
+                    onAbout = { route = ROUTE_ABOUT }
                 )
             }
 
             ROUTE_ABOUT -> AboutScreen(
                 appName = context.getString(R.string.app_name),
                 version = runCatching { context.getString(R.string.app_version) }.getOrDefault(""),
-                onBack = { route = ROUTE_LOCATIONS },
+                onBack = { route = ROUTE_SETTINGS },
                 onOpenLink = { url ->
                     runCatching {
                         context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url)))
@@ -570,10 +550,8 @@ fun ExpressiveFilesApp() {
                     if (selectedCount > 0) {
                         viewModel.selectFile(file, !(file in selectedFiles))
                     } else if (file.mimeType.type == "image") {
-                        RecentsStore.record(file)
                         imageViewerFile = file
                     } else if (file.isEditableText()) {
-                        RecentsStore.record(file)
                         textEditorFile = file
                     } else {
                         openEntry(context, viewModel, file)
@@ -583,6 +561,7 @@ fun ExpressiveFilesApp() {
                     filesByPath[entry.path]?.let { viewModel.selectFile(it, true) }
                 },
                 onEntryMenu = { entry -> actionTarget = filesByPath[entry.path] },
+                onSearchClick = { route = ROUTE_SEARCH },
                 onSortClick = { showSortSheet = true },
                 onLayoutToggle = {
                     viewModel.viewType = if (viewType == FileViewType.LIST) {
@@ -609,6 +588,7 @@ fun ExpressiveFilesApp() {
                 onSelectionMore = { showSelectionOptions = true },
                 bottomOverlayPadding = 0.dp
             )
+            }
         }
             }
             if (showNavigation) {
@@ -932,7 +912,6 @@ private fun defaultPath(): Path = runCatching {
 }
 
 private fun openEntry(context: Context, viewModel: FileListViewModel, file: FileItem) {
-    RecentsStore.record(file)
     viewModel.clearSelectedFiles()
     if (file.isListable) {
         viewModel.navigateTo(Bundle(), file.listablePath)

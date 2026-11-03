@@ -24,13 +24,9 @@ import me.zhanghai.android.files.util.valueCompat
 object NavigationStateBuilder {
     fun build(context: Context, currentPath: Path? = null): NavigationUiState {
         FavoritesStore.initialize(context)
-        RecentsStore.initialize(context)
         val currentPathString = currentPath?.toString()
 
         val favorites = FavoritesStore.favorites.value.map {
-            it.toDrawerEntryUi(currentPathString)
-        }
-        val recents = RecentsStore.recents.value.map {
             it.toDrawerEntryUi(currentPathString)
         }
         val storages = loadStorages(context, currentPathString)
@@ -43,15 +39,6 @@ object NavigationStateBuilder {
                         id = "favorites",
                         title = "Favorites", // TODO: localize
                         entries = favorites
-                    )
-                )
-            }
-            if (recents.isNotEmpty()) {
-                add(
-                    DrawerSectionUi(
-                        id = "recents",
-                        title = "Recents", // TODO: localize
-                        entries = recents
                     )
                 )
             }

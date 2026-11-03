@@ -18,9 +18,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -46,8 +43,6 @@ import me.zhanghai.android.files.compose.model.NavigationUiState
 fun LocationsScreen(
     state: NavigationUiState,
     onEntryClick: (DrawerEntryUi) -> Unit,
-    onSettings: () -> Unit,
-    onAbout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sections = state.sections.filter {
@@ -78,25 +73,6 @@ fun LocationsScreen(
                     item(key = "gap/${section.id}") {
                         Spacer(Modifier.height(8.dp))
                     }
-                }
-                item(key = "footer-header") {
-                    SectionLabel("App") // TODO: localize
-                }
-                item(key = "settings") {
-                    ActionRow(
-                        title = "Settings", // TODO: localize
-                        supporting = "Appearance, behavior, and storage", // TODO: localize
-                        icon = Icons.Filled.Settings,
-                        onClick = onSettings
-                    )
-                }
-                item(key = "about") {
-                    ActionRow(
-                        title = "About", // TODO: localize
-                        supporting = "Version, licenses, and links", // TODO: localize
-                        icon = Icons.Filled.Info,
-                        onClick = onAbout
-                    )
                 }
             }
         }
@@ -171,24 +147,3 @@ private fun LocationRow(
     )
 }
 
-@Composable
-private fun ActionRow(
-    title: String,
-    supporting: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    onClick: () -> Unit
-) {
-    ListItem(
-        headlineContent = { Text(title) },
-        supportingContent = { Text(supporting) },
-        leadingContent = { Icon(imageVector = icon, contentDescription = null) },
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 2.dp)
-            .clip(MaterialTheme.shapes.medium)
-            .clickable(onClick = onClick)
-    )
-}

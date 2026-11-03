@@ -5,6 +5,11 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,6 +62,7 @@ fun FileListScreen(
     onEntryClick: (FileEntryUi) -> Unit,
     onEntryLongClick: (FileEntryUi) -> Unit,
     onEntryMenu: (FileEntryUi) -> Unit,
+    onSearchClick: () -> Unit,
     onSortClick: () -> Unit,
     onLayoutToggle: () -> Unit,
     onRefresh: () -> Unit,
@@ -96,6 +102,7 @@ fun FileListScreen(
                 FileListTopBar(
                     state = state,
                     onNavigateUp = onNavigateUp,
+                    onSearchClick = onSearchClick,
                     onSortClick = onSortClick,
                     onOptionsClick = { showListOptions = true }
                 )
@@ -139,7 +146,11 @@ fun FileListScreen(
                 }
             }
         }
-        if (showFab) {
+        AnimatedVisibility(
+            visible = showFab,
+            enter = fadeIn() + scaleIn(initialScale = 0.8f),
+            exit = fadeOut() + scaleOut(targetScale = 0.8f)
+        ) {
             CreateFabMenu(
                 canPaste = state.canPaste,
                 onCreateFolder = onCreateFolder,
@@ -256,6 +267,7 @@ private fun PreviewFileListScreen(state: FileListUiState) {
             onEntryClick = {},
             onEntryLongClick = {},
             onEntryMenu = {},
+            onSearchClick = {},
             onSortClick = {},
             onLayoutToggle = {},
             onRefresh = {},

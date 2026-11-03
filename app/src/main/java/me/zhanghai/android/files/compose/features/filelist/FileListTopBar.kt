@@ -42,6 +42,7 @@ private val TOP_BAR_HEIGHT = 64.dp
 fun FileListTopBar(
     state: FileListUiState,
     onNavigateUp: () -> Unit,
+    onSearchClick: () -> Unit,
     onSortClick: () -> Unit,
     onOptionsClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -101,6 +102,16 @@ fun FileListTopBar(
                 }
             }
             IconButton(
+                onClick = onSearchClick,
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_expressive_search),
+                    contentDescription = "Search files", // TODO: localize
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+            IconButton(
                 onClick = onSortClick,
                 modifier = Modifier.size(48.dp)
             ) {
@@ -134,6 +145,7 @@ private fun FileListTopBarPreview() {
             canNavigateUp = false
         ),
         onNavigateUp = {},
+        onSearchClick = {},
         onSortClick = {},
         onOptionsClick = {}
     )
