@@ -18,8 +18,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -51,6 +54,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Observer
@@ -61,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import java8.nio.file.Path
 import java8.nio.file.Paths
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -83,6 +88,9 @@ import me.zhanghai.android.files.compose.features.settings.AboutScreen
 import me.zhanghai.android.files.compose.features.search.SearchScreen
 import me.zhanghai.android.files.compose.features.settings.SettingsScreen
 import me.zhanghai.android.files.compose.features.viewer.ImageViewerScreen
+import me.zhanghai.android.files.compose.features.viewer.TextEditorScreen
+import me.zhanghai.android.files.compose.components.ConfirmDialog
+import me.zhanghai.android.files.compose.components.LoadingState
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 import me.zhanghai.android.files.compose.model.HomeUiState
 import me.zhanghai.android.files.compose.model.PropertiesUiState
@@ -201,12 +209,34 @@ fun ExpressiveFilesApp() {
     var actionTarget by remember { mutableStateOf<FileItem?>(null) }
     var propertiesFile by remember { mutableStateOf<FileItem?>(null) }
     var imageViewerFile by remember { mutableStateOf<FileItem?>(null) }
+    var textEditorFile by remember { mutableStateOf<FileItem?>(null) }
+    var textEditorContent by remember { mutableStateOf<String?>(null) }
+    var textEditorDirty by remember { mutableStateOf(false) }
+    var textEditorReload by remember { mutableIntStateOf(0) }
+    var showDiscardText by remember { mutableStateOf(false) }
     var settingsTick by remember { mutableIntStateOf(0) }
     var settingsQuery by remember { mutableStateOf("") }
 
     val files = fileListStateful.value.orEmpty()
     val filesByPath = remember(files) { files.associateBy { it.path.toString() } }
     val selectedCount = selectedFiles.size
+
+    LaunchedEffect(textEditorFile, textEditorReload) {
+        val file = textEditorFile ?: return@LaunchedEffect
+        textEditorContent = null
+        textEditorContent = withContext(Dispatchers.IO) {
+            runCatching {
+                if (file.attributes.size() > 1024L * 1024L) {
+                    null
+                } else {
+                    file.path.newInputStream().use { stream ->
+                        stream.readBytes().toString(Charsets.UTF_8)
+                    }
+                }
+            }.getOrNull()
+        }
+        textEditorDirty = false
+    }
 
     LaunchedEffect(route, searchQuery) {
         if (route != ROUTE_SEARCH) {
@@ -260,10 +290,41 @@ fun ExpressiveFilesApp() {
         NavigationStateBuilder.build(context, currentPath)
     }
 
-    val canHandleBack = imageViewerFile != null || propertiesFile != null || selectedCount > 0 ||
-        route != ROUTE_FILES || (breadcrumb?.selectedIndex ?: 0) > 0
-    BackHandler(enabled = canHandleBack) {
+    val predictiveBackTarget = when (route) {
+        ROUTE_SETTINGS, ROUTE_ABOUT -> ROUTE_LOCATIONS
+        else -> ROUTE_FILES
+    }
+    val predictiveBackEnabled = imageViewerFile == null && propertiesFile == null &&
+        textEditorFile == null && selectedCount == 0 && route != ROUTE_FILES
+    val backProgress = remember { Animatable(0f) }
+    PredictiveBackHandler(enabled = predictiveBackEnabled) { progress ->
+        try {
+            progress.collect { backProgress.snapTo(it.progress) }
+            if (route == ROUTE_SEARCH) {
+                searchQuery = ""
+                viewModel.stopSearching()
+            }
+            route = predictiveBackTarget
+            backProgress.snapTo(0f)
+        } catch (e: CancellationException) {
+            backProgress.animateTo(0f, animationSpec = spring(stiffness = 700f))
+            throw e
+        }
+    }
+
+    val canHandleBack = textEditorFile != null || imageViewerFile != null ||
+        propertiesFile != null || selectedCount > 0 || route != ROUTE_FILES ||
+        (breadcrumb?.selectedIndex ?: 0) > 0
+    BackHandler(enabled = canHandleBack && !predictiveBackEnabled) {
         when {
+            textEditorFile != null -> {
+                if (textEditorDirty) {
+                    showDiscardText = true
+                } else {
+                    textEditorFile = null
+                }
+            }
+
             imageViewerFile != null -> imageViewerFile = null
             propertiesFile != null -> propertiesFile = null
             route == ROUTE_SEARCH -> {
@@ -310,8 +371,8 @@ fun ExpressiveFilesApp() {
         )
     }
 
-    val showNavigation = selectedCount == 0 &&
-        imageViewerFile == null && propertiesFile == null
+    val showNavigation = selectedCount == 0 && imageViewerFile == null &&
+        propertiesFile == null && textEditorFile == null
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= 600.dp
@@ -319,14 +380,50 @@ fun ExpressiveFilesApp() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .graphicsLayer {
+                        val progress = backProgress.value
+                        translationX = progress * size.width * 0.08f
+                        val scale = 1f - 0.02f * progress
+                        scaleX = scale
+                        scaleY = scale
+                    }
                     .padding(
                         start = if (showNavigation && useNavigationRail) 88.dp else 0.dp,
                         bottom = if (showNavigation && !useNavigationRail) 88.dp else 0.dp
                     )
             ) {
+        val textEditor = textEditorFile
         val imageViewer = imageViewerFile
         val properties = propertiesFile
-        if (imageViewer != null) {
+        if (textEditor != null) {
+            val content = textEditorContent
+            if (content == null) {
+                LoadingState()
+            } else {
+                TextEditorScreen(
+                    title = textEditor.name,
+                    text = content,
+                    isDirty = textEditorDirty,
+                    onTextChange = {
+                        textEditorContent = it
+                        textEditorDirty = true
+                    },
+                    onSave = {
+                        val bytes = (textEditorContent ?: "").toByteArray(Charsets.UTF_8)
+                        FileJobService.write(textEditor.path, bytes, context, null)
+                        textEditorDirty = false
+                    },
+                    onReload = { textEditorReload++ },
+                    onBack = {
+                        if (textEditorDirty) {
+                            showDiscardText = true
+                        } else {
+                            textEditorFile = null
+                        }
+                    }
+                )
+            }
+        } else if (imageViewer != null) {
             ComposeImageViewer(
                 file = imageViewer,
                 onBack = { imageViewerFile = null },
@@ -395,10 +492,24 @@ fun ExpressiveFilesApp() {
                 },
                 onEntryClick = { entry ->
                     val file = filesByPath[entry.path] ?: return@SearchScreen
-                    openEntry(context, viewModel, file)
-                    if (file.isListable) {
-                        searchQuery = ""
-                        route = ROUTE_FILES
+                    when {
+                        file.isListable -> {
+                            openEntry(context, viewModel, file)
+                            searchQuery = ""
+                            route = ROUTE_FILES
+                        }
+
+                        file.mimeType.type == "image" -> {
+                            RecentsStore.record(file)
+                            imageViewerFile = file
+                        }
+
+                        file.isEditableText() -> {
+                            RecentsStore.record(file)
+                            textEditorFile = file
+                        }
+
+                        else -> openEntry(context, viewModel, file)
                     }
                 },
                 onEntryLongClick = {},
@@ -461,6 +572,9 @@ fun ExpressiveFilesApp() {
                     } else if (file.mimeType.type == "image") {
                         RecentsStore.record(file)
                         imageViewerFile = file
+                    } else if (file.isEditableText()) {
+                        RecentsStore.record(file)
+                        textEditorFile = file
                     } else {
                         openEntry(context, viewModel, file)
                     }
@@ -524,6 +638,21 @@ fun ExpressiveFilesApp() {
                 }
             }
         }
+    }
+
+    if (showDiscardText) {
+        ConfirmDialog(
+            title = "Discard changes?", // TODO: localize
+            message = "Your edits will be lost.", // TODO: localize
+            confirmLabel = "Discard", // TODO: localize
+            destructive = true,
+            onConfirm = {
+                showDiscardText = false
+                textEditorFile = null
+                textEditorDirty = false
+            },
+            onDismiss = { showDiscardText = false }
+        )
     }
 
     if (showSortSheet) {
@@ -768,6 +897,15 @@ private fun buildPropertiesUiState(context: Context, file: FileItem): Properties
         sections = listOf(PropertySectionUi("File", rows)) // TODO: localize
     )
 }
+
+private fun FileItem.isEditableText(): Boolean =
+    mimeType.type == "text" ||
+        mimeType.value in setOf(
+            "application/json",
+            "application/xml",
+            "application/javascript",
+            "application/x-sh"
+        )
 
 private fun isStorageAccessGranted(context: Context): Boolean =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

@@ -6,6 +6,8 @@
 package me.zhanghai.android.files.compose.features.navigation
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +37,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -135,6 +140,12 @@ private fun NavIcon(
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant
     }
+    val iconScale by animateFloatAsState(
+        targetValue = if (selected) 1.06f else 1f,
+        animationSpec = spring(dampingRatio = 0.9f, stiffness = 700f),
+        label = "navIconScale"
+    )
+    val haptics = LocalHapticFeedback.current
     TooltipBox(
         positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
         tooltip = { PlainTooltip { Text(destination.label) } },
@@ -144,7 +155,13 @@ private fun NavIcon(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .clip(CircleShape)
-                .clickable(onClick = onClick, role = Role.Tab)
+                .clickable(
+                    onClick = {
+                        haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                        onClick()
+                    },
+                    role = Role.Tab
+                )
                 .semantics {
                     this.selected = selected
                     contentDescription = destination.label
@@ -162,14 +179,24 @@ private fun NavIcon(
                         painter = painterResource(destination.iconRes),
                         contentDescription = null,
                         tint = content,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier
+                            .size(20.dp)
+                            .graphicsLayer {
+                                scaleX = iconScale
+                                scaleY = iconScale
+                            }
                     )
                 } else {
                     Icon(
                         imageVector = destination.icon ?: ExpressiveIcons.Folder,
                         contentDescription = null,
                         tint = content,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier
+                            .size(20.dp)
+                            .graphicsLayer {
+                                scaleX = iconScale
+                                scaleY = iconScale
+                            }
                     )
                 }
             }

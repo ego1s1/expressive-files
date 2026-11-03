@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -24,18 +23,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileListUiState
 
-private const val TOP_BAR_HEIGHT_DP = 64
-
 /**
- * The file list app bar: back/drawer navigation plus the current location title and subtitle.
+ * Expressive medium-flexible app bar: the navigation button sits in a compact top row and the
+ * location headline is free to use the full width beneath it. This follows the flexible app bar
+ * pattern instead of squeezing a toolbar title next to the back button.
  */
 @Composable
 fun FileListTopBar(
@@ -52,44 +50,52 @@ fun FileListTopBar(
         color = colorScheme.surfaceContainer,
         contentColor = colorScheme.onSurface
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
-                .height(TOP_BAR_HEIGHT_DP.dp),
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            when {
-                state.canNavigateUp -> IconButton(
-                    onClick = onNavigateUp,
-                    modifier = Modifier.size(48.dp)
+            if (state.canNavigateUp) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Navigate up" // TODO: localize
-                    )
+                    IconButton(
+                        onClick = onNavigateUp,
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Navigate up" // TODO: localize
+                        )
+                    }
                 }
-
-                else -> Spacer(Modifier.width(12.dp))
+            } else {
+                Spacer(Modifier.height(12.dp))
             }
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 4.dp)
+                    .fillMaxWidth()
+                    .padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        bottom = 16.dp
+                    )
             ) {
                 Text(
                     text = title,
+                    modifier = Modifier.semantics { heading() },
                     color = colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = 20.sp,
-                        lineHeight = 26.sp
-                    ),
-                    maxLines = 1,
+                    style = MaterialTheme.typography.headlineMedium,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 if (!subtitle.isNullOrBlank()) {
                     Text(
                         text = subtitle,
+                        modifier = Modifier.padding(top = 2.dp),
                         color = colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
@@ -108,7 +114,7 @@ private fun FileListTopBarPreview() {
         state = FileListUiState(
             title = "Downloads",
             subtitle = "12 items • 4.2 GB free", // TODO: localize
-            canNavigateUp = true
+            canNavigateUp = false
         ),
         onNavigateUp = {}
     )
