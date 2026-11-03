@@ -7,14 +7,25 @@ package me.zhanghai.android.files.compose
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -31,20 +42,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Observer
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import java8.nio.file.Path
 import java8.nio.file.Paths
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.features.filelist.FileListScreen
@@ -52,19 +69,30 @@ import me.zhanghai.android.files.compose.features.filelist.FileSortBy
 import me.zhanghai.android.files.compose.features.filelist.SortSheet
 import me.zhanghai.android.files.compose.features.home.HomeScreen
 import me.zhanghai.android.files.compose.features.navigation.AppDrawer
+import me.zhanghai.android.files.compose.features.navigation.BottomPillNav
+import me.zhanghai.android.files.compose.features.navigation.LocationsScreen
+import me.zhanghai.android.files.compose.features.onboarding.PermissionRationaleSheet
 import me.zhanghai.android.files.compose.features.operations.CreateEntrySheet
 import me.zhanghai.android.files.compose.features.operations.DeleteConfirmDialog
 import me.zhanghai.android.files.compose.features.operations.RenameDialog
+import me.zhanghai.android.files.compose.features.properties.PropertiesScreen
 import me.zhanghai.android.files.compose.features.settings.AboutScreen
 import me.zhanghai.android.files.compose.features.settings.SettingsScreen
+import me.zhanghai.android.files.compose.features.viewer.ImageViewerScreen
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 import me.zhanghai.android.files.compose.model.HomeUiState
+import me.zhanghai.android.files.compose.model.PropertiesUiState
+import me.zhanghai.android.files.compose.model.PropertyRowUi
+import me.zhanghai.android.files.compose.model.PropertySectionUi
 import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
 import me.zhanghai.android.files.compose.state.RecentsStore
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
 import me.zhanghai.android.files.compose.state.mapFileListState
 import me.zhanghai.android.files.file.FileItem
+import me.zhanghai.android.files.file.fileSize
+import me.zhanghai.android.files.file.formatShort
+import me.zhanghai.android.files.file.icon
 import me.zhanghai.android.files.file.fileProviderUri
 import me.zhanghai.android.files.filelist.FileItemSet
 import me.zhanghai.android.files.filelist.FileListViewModel
@@ -76,6 +104,7 @@ import me.zhanghai.android.files.filelist.isListable
 import me.zhanghai.android.files.filelist.listablePath
 import me.zhanghai.android.files.filelist.name
 import me.zhanghai.android.files.filejob.FileJobService
+import me.zhanghai.android.files.provider.common.newInputStream
 import me.zhanghai.android.files.settings.Settings
 import me.zhanghai.android.files.settings.SettingsActivity
 import me.zhanghai.android.files.util.Loading
@@ -89,6 +118,10 @@ private const val ROUTE_RECENTS = "recents"
 private const val ROUTE_FAVORITES = "favorites"
 private const val ROUTE_SETTINGS = "settings"
 private const val ROUTE_ABOUT = "about"
+private const val ROUTE_LOCATIONS = "locations"
+
+/** Phase 1 of the bottom-navigation migration; flip to false to restore the drawer. */
+private const val USE_BOTTOM_PILL_NAV = true
 
 /**
  * Compose-first application shell.
@@ -101,14 +134,37 @@ private const val ROUTE_ABOUT = "about"
 fun ExpressiveFilesApp() {
     val context = LocalContext.current
     val viewModel: FileListViewModel = viewModel()
+    // The legacy LiveData graph requires a non-null trail before it is observed.
+    // This is an idempotent initialization, not a per-frame side effect.
+    remember(viewModel) {
+        if (!viewModel.hasTrail) {
+            viewModel.resetTo(defaultPath())
+        }
+    }
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
 
-    LaunchedEffect(Unit) {
+    var hasStorageAccess by remember { mutableStateOf(isStorageAccessGranted(context)) }
+    var permissionDismissed by rememberSaveable { mutableStateOf(false) }
+    val allFilesLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        hasStorageAccess = isStorageAccessGranted(context)
+    }
+    val legacyPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {
+        hasStorageAccess = isStorageAccessGranted(context)
+    }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        hasStorageAccess = isStorageAccessGranted(context)
+    }
+
+    LaunchedEffect(hasStorageAccess) {
         FavoritesStore.initialize(context)
         RecentsStore.initialize(context)
-        if (!viewModel.hasTrail) {
-            viewModel.resetTo(defaultPath())
+        if (hasStorageAccess) {
+            viewModel.reload()
         }
     }
 
@@ -144,6 +200,8 @@ fun ExpressiveFilesApp() {
     var renameTarget by remember { mutableStateOf<FileItem?>(null) }
     var showDelete by remember { mutableStateOf(false) }
     var actionTarget by remember { mutableStateOf<FileItem?>(null) }
+    var propertiesFile by remember { mutableStateOf<FileItem?>(null) }
+    var imageViewerFile by remember { mutableStateOf<FileItem?>(null) }
     var settingsTick by remember { mutableIntStateOf(0) }
     var settingsQuery by remember { mutableStateOf("") }
 
@@ -203,10 +261,12 @@ fun ExpressiveFilesApp() {
         NavigationStateBuilder.build(context, currentPath)
     }
 
-    val canHandleBack = selectedCount > 0 || route != ROUTE_FILES || searchExpanded ||
-        (breadcrumb?.selectedIndex ?: 0) > 0
+    val canHandleBack = imageViewerFile != null || propertiesFile != null || selectedCount > 0 ||
+        route != ROUTE_FILES || searchExpanded || (breadcrumb?.selectedIndex ?: 0) > 0
     BackHandler(enabled = canHandleBack) {
         when {
+            imageViewerFile != null -> imageViewerFile = null
+            propertiesFile != null -> propertiesFile = null
             searchExpanded -> {
                 searchExpanded = false
                 searchQuery = ""
@@ -214,16 +274,51 @@ fun ExpressiveFilesApp() {
             }
 
             selectedCount > 0 -> viewModel.clearSelectedFiles()
+            route == ROUTE_SETTINGS || route == ROUTE_ABOUT -> route = ROUTE_LOCATIONS
             route != ROUTE_FILES -> route = ROUTE_FILES
             else -> viewModel.navigateUp()
         }
     }
 
+    if (!hasStorageAccess && !permissionDismissed) {
+        PermissionRationaleSheet(
+            title = "Allow access to your files", // TODO: localize
+            body = "Expressive Files needs file access to browse, copy, and organize files on this device.", // TODO: localize
+            primaryLabel = "Continue", // TODO: localize
+            onPrimary = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val intent = Intent(
+                        android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                        Uri.parse("package:${context.packageName}")
+                    )
+                    runCatching { allFilesLauncher.launch(intent) }.onFailure {
+                        runCatching {
+                            allFilesLauncher.launch(
+                                Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                            )
+                        }
+                    }
+                } else {
+                    legacyPermissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                    )
+                }
+            },
+            onDismiss = { permissionDismissed = true }
+        )
+    }
+
+    val showBottomPill = USE_BOTTOM_PILL_NAV && selectedCount == 0 &&
+        imageViewerFile == null && propertiesFile == null && !searchExpanded
+
     ModalNavigationDrawer(
         drawerState = drawerState,
-        gesturesEnabled = route == ROUTE_FILES,
+        gesturesEnabled = !USE_BOTTOM_PILL_NAV && route == ROUTE_FILES,
         drawerContent = {
-            AppDrawer(
+            if (!USE_BOTTOM_PILL_NAV) AppDrawer(
                 state = navigationState,
                 currentRoute = route,
                 onNavigate = { newRoute ->
@@ -250,7 +345,36 @@ fun ExpressiveFilesApp() {
             )
         }
     ) {
-        when (route) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = if (showBottomPill) 88.dp else 0.dp)
+            ) {
+        val imageViewer = imageViewerFile
+        val properties = propertiesFile
+        if (imageViewer != null) {
+            ComposeImageViewer(
+                file = imageViewer,
+                onBack = { imageViewerFile = null },
+                onShare = { shareFiles(context, listOf(imageViewer)) },
+                onDelete = {
+                    viewModel.replaceSelectedFiles(fileItemSetOf(imageViewer))
+                    showDelete = true
+                },
+                onInfo = { propertiesFile = imageViewer }
+            )
+        } else if (properties != null) {
+            PropertiesScreen(
+                state = remember(properties) { buildPropertiesUiState(context, properties) },
+                onTabSelected = {},
+                onCopy = { value ->
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setPrimaryClip(ClipData.newPlainText("value", value))
+                },
+                onBack = { propertiesFile = null }
+            )
+        } else when (route) {
             ROUTE_RECENTS -> HomeScreen(
                 title = "Recents", // TODO: localize
                 state = HomeUiState(recents = recents, favorites = favorites),
@@ -267,7 +391,7 @@ fun ExpressiveFilesApp() {
                         .getOrNull()
                         ?.let(FavoritesStore::remove)
                 },
-                onOpenDrawer = { scope.launch { drawerState.open() } }
+                onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } })
             )
 
             ROUTE_FAVORITES -> HomeScreen(
@@ -286,7 +410,23 @@ fun ExpressiveFilesApp() {
                         .getOrNull()
                         ?.let(FavoritesStore::remove)
                 },
-                onOpenDrawer = { scope.launch { drawerState.open() } }
+                onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } })
+            )
+
+            ROUTE_LOCATIONS -> LocationsScreen(
+                state = navigationState,
+                onEntryClick = { entry ->
+                    when (entry.id) {
+                        NavigationStateBuilder.ACTION_SETTINGS -> route = ROUTE_SETTINGS
+                        NavigationStateBuilder.ACTION_ABOUT -> route = ROUTE_ABOUT
+                        else -> {
+                            openPath(viewModel, entry.id)
+                            route = ROUTE_FILES
+                        }
+                    }
+                },
+                onSettings = { route = ROUTE_SETTINGS },
+                onAbout = { route = ROUTE_ABOUT }
             )
 
             ROUTE_SETTINGS -> {
@@ -300,7 +440,7 @@ fun ExpressiveFilesApp() {
                         applySetting(context, item.key, item.checked == true)
                         settingsTick++
                     },
-                    onBack = { route = ROUTE_FILES },
+                    onBack = { route = ROUTE_LOCATIONS },
                     onOpenLegacySettings = {
                         context.startActivity(Intent(context, SettingsActivity::class.java))
                     }
@@ -310,7 +450,7 @@ fun ExpressiveFilesApp() {
             ROUTE_ABOUT -> AboutScreen(
                 appName = context.getString(R.string.app_name),
                 version = runCatching { context.getString(R.string.app_version) }.getOrDefault(""),
-                onBack = { route = ROUTE_FILES },
+                onBack = { route = ROUTE_LOCATIONS },
                 onOpenLink = { url ->
                     runCatching {
                         context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url)))
@@ -320,13 +460,16 @@ fun ExpressiveFilesApp() {
 
             else -> FileListScreen(
                 state = uiState,
-                onOpenDrawer = { scope.launch { drawerState.open() } },
+                onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } }),
                 onNavigateUp = { viewModel.navigateUp() },
                 onBreadcrumbClick = { crumb -> openPath(viewModel, crumb.path) },
                 onEntryClick = { entry ->
                     val file = filesByPath[entry.path] ?: return@FileListScreen
                     if (selectedCount > 0) {
                         viewModel.selectFile(file, !(file in selectedFiles))
+                    } else if (file.mimeType.type == "image") {
+                        RecentsStore.record(file)
+                        imageViewerFile = file
                     } else {
                         openEntry(context, viewModel, file)
                     }
@@ -366,6 +509,18 @@ fun ExpressiveFilesApp() {
                     }
                 }
             )
+        }
+            }
+            if (showBottomPill) {
+                BottomPillNav(
+                    currentRoute = route,
+                    onNavigate = { route = it },
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .navigationBarsPadding()
+                        .padding(bottom = 16.dp)
+                )
+            }
         }
     }
 
@@ -468,9 +623,39 @@ fun ExpressiveFilesApp() {
                 clipboard.setPrimaryClip(ClipData.newPlainText("path", file.path.toString()))
                 actionTarget = null
             },
+            onProperties = {
+                propertiesFile = file
+                actionTarget = null
+            },
             onDismiss = { actionTarget = null }
         )
     }
+}
+
+@Composable
+private fun ComposeImageViewer(
+    file: FileItem,
+    onBack: () -> Unit,
+    onShare: () -> Unit,
+    onDelete: () -> Unit,
+    onInfo: () -> Unit
+) {
+    val bitmap by produceState<Bitmap?>(initialValue = null, file) {
+        value = withContext(Dispatchers.IO) {
+            runCatching {
+                file.path.newInputStream().use(BitmapFactory::decodeStream)
+            }.getOrNull()
+        }
+    }
+    ImageViewerScreen(
+        bitmap = bitmap,
+        title = file.name,
+        subtitle = null,
+        onBack = onBack,
+        onShare = onShare,
+        onDelete = onDelete,
+        onInfo = onInfo
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -484,6 +669,7 @@ private fun FileActionSheet(
     onDelete: () -> Unit,
     onToggleFavorite: () -> Unit,
     onCopyPath: () -> Unit,
+    onProperties: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -506,6 +692,7 @@ private fun FileActionSheet(
                 onToggleFavorite
             )
             ActionRow("Copy path", onCopyPath) // TODO: localize
+            ActionRow("Properties", onProperties) // TODO: localize
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = MaterialTheme.colorScheme.outlineVariant
@@ -536,6 +723,45 @@ private fun ActionRow(
     )
 }
 
+private fun buildPropertiesUiState(context: Context, file: FileItem): PropertiesUiState {
+    val attributes = file.attributes
+    val rows = buildList {
+        add(PropertyRowUi("Name", file.name, copyable = true)) // TODO: localize
+        add(PropertyRowUi("Path", file.path.toString(), copyable = true)) // TODO: localize
+        if (!attributes.isDirectory) {
+            add(PropertyRowUi("Size", attributes.fileSize.formatHumanReadable(context))) // TODO: localize
+        }
+        add(
+            PropertyRowUi(
+                "Modified", // TODO: localize
+                attributes.lastModifiedTime().toInstant().formatShort(context)
+            )
+        )
+        add(
+            PropertyRowUi(
+                "Type", // TODO: localize
+                if (attributes.isDirectory) "Folder" else file.mimeType.value // TODO: localize
+            )
+        )
+    }
+    return PropertiesUiState(
+        title = file.name,
+        subtitle = file.path.toString(),
+        iconRes = file.mimeType.icon.resourceId,
+        tabTitles = listOf("Basic"), // TODO: localize
+        selectedTab = 0,
+        sections = listOf(PropertySectionUi("File", rows)) // TODO: localize
+    )
+}
+
+private fun isStorageAccessGranted(context: Context): Boolean =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        Environment.isExternalStorageManager()
+    } else {
+        context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+            PackageManager.PERMISSION_GRANTED
+    }
+
 private fun defaultPath(): Path = runCatching {
     Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat
 }.getOrElse {
@@ -544,6 +770,7 @@ private fun defaultPath(): Path = runCatching {
 
 private fun openEntry(context: Context, viewModel: FileListViewModel, file: FileItem) {
     RecentsStore.record(file)
+    viewModel.clearSelectedFiles()
     if (file.isListable) {
         viewModel.navigateTo(Bundle(), file.listablePath)
     } else {
@@ -555,6 +782,7 @@ private fun openEntry(context: Context, viewModel: FileListViewModel, file: File
 
 private fun openPath(viewModel: FileListViewModel, pathString: String) {
     val path = runCatching { Paths.get(pathString) }.getOrNull() ?: return
+    viewModel.clearSelectedFiles()
     viewModel.navigateTo(Bundle(), path)
 }
 

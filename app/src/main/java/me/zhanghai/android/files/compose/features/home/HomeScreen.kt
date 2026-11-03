@@ -32,6 +32,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,7 +54,7 @@ fun HomeScreen(
     state: HomeUiState,
     onOpen: (ShortcutEntryUi) -> Unit,
     onToggleFavorite: (ShortcutEntryUi) -> Unit,
-    onOpenDrawer: () -> Unit
+    onOpenDrawer: (() -> Unit)?
 ) {
     val isFavorites = title.contains("favorite", ignoreCase = true)
     val entries = if (isFavorites) state.favorites else state.recents
@@ -120,25 +122,28 @@ fun HomeScreen(
 private fun HomeHeader(
     title: String,
     supportingText: String,
-    onOpenDrawer: () -> Unit
+    onOpenDrawer: (() -> Unit)?
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(112.dp)
-            .padding(start = 4.dp, end = 24.dp),
+            .padding(start = if (onOpenDrawer != null) 4.dp else 24.dp, end = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onOpenDrawer) {
-            Icon(
-                imageVector = Icons.Filled.Menu,
-                contentDescription = "Open navigation drawer" // TODO: localize
-            )
+        if (onOpenDrawer != null) {
+            IconButton(onClick = onOpenDrawer) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "Open navigation drawer" // TODO: localize
+                )
+            }
+            Spacer(Modifier.width(8.dp))
         }
-        Spacer(Modifier.width(8.dp))
         Column(Modifier.weight(1f)) {
             Text(
                 text = title,
+                modifier = Modifier.semantics { heading() },
                 style = MaterialTheme.typography.headlineLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -161,7 +166,8 @@ private fun HomeSectionHeader(isFavorites: Boolean) {
         text = if (isFavorites) "Starred" else "Recently opened", // TODO: localize
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 4.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 4.dp)
+            .semantics { heading() },
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )

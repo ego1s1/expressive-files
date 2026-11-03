@@ -37,15 +37,30 @@ import androidx.compose.ui.unit.dp
  *
  * The base name (everything before the last extension dot) is preselected so typing replaces it
  * while keeping the extension intact.
- *
- * @param existingNames Optional sibling names used for inline duplicate validation.
  */
 @Composable
 fun RenameDialog(
     initialName: String,
     onConfirm: (String) -> Unit,
-    onDismiss: () -> Unit,
-    existingNames: List<String> = emptyList()
+    onDismiss: () -> Unit
+) {
+    RenameDialog(
+        initialName = initialName,
+        existingNames = emptyList(),
+        onConfirm = onConfirm,
+        onDismiss = onDismiss
+    )
+}
+
+/**
+ * Overload that enables inline duplicate validation against [existingNames].
+ */
+@Composable
+fun RenameDialog(
+    initialName: String,
+    existingNames: List<String>,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
     var value by rememberSaveable(initialName, stateSaver = TextFieldValue.Saver) {

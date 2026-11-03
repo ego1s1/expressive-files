@@ -108,8 +108,8 @@ internal fun OperationSheetContent(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
-                if (!detail.isNullOrEmpty()) {
-                    Spacer(Modifier.height(2.dp))
+                if (detail != null && detail.isNotEmpty()) {
+                    Spacer(Modifier.height(4.dp))
                     Text(
                         text = detail,
                         style = MaterialTheme.typography.bodyMedium,
@@ -168,6 +168,14 @@ internal fun OperationSheetContent(
                     .heightIn(min = 48.dp)
             ) {
                 Text(text = "Done") // TODO: localize
+            }
+            error != null -> Button(
+                onClick = onDismiss,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+            ) {
+                Text(text = "Dismiss") // TODO: localize
             }
             operation.canCancel -> OutlinedButton(
                 onClick = onCancel,
@@ -278,7 +286,6 @@ private fun OperationSheetErrorPreview() {
                     id = "preview-error",
                     title = "Copying 3 items", // TODO: localize
                     detail = "/storage/emulated/0/DCIM/IMG_2041.jpg",
-                    isComplete = true,
                     error = "Not enough free space" // TODO: localize
                 ),
                 onCancel = {},

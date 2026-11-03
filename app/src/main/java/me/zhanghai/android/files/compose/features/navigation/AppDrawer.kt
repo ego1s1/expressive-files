@@ -44,6 +44,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,7 +105,13 @@ fun AppDrawer(
                 }
             }
 
-            val sections = state.sections.filter { it.entries.isNotEmpty() }
+            // Action entries (Settings/About) are rendered by the dedicated bottom rows below, so
+            // keep the state-driven sections limited to navigable shortcuts.
+            val sections = state.sections
+                .map { section ->
+                    section.copy(entries = section.entries.filterNot { it.isAction })
+                }
+                .filter { it.entries.isNotEmpty() }
             if (sections.isNotEmpty()) {
                 item(key = "destination-divider") {
                     HorizontalDivider(
@@ -167,7 +175,7 @@ private fun DrawerHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(R.mipmap.launcher_icon),
+            painter = painterResource(R.drawable.launcher_icon_foreground),
             contentDescription = null,
             modifier = Modifier
                 .size(40.dp)
@@ -206,7 +214,8 @@ private fun DrawerSectionHeader(title: String) {
         text = title,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 28.dp, end = 24.dp, top = 12.dp, bottom = 4.dp),
+            .padding(start = 28.dp, end = 24.dp, top = 12.dp, bottom = 4.dp)
+            .semantics { heading() },
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         maxLines = 1,

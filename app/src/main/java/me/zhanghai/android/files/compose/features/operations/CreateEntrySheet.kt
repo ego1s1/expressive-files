@@ -50,17 +50,31 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Bottom sheet for creating an empty file or folder in the current directory.
- *
- * @param existingNames Optional sibling names used for inline duplicate validation. The caller can
- * leave this empty when the target directory contents are not known.
+ */
+@Composable
+fun CreateEntrySheet(
+    isDirectory: Boolean,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    CreateEntrySheet(
+        isDirectory = isDirectory,
+        existingNames = emptyList(),
+        onConfirm = onConfirm,
+        onDismiss = onDismiss
+    )
+}
+
+/**
+ * Overload that enables inline duplicate validation against [existingNames].
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEntrySheet(
     isDirectory: Boolean,
+    existingNames: List<String>,
     onConfirm: (String) -> Unit,
-    onDismiss: () -> Unit,
-    existingNames: List<String> = emptyList()
+    onDismiss: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
@@ -145,7 +159,7 @@ private fun CreateEntrySheetContent(
                 }
             }
             Spacer(Modifier.size(16.dp))
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,

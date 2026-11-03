@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,10 +62,7 @@ internal fun ShortcutRow(
             color = MaterialTheme.colorScheme.surfaceContainerHigh
         ) {
             Box(contentAlignment = Alignment.Center) {
-                ShortcutIcon(
-                    iconRes = entry.iconRes,
-                    isDirectory = entry.isDirectory
-                )
+                ShortcutIcon(iconRes = entry.iconRes)
             }
         }
         Spacer(Modifier.width(12.dp))
@@ -111,28 +109,21 @@ internal fun ShortcutRow(
 }
 
 @Composable
-private fun ShortcutIcon(
-    @DrawableRes iconRes: Int,
-    isDirectory: Boolean
-) {
-    val tint = if (isDirectory) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
-    }
+private fun ShortcutIcon(@DrawableRes iconRes: Int) {
     if (iconRes != 0) {
+        // MIME icons carry their own colour; keep them untinted.
         Icon(
             painter = painterResource(iconRes),
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            tint = tint
+            tint = Color.Unspecified
         )
     } else {
         Icon(
             imageVector = ExpressiveIcons.Folder,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            tint = tint
+            tint = MaterialTheme.colorScheme.primary
         )
     }
 }

@@ -33,7 +33,8 @@ import me.zhanghai.android.files.compose.model.NavigationUiState
  * Collapsed (80dp) navigation rail for compact-width-free layouts.
  *
  * Only the top-level destinations are repeated from the drawer; storage/bookmark entries stay in
- * [AppDrawer]. The rail header is intentionally empty so the host can place its FAB there.
+ * [AppDrawer], so [onEntryClick] is intentionally unused. The rail header is left empty for the
+ * host's FAB.
  */
 @Suppress("UNUSED_PARAMETER")
 @Composable

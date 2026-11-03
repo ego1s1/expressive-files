@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
@@ -50,11 +52,13 @@ fun FileGrid(
     onEntryClick: (FileEntryUi) -> Unit,
     onEntryLongClick: (FileEntryUi) -> Unit,
     onEntryMenu: (FileEntryUi) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: LazyGridState = rememberLazyGridState()
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = GridCellMinSize),
         modifier = modifier.fillMaxSize(),
+        state = state,
         contentPadding = PaddingValues(
             start = 16.dp,
             top = 12.dp,

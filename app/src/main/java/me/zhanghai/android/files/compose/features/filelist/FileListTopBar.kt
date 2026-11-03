@@ -22,8 +22,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -50,6 +50,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 import me.zhanghai.android.files.compose.model.FileListUiState
@@ -63,7 +64,7 @@ private const val TOP_BAR_HEIGHT_DP = 64
 @Composable
 fun FileListTopBar(
     state: FileListUiState,
-    onOpenDrawer: () -> Unit,
+    onOpenDrawer: (() -> Unit)?,
     onNavigateUp: () -> Unit,
     onSearchClick: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
@@ -101,7 +102,7 @@ fun FileListTopBar(
 @Composable
 private fun BrowseTopBar(
     state: FileListUiState,
-    onOpenDrawer: () -> Unit,
+    onOpenDrawer: (() -> Unit)?,
     onNavigateUp: () -> Unit,
     onSearchClick: () -> Unit,
     onSortClick: () -> Unit,
@@ -130,22 +131,26 @@ private fun BrowseTopBar(
             .height(TOP_BAR_HEIGHT_DP.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(
-            onClick = if (state.canNavigateUp) onNavigateUp else onOpenDrawer,
-            modifier = Modifier.size(48.dp)
-        ) {
-            if (state.canNavigateUp) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Navigate up" // TODO: localize
-                )
-            } else {
-                Icon(
-                    painter = painterResource(R.drawable.menu_icon_control_normal_24dp),
-                    contentDescription = "Open navigation drawer", // TODO: localize
-                    modifier = Modifier.size(24.dp)
-                )
+        if (state.canNavigateUp || onOpenDrawer != null) {
+            IconButton(
+                onClick = if (state.canNavigateUp) onNavigateUp else onOpenDrawer!!,
+                modifier = Modifier.size(48.dp)
+            ) {
+                if (state.canNavigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Navigate up" // TODO: localize
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.menu_icon_control_normal_24dp),
+                        contentDescription = "Open navigation drawer", // TODO: localize
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
+        } else {
+            Spacer(Modifier.width(12.dp))
         }
         Column(
             modifier = Modifier
@@ -155,7 +160,7 @@ private fun BrowseTopBar(
             Text(
                 text = title,
                 color = colorScheme.onSurface,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, lineHeight = 26.sp),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -223,7 +228,7 @@ private fun BrowseTopBar(
                     },
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Filled.List,
+                            imageVector = Icons.AutoMirrored.Filled.List,
                             contentDescription = null
                         )
                     }
@@ -307,7 +312,10 @@ private fun SearchTopBar(
                 )
                 if (query.isNotEmpty()) {
                     IconButton(
-                        onClick = { onQueryChange("") },
+                        onClick = {
+                            onQueryChange("")
+                            focusRequester.requestFocus()
+                        },
                         modifier = Modifier.size(48.dp)
                     ) {
                         Icon(

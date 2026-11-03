@@ -7,7 +7,8 @@ package me.zhanghai.android.files.compose.components
 
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 
-import androidx.compose.foundation.backgroundimport androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

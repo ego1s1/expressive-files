@@ -5,8 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
-import me.zhanghai.android.files.compose.icons.ExpressiveIcons
-
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -49,6 +48,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 
 /**
  * A compact, scrim-less create menu built from a [FloatingActionButton] and
@@ -68,6 +68,10 @@ fun CreateFabMenu(
         animationSpec = tween(durationMillis = 180),
         label = "createFabIconRotation"
     )
+
+    BackHandler(enabled = expanded) {
+        expanded = false
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         if (expanded) {

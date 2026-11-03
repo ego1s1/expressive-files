@@ -5,8 +5,8 @@ by surface. This document records what is migrated, what is bridged to a legacy
 Activity/Fragment, and what is still pending. It is updated in the same change that
 flips an entry point.
 
-**Snapshot:** 2026-11-03, fork base Material Files `1.7.5` (versionCode 40), application
-id `dev.expressive.files`.
+**Snapshot:** 2026-11-03, fork base Material Files `1.7.5`, fork version `0.1.0`
+(versionCode 1), application id `dev.expressive.files`.
 
 ## Status definitions
 
@@ -24,16 +24,16 @@ Compose preview alone is not a migration.
 
 | Legacy surface | Current implementation | Compose target | Status | Notes |
 |---|---|---|---|---|
-| Launcher / app shell | `app/AppActivity`, `compose/MainActivity` | `compose/`, `compose/theme/` | **migrated** | Compose `MainActivity` is the launcher; theme wrapper and `enableEdgeToEdge()` are in place. The root is still a placeholder until navigation is routed. |
-| File list | `filelist/FileListActivity`, `FileListFragment`, `FileListAdapter`, `FileListViewModel` | `compose/features/filelist` | **pending** | `compose/state/FileListStateMapper` exists, but no Compose list is routed yet. Legacy activity remains exported for `VIEW` directory intents and picker flows. |
-| Breadcrumbs | `filelist/BreadcrumbLayout`, `BreadcrumbLiveData` | `compose/features/filelist` | **pending** | Model is shared (`BreadcrumbUi`); rendering and scroll-to-current still legacy. |
-| Drawer / navigation | `navigation/` fragments, legacy drawer layout | `compose/features/navigation` | **pending** | Destination ids and saved-state behavior must match before the legacy drawer is removed. |
-| Home / bookmarks / recents | legacy home section under `navigation/` | `compose/features/home` | **pending** | `HomeUiState`, `HomeSectionUi`, `ShortcutEntryUi` already exist. |
-| Settings | `settings/` fragments and preference classes | `compose/features/settings` | **bridged** | Compose settings components exist but are not routed; preference storage is frozen. |
+| Launcher / app shell | `app/AppActivity`, `compose/MainActivity` | `compose/`, `compose/theme/` | **migrated** | Compose `MainActivity` is the launcher; theme, edge-to-edge, file list, bottom navigation, recents/favorites, settings, about and basic properties are routed. Legacy screens remain reachable where noted below. |
+| File list | `filelist/FileListFragment`, `FileListAdapter`, `FileListViewModel` | `compose/features/filelist` | **migrated** | Compose list/grid, search, selection, FAB menu, create/rename/delete and breadcrumbs use the existing `FileListViewModel`. Legacy `FileListActivity` stays exported only for external `VIEW`/picker intents. |
+| Breadcrumbs | `filelist/BreadcrumbLiveData` | `compose/features/filelist` | **migrated** | Compose breadcrumb rail with current pill and horizontal scroll; legacy layout remains for external legacy screens. |
+| Drawer / navigation | `navigation/`, `compose/features/navigation/AppDrawer.kt` | `compose/features/navigation/BottomPillNav.kt` | **bridged** | Phase 1 floating icon-only pill is the production navigation (`USE_BOTTOM_PILL_NAV = true`); the drawer remains behind the flag as a fallback until Phase 3 removes it. |
+| Home / bookmarks / recents | legacy home section under `navigation/` | `compose/features/home` | **migrated** | Recents and Favorites routes use real `RecentsStore`/`FavoritesStore` flows; storages and bookmarks moved to the Locations hub. |
+| Settings | `settings/` fragments and preference classes | `compose/features/settings` | **bridged** | Compose settings is routed from Locations; three real toggles are wired and the footer opens legacy settings for the remaining preference tree. |
 | Onboarding / permissions | legacy first-run and rationale dialogs | `compose/features/onboarding` | **bridged** | A Compose rationale sheet exists but is not wired. Storage permission and SAF flows must keep the exact request/result contract. |
-| Properties | `fileproperties/` dialog and tab fragments | `compose/features/properties` | **pending** | `PropertiesUiState` exists; no Compose screen yet. Checksum, permission, APK and media tabs need parity. |
-| Viewers (text / image / media / archive) | `viewer/` activities and fragments | `compose/features/viewer` | **bridged** | Compose image and text screens exist but are not routed. Archive viewer and save-as flow are the riskiest: keep legacy until parity is proven. |
-| Operations / conflicts | `filejob/`, `filelist/` conflict dialogs | `compose/features/operations` | **pending** | `OperationUi` and `ConflictUi` are contracts only; job engine is frozen. |
+| Properties | `fileproperties/` tabs | `compose/features/properties` | **bridged** | Basic file properties are routed from the file action sheet; checksum, permission, APK and media tabs still use the legacy dialog. |
+| Viewers (text / image / media / archive) | `viewer/` activities and fragments | `compose/features/viewer` | **bridged** | Image files open the Compose viewer; text, media, PDF and archive viewing still use legacy/external intents until parity and gestures are proven. |
+| Operations / conflicts | `filejob/`, `filelist/` conflict dialogs | `compose/features/operations` | **bridged** | Create/rename/delete use Compose confirmation UI and the frozen job engine; archive, conflict and batch-progress sheets still need wiring. |
 | Servers (SMB / FTP / SFTP / WebDAV) | `storage/` server editors, providers under `provider/` | `compose/features/settings` (server management); extraction to `compose/features/servers` requires integrator approval | **pending** | UI only. Provider implementations and credentials storage are frozen. |
 | FTP server | `ftpserver/FtpServerActivity`, `FtpServerFragment`, service and tile | `compose/features/settings` (FTP section); extraction to `compose/features/ftpserver` requires approval | **pending** | Service, notification, tile and receiver stay legacy; only the control screen moves. |
 | About / licenses | `about/AboutActivity`, `AboutFragment` | `compose/features/settings` | **bridged** | A Compose about screen exists but is not routed. Keep GPLv3 and upstream attribution visible; do not move license text behind a web-only link. |

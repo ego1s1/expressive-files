@@ -62,8 +62,9 @@ private val ArchiveFormatOptions = listOf(
 /**
  * Sheet for creating an archive from the selected items.
  *
- * @param onConfirm Receives the trimmed archive name, the format value (`"zip"`, `"tar.xz"` or
- * `"7z"`) and an optional password. The password is only non-null for ZIP.
+ * @param onConfirm Receives the trimmed archive name exactly as entered (no extension is appended),
+ * the format value (`"zip"`, `"tar.xz"` or `"7z"`, matching the legacy archive formats) and an
+ * optional password. The password is only non-null for ZIP.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +77,7 @@ fun ArchiveSheet(
     var name by rememberSaveable(defaultName) { mutableStateOf(defaultName) }
     var formatIndex by rememberSaveable { mutableIntStateOf(0) }
     var password by rememberSaveable { mutableStateOf("") }
-    var touched by rememberSaveable { mutableStateOf(false) }
+    var touched by rememberSaveable(defaultName) { mutableStateOf(false) }
 
     val colorScheme = MaterialTheme.colorScheme
     val selectedFormat = ArchiveFormatOptions[formatIndex]
@@ -126,7 +127,7 @@ fun ArchiveSheet(
                     }
                 }
                 Spacer(Modifier.size(16.dp))
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "Create archive", // TODO: localize
                         style = MaterialTheme.typography.titleLarge,
@@ -170,6 +171,7 @@ fun ArchiveSheet(
                     SegmentedButton(
                         selected = index == formatIndex,
                         onClick = { formatIndex = index },
+                        modifier = Modifier.weight(1f),
                         shape = SegmentedButtonDefaults.itemShape(
                             index = index,
                             count = ArchiveFormatOptions.size

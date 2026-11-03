@@ -99,7 +99,7 @@ private fun DeleteDialogBody(count: Int, names: List<String>) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     shownNames.forEach { entryName ->
                         Text(

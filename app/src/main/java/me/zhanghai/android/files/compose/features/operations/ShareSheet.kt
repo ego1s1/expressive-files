@@ -5,8 +5,6 @@
 
 package me.zhanghai.android.files.compose.features.operations
 
-import me.zhanghai.android.files.compose.icons.ExpressiveIcons
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 
 /**
  * Sheet with the share targets for a single file.
@@ -159,8 +158,8 @@ private fun ShareFileHeader(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                if (!supportingText.isNullOrEmpty()) {
-                    Spacer(Modifier.height(2.dp))
+                if (supportingText != null && supportingText.isNotEmpty()) {
+                    Spacer(Modifier.height(4.dp))
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,

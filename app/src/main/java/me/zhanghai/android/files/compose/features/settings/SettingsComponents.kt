@@ -255,7 +255,7 @@ internal fun SettingsRow(
                         text = summary,
                         style = MaterialTheme.typography.bodyMedium,
                         color = supportingColor,
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
