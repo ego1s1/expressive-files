@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Expressive Files</title>
+  <rect width="512" height="512" rx="112" fill="#0B57D0"/>
+  <path fill="#FFFFFF" d="M132 158h90l28 28h108a22 22 0 0 1 22 22v118a22 22 0 0 1-22 22H132a22 22 0 0 1-22-22V180a22 22 0 0 1 22-22Z"/>
+  <path fill="#D3E3FD" d="M366 54l12 38 38 12-38 12-12 38-12-38-38-12 38-12Z"/>
+</svg>
