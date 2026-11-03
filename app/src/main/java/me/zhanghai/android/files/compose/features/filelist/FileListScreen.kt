@@ -95,17 +95,16 @@ fun FileListScreen(
             } else {
                 FileListTopBar(
                     state = state,
-                    onNavigateUp = onNavigateUp
+                    onNavigateUp = onNavigateUp,
+                    onSortClick = onSortClick,
+                    onOptionsClick = { showListOptions = true }
                 )
             }
-            if (state.breadcrumbs.isNotEmpty()) {
+            val ancestors = state.breadcrumbs.filterNot { it.isCurrent }
+            if (ancestors.isNotEmpty()) {
                 Breadcrumbs(
-                    breadcrumbs = state.breadcrumbs,
-                    onBreadcrumbClick = onBreadcrumbClick,
-                    sortLabel = state.sortLabel,
-                    onSortClick = onSortClick,
-                    onOptionsClick = { showListOptions = true },
-                    isGrid = state.layoutMode == FileLayoutMode.GRID
+                    breadcrumbs = ancestors,
+                    onBreadcrumbClick = onBreadcrumbClick
                 )
             }
             if (state.isLoading && state.entries.isNotEmpty()) {

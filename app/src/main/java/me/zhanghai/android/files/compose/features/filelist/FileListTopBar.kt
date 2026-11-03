@@ -24,10 +24,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileListUiState
 
 private val TOP_BAR_HEIGHT = 64.dp
@@ -40,6 +42,8 @@ private val TOP_BAR_HEIGHT = 64.dp
 fun FileListTopBar(
     state: FileListUiState,
     onNavigateUp: () -> Unit,
+    onSortClick: () -> Unit,
+    onOptionsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
@@ -96,6 +100,26 @@ fun FileListTopBar(
                     )
                 }
             }
+            IconButton(
+                onClick = onSortClick,
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_expressive_sort),
+                    contentDescription = "Sort and view, sorted by ${state.sortLabel}", // TODO: localize
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+            IconButton(
+                onClick = onOptionsClick,
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.more_vertical_icon_white_24dp),
+                    contentDescription = "View options", // TODO: localize
+                    modifier = Modifier.size(22.dp)
+                )
+            }
         }
     }
 }
@@ -109,6 +133,8 @@ private fun FileListTopBarPreview() {
             subtitle = "12 items • 4.2 GB free", // TODO: localize
             canNavigateUp = false
         ),
-        onNavigateUp = {}
+        onNavigateUp = {},
+        onSortClick = {},
+        onOptionsClick = {}
     )
 }
