@@ -20,7 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +46,7 @@ import me.zhanghai.android.files.compose.model.FileListUiState
  * ViewModel and no sort sheet state: the caller owns both and receives all interactions as
  * callbacks.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FileListScreen(
     state: FileListUiState,
@@ -109,22 +112,29 @@ fun FileListScreen(
                     trackColor = colorScheme.surfaceContainerHighest
                 )
             }
-            Box(
+            PullToRefreshBox(
+                isRefreshing = state.isLoading && state.entries.isNotEmpty(),
+                onRefresh = onRefresh,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
-                    )
             ) {
-                FileListBody(
-                    state = state,
-                    onEntryClick = onEntryClick,
-                    onEntryLongClick = onEntryLongClick,
-                    onEntryMenu = onEntryMenu,
-                    onRefresh = onRefresh,
-                    onCreateFolder = onCreateFolder
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
+                        )
+                ) {
+                    FileListBody(
+                        state = state,
+                        onEntryClick = onEntryClick,
+                        onEntryLongClick = onEntryLongClick,
+                        onEntryMenu = onEntryMenu,
+                        onRefresh = onRefresh,
+                        onCreateFolder = onCreateFolder
+                    )
+                }
             }
         }
         if (showFab) {

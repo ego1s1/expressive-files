@@ -68,6 +68,7 @@ import kotlinx.coroutines.launch
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.features.filelist.FileListScreen
 import me.zhanghai.android.files.compose.features.filelist.FileSortBy
+import me.zhanghai.android.files.compose.features.filelist.SelectionOptionsSheet
 import me.zhanghai.android.files.compose.features.filelist.SortSheet
 import me.zhanghai.android.files.compose.features.home.HomeScreen
 import me.zhanghai.android.files.compose.features.navigation.BottomPillNav
@@ -196,6 +197,7 @@ fun ExpressiveFilesApp() {
     var createTarget by remember { mutableStateOf<Boolean?>(null) }
     var renameTarget by remember { mutableStateOf<FileItem?>(null) }
     var showDelete by remember { mutableStateOf(false) }
+    var showSelectionOptions by remember { mutableStateOf(false) }
     var actionTarget by remember { mutableStateOf<FileItem?>(null) }
     var propertiesFile by remember { mutableStateOf<FileItem?>(null) }
     var imageViewerFile by remember { mutableStateOf<FileItem?>(null) }
@@ -490,11 +492,7 @@ fun ExpressiveFilesApp() {
                 },
                 onSelectionDelete = { showDelete = true },
                 onSelectionClear = { viewModel.clearSelectedFiles() },
-                onSelectionMore = {
-                    if (files.isNotEmpty()) {
-                        viewModel.replaceSelectedFiles(fileItemSetOf(*files.toTypedArray()))
-                    }
-                }
+                onSelectionMore = { showSelectionOptions = true }
             )
         }
             }
@@ -580,6 +578,19 @@ fun ExpressiveFilesApp() {
                 renameTarget = null
             },
             onDismiss = { renameTarget = null }
+        )
+    }
+
+    if (showSelectionOptions) {
+        SelectionOptionsSheet(
+            selectedCount = selectedCount,
+            onDismiss = { showSelectionOptions = false },
+            onSelectAll = {
+                if (files.isNotEmpty()) {
+                    viewModel.replaceSelectedFiles(fileItemSetOf(*files.toTypedArray()))
+                }
+            },
+            onDeselectAll = { viewModel.clearSelectedFiles() }
         )
     }
 
