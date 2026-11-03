@@ -376,6 +376,7 @@ fun ExpressiveFilesApp() {
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= 600.dp
+        val showNavLabels = maxWidth >= 390.dp
         Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
@@ -606,7 +607,7 @@ fun ExpressiveFilesApp() {
                 onSelectionDelete = { showDelete = true },
                 onSelectionClear = { viewModel.clearSelectedFiles() },
                 onSelectionMore = { showSelectionOptions = true },
-                bottomOverlayPadding = if (useNavigationRail) 0.dp else 96.dp
+                bottomOverlayPadding = 0.dp
             )
         }
             }
@@ -627,13 +628,22 @@ fun ExpressiveFilesApp() {
                         )
                     }
                 } else {
+                    val fabVisible = route == ROUTE_FILES
                     BottomPillNav(
                         currentRoute = route,
                         onNavigate = { route = it },
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .navigationBarsPadding()
-                            .padding(bottom = 16.dp)
+                        showSelectedLabel = showNavLabels,
+                        modifier = if (fabVisible) {
+                            Modifier
+                                .align(Alignment.BottomEnd)
+                                .navigationBarsPadding()
+                                .padding(bottom = 16.dp, end = 84.dp)
+                        } else {
+                            Modifier
+                                .align(Alignment.BottomCenter)
+                                .navigationBarsPadding()
+                                .padding(bottom = 16.dp)
+                        }
                     )
                 }
             }

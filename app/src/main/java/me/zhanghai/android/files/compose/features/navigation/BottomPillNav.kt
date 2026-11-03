@@ -5,7 +5,12 @@
 
 package me.zhanghai.android.files.compose.features.navigation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -14,14 +19,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +47,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -51,17 +56,19 @@ import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 
 /**
- * Floating icon-only navigation pill.
+ * Floating navigation pill.
  *
  * Geometry and selection treatment follow the same floating-navigator pattern used by Iridium:
- * a circular surface, 48dp targets, a selected tonal pill, and no persistent labels. Labels are
- * exposed through tooltips and content descriptions for accessibility and pointer users.
+ * a circular surface, 48dp targets, and a selected tonal pill. Only the selected destination
+ * expands to show its label; the others stay icon-only. Labels remain available through
+ * content descriptions and tooltips.
  */
 @Composable
 fun BottomPillNav(
     currentRoute: String,
     onNavigate: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showSelectedLabel: Boolean = true
 ) {
     Surface(
         shape = CircleShape,
@@ -81,7 +88,8 @@ fun BottomPillNav(
                 NavIcon(
                     selected = currentRoute == destination.route,
                     onClick = { onNavigate(destination.route) },
-                    destination = destination
+                    destination = destination,
+                    showLabel = showSelectedLabel
                 )
             }
         }
@@ -125,7 +133,8 @@ fun PillNavRail(
 private fun NavIcon(
     selected: Boolean,
     onClick: () -> Unit,
-    destination: BottomNavDestination
+    destination: BottomNavDestination,
+    showLabel: Boolean = false
 ) {
     val container by animateColorAsState(
         targetValue = if (selected) {
@@ -201,6 +210,21 @@ private fun NavIcon(
                             }
                     )
                 }
+                AnimatedVisibility(
+                    visible = selected && showLabel,
+                    enter = fadeIn() + expandHorizontally(),
+                    exit = fadeOut() + shrinkHorizontally()
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            text = destination.label,
+                            modifier = Modifier.clearAndSetSemantics {},
+                            style = MaterialTheme.typography.labelMedium,
+                            maxLines = 1
+                        )
+                    }
+                }
             }
         }
     }
@@ -215,12 +239,12 @@ private val BottomNavDestinations = listOf(
     BottomNavDestination(
         route = "recents",
         label = "Recents", // TODO: localize
-        icon = Icons.Filled.Refresh
+        iconRes = R.drawable.ic_expressive_history
     ),
     BottomNavDestination(
         route = "favorites",
         label = "Favorites", // TODO: localize
-        icon = Icons.Filled.Star
+        iconRes = R.drawable.ic_expressive_star_filled
     ),
     BottomNavDestination(
         route = "search",
