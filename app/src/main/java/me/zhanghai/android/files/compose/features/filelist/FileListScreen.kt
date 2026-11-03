@@ -24,6 +24,10 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,12 +53,10 @@ fun FileListScreen(
     onEntryClick: (FileEntryUi) -> Unit,
     onEntryLongClick: (FileEntryUi) -> Unit,
     onEntryMenu: (FileEntryUi) -> Unit,
-    onSearchClick: () -> Unit,
-    onSearchQueryChange: (String) -> Unit,
-    onSearchClose: () -> Unit,
     onSortClick: () -> Unit,
     onLayoutToggle: () -> Unit,
     onRefresh: () -> Unit,
+    onSelectAll: () -> Unit,
     onCreateFolder: () -> Unit,
     onCreateFile: () -> Unit,
     onPaste: () -> Unit,
@@ -64,6 +66,7 @@ fun FileListScreen(
     onSelectionMore: () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    var showListOptions by remember { mutableStateOf(false) }
     val selectionMode = state.selectedCount > 0
     val showFab = !selectionMode &&
         !state.isSearching &&
@@ -88,19 +91,17 @@ fun FileListScreen(
                 FileListTopBar(
                     state = state,
                     onOpenDrawer = onOpenDrawer,
-                    onNavigateUp = onNavigateUp,
-                    onSearchClick = onSearchClick,
-                    onSearchQueryChange = onSearchQueryChange,
-                    onSearchClose = onSearchClose,
-                    onSortClick = onSortClick,
-                    onRefresh = onRefresh,
-                    onLayoutToggle = onLayoutToggle
+                    onNavigateUp = onNavigateUp
                 )
             }
-            if (state.breadcrumbs.isNotEmpty() && !state.isSearching) {
+            if (state.breadcrumbs.isNotEmpty()) {
                 Breadcrumbs(
                     breadcrumbs = state.breadcrumbs,
-                    onBreadcrumbClick = onBreadcrumbClick
+                    onBreadcrumbClick = onBreadcrumbClick,
+                    sortLabel = state.sortLabel,
+                    onSortClick = onSortClick,
+                    onOptionsClick = { showListOptions = true },
+                    isGrid = state.layoutMode == FileLayoutMode.GRID
                 )
             }
             if (state.isLoading && state.entries.isNotEmpty()) {
@@ -124,8 +125,7 @@ fun FileListScreen(
                     onEntryLongClick = onEntryLongClick,
                     onEntryMenu = onEntryMenu,
                     onRefresh = onRefresh,
-                    onCreateFolder = onCreateFolder,
-                    onSearchClose = onSearchClose
+                    onCreateFolder = onCreateFolder
                 )
             }
         }
@@ -138,6 +138,17 @@ fun FileListScreen(
             )
         }
     }
+
+    if (showListOptions) {
+        ListOptionsSheet(
+            isGrid = state.layoutMode == FileLayoutMode.GRID,
+            onDismiss = { showListOptions = false },
+            onSortClick = onSortClick,
+            onRefresh = onRefresh,
+            onSelectAll = onSelectAll,
+            onToggleLayout = onLayoutToggle
+        )
+    }
 }
 
 @Composable
@@ -147,8 +158,7 @@ private fun FileListBody(
     onEntryLongClick: (FileEntryUi) -> Unit,
     onEntryMenu: (FileEntryUi) -> Unit,
     onRefresh: () -> Unit,
-    onCreateFolder: () -> Unit,
-    onSearchClose: () -> Unit
+    onCreateFolder: () -> Unit
 ) {
     val error = state.error
     val currentPath = state.breadcrumbs.lastOrNull { it.isCurrent }?.path
@@ -170,8 +180,7 @@ private fun FileListBody(
         state.isLoading && state.entries.isEmpty() -> LoadingState()
         state.entries.isEmpty() -> EmptyState(
             state = state,
-            onCreateFolder = onCreateFolder,
-            onSearchClose = onSearchClose
+            onCreateFolder = onCreateFolder
         )
         state.layoutMode == FileLayoutMode.GRID -> FileGrid(
             entries = state.entries,
@@ -237,12 +246,10 @@ private fun PreviewFileListScreen(state: FileListUiState) {
             onEntryClick = {},
             onEntryLongClick = {},
             onEntryMenu = {},
-            onSearchClick = {},
-            onSearchQueryChange = {},
-            onSearchClose = {},
             onSortClick = {},
             onLayoutToggle = {},
             onRefresh = {},
+            onSelectAll = {},
             onCreateFolder = {},
             onCreateFile = {},
             onPaste = {},

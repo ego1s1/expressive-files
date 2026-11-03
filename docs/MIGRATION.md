@@ -25,9 +25,9 @@ Compose preview alone is not a migration.
 | Legacy surface | Current implementation | Compose target | Status | Notes |
 |---|---|---|---|---|
 | Launcher / app shell | `app/AppActivity`, `compose/MainActivity` | `compose/`, `compose/theme/` | **migrated** | Compose `MainActivity` is the launcher; theme, edge-to-edge, file list, bottom navigation, recents/favorites, settings, about and basic properties are routed. Legacy screens remain reachable where noted below. |
-| File list | `filelist/FileListFragment`, `FileListAdapter`, `FileListViewModel` | `compose/features/filelist` | **migrated** | Compose list/grid, search, selection, FAB menu, create/rename/delete and breadcrumbs use the existing `FileListViewModel`. Legacy `FileListActivity` stays exported only for external `VIEW`/picker intents. |
+| File list | `filelist/FileListFragment`, `FileListAdapter`, `FileListViewModel` | `compose/features/filelist` | **migrated** | Compose list/grid, search, selection, FAB menu, create/rename/delete and breadcrumbs use the existing `FileListViewModel`. Phase 2 slims the top bar to back/title/subtitle only: search becomes a pill destination and sort, list/grid and refresh move to breadcrumb-row chips. Legacy `FileListActivity` stays exported only for external `VIEW`/picker intents. |
 | Breadcrumbs | `filelist/BreadcrumbLiveData` | `compose/features/filelist` | **migrated** | Compose breadcrumb rail with current pill and horizontal scroll; legacy layout remains for external legacy screens. |
-| Drawer / navigation | `navigation/`, `compose/features/navigation/AppDrawer.kt` | `compose/features/navigation/BottomPillNav.kt` | **bridged** | Phase 1 floating icon-only pill is the production navigation (`USE_BOTTOM_PILL_NAV = true`); the drawer remains behind the flag as a fallback until Phase 3 removes it. |
+| Drawer / navigation | `navigation/`, `compose/features/navigation/AppDrawer.kt` | `compose/features/navigation/BottomPillNav.kt` | **bridged** | Phase 1 floating icon-only pill (Files/Recents/Favorites/Locations, no labels, 48dp targets, tooltips) is the production navigation (`USE_BOTTOM_PILL_NAV = true`). Phase 2 adds Search as a fifth destination; the drawer remains behind the flag as a fallback until Phase 3 removes it and enables the ≥600dp rail. See [NAVIGATION.md](NAVIGATION.md). |
 | Home / bookmarks / recents | legacy home section under `navigation/` | `compose/features/home` | **migrated** | Recents and Favorites routes use real `RecentsStore`/`FavoritesStore` flows; storages and bookmarks moved to the Locations hub. |
 | Settings | `settings/` fragments and preference classes | `compose/features/settings` | **bridged** | Compose settings is routed from Locations; three real toggles are wired and the footer opens legacy settings for the remaining preference tree. |
 | Onboarding / permissions | legacy first-run and rationale dialogs | `compose/features/onboarding` | **bridged** | A Compose rationale sheet exists but is not wired. Storage permission and SAF flows must keep the exact request/result contract. |
@@ -37,6 +37,37 @@ Compose preview alone is not a migration.
 | Servers (SMB / FTP / SFTP / WebDAV) | `storage/` server editors, providers under `provider/` | `compose/features/settings` (server management); extraction to `compose/features/servers` requires integrator approval | **pending** | UI only. Provider implementations and credentials storage are frozen. |
 | FTP server | `ftpserver/FtpServerActivity`, `FtpServerFragment`, service and tile | `compose/features/settings` (FTP section); extraction to `compose/features/ftpserver` requires approval | **pending** | Service, notification, tile and receiver stay legacy; only the control screen moves. |
 | About / licenses | `about/AboutActivity`, `AboutFragment` | `compose/features/settings` | **bridged** | A Compose about screen exists but is not routed. Keep GPLv3 and upstream attribution visible; do not move license text behind a web-only link. |
+
+## Navigation migration
+
+The shell is moving from a modal drawer to a floating destination pill, then to an
+adaptive rail. [`NAVIGATION.md`](NAVIGATION.md) owns the detailed destination map,
+geometry and component list; this tracker only records phase state.
+
+1. **Phase 1 — floating icon-only pill (shipped).** `BottomPillNav` owns
+   Files/Recents/Favorites/Locations with no persistent labels, ≥48dp targets,
+   selected-state semantics and tooltips. `USE_BOTTOM_PILL_NAV = true` makes it the
+   production path; the drawer remains behind the flag as the fallback. The pill is
+   hidden during selection, search, viewers and properties.
+2. **Phase 2 — Search as a destination (next).** Search becomes a fifth pill
+   destination. The file-list top bar keeps only back/title/subtitle; search, sort,
+   refresh and overflow leave the app bar. Sort and list/grid move to chips on the
+   breadcrumb row, with refresh behind that row's overflow and a pull-to-refresh
+   gesture. Expected files: `SearchScreen`/`SearchStates`, `BreadcrumbRow`,
+   `BreadcrumbActions`, plus edits to `BottomPillNav`, `FileListTopBar`,
+   `FileListScreen` and the integrator-owned `ExpressiveFilesApp`.
+3. **Phase 3 — retire the drawer and enable the rail.** Delete `AppDrawer` and the
+   `USE_BOTTOM_PILL_NAV` fallback, including `onOpenDrawer` plumbing. Promote
+   `AppNavigationRail` at widths ≥600dp with Files/Search/Recents/Favorites/Locations
+   plus Settings/About; keep Locations as the storage/bookmark hub.
+4. **Phase 4 — polish.** Use the theme motion tokens for pill selection and route
+   transitions, add predictive back in the existing back-priority order, and verify
+   RTL, 200% font scale, TalkBack, IME and FAB/navigation-bar clearance.
+
+**Selection rule:** whenever a selection exists, `SelectionBar` replaces the
+file-list top bar and the pill/rail stays hidden. Selection never changes the route
+and never turns a destination into an action; closing the selection restores the
+browse chrome.
 
 ## Frozen backends
 

@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,31 +40,16 @@ import me.zhanghai.android.files.compose.model.FileListUiState
 @Composable
 internal fun EmptyState(
     state: FileListUiState,
-    onCreateFolder: () -> Unit,
-    onSearchClose: () -> Unit
+    onCreateFolder: () -> Unit
 ) {
-    val isSearching = state.isSearching
-    val headline = state.emptyTitle ?: if (isSearching) {
-        "No matching files" // TODO: localize
-    } else {
-        "This folder is empty" // TODO: localize
-    }
-    val actionLabel = if (isSearching) {
-        "Clear search" // TODO: localize
-    } else {
-        "New folder" // TODO: localize
-    }
-    val actionIcon = if (isSearching) Icons.Filled.Close else Icons.Filled.Add
-    val action = if (isSearching) onSearchClose else onCreateFolder
-
     CenteredMessageState(
         icon = ExpressiveIcons.Folder,
         iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-        headline = headline,
+        headline = state.emptyTitle ?: "This folder is empty", // TODO: localize
         body = state.emptyBody,
-        actionLabel = actionLabel,
-        actionIcon = actionIcon,
-        onAction = action
+        actionLabel = "New folder", // TODO: localize
+        actionIcon = Icons.Filled.Add,
+        onAction = onCreateFolder
     )
 }
 

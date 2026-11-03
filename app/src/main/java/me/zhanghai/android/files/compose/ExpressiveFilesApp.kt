@@ -77,6 +77,7 @@ import me.zhanghai.android.files.compose.features.operations.DeleteConfirmDialog
 import me.zhanghai.android.files.compose.features.operations.RenameDialog
 import me.zhanghai.android.files.compose.features.properties.PropertiesScreen
 import me.zhanghai.android.files.compose.features.settings.AboutScreen
+import me.zhanghai.android.files.compose.features.search.SearchScreen
 import me.zhanghai.android.files.compose.features.settings.SettingsScreen
 import me.zhanghai.android.files.compose.features.viewer.ImageViewerScreen
 import me.zhanghai.android.files.compose.model.FileLayoutMode
@@ -119,6 +120,7 @@ private const val ROUTE_FAVORITES = "favorites"
 private const val ROUTE_SETTINGS = "settings"
 private const val ROUTE_ABOUT = "about"
 private const val ROUTE_LOCATIONS = "locations"
+private const val ROUTE_SEARCH = "search"
 
 /** Phase 1 of the bottom-navigation migration; flip to false to restore the drawer. */
 private const val USE_BOTTOM_PILL_NAV = true
@@ -193,7 +195,6 @@ fun ExpressiveFilesApp() {
     }
 
     var route by rememberSaveable { mutableStateOf(ROUTE_FILES) }
-    var searchExpanded by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var showSortSheet by remember { mutableStateOf(false) }
     var createTarget by remember { mutableStateOf<Boolean?>(null) }
@@ -209,8 +210,9 @@ fun ExpressiveFilesApp() {
     val filesByPath = remember(files) { files.associateBy { it.path.toString() } }
     val selectedCount = selectedFiles.size
 
-    LaunchedEffect(searchQuery, searchExpanded) {
-        if (!searchExpanded) {
+    LaunchedEffect(route, searchQuery) {
+        if (route != ROUTE_SEARCH) {
+            viewModel.stopSearching()
             return@LaunchedEffect
         }
         delay(350)
@@ -239,8 +241,7 @@ fun ExpressiveFilesApp() {
         selectionEpoch,
         layoutMode,
         sortLabel,
-        searchQuery,
-        searchExpanded
+        searchQuery
     ) {
         mapFileListState(
             context = context,
@@ -251,7 +252,7 @@ fun ExpressiveFilesApp() {
             layoutMode = layoutMode,
             sortLabel = sortLabel,
             query = searchQuery,
-            isSearching = searchExpanded,
+            isSearching = route == ROUTE_SEARCH,
             canPaste = false,
             canNavigateUp = (breadcrumb?.selectedIndex ?: 0) > 0
         )
@@ -262,14 +263,14 @@ fun ExpressiveFilesApp() {
     }
 
     val canHandleBack = imageViewerFile != null || propertiesFile != null || selectedCount > 0 ||
-        route != ROUTE_FILES || searchExpanded || (breadcrumb?.selectedIndex ?: 0) > 0
+        route != ROUTE_FILES || (breadcrumb?.selectedIndex ?: 0) > 0
     BackHandler(enabled = canHandleBack) {
         when {
             imageViewerFile != null -> imageViewerFile = null
             propertiesFile != null -> propertiesFile = null
-            searchExpanded -> {
-                searchExpanded = false
+            route == ROUTE_SEARCH -> {
                 searchQuery = ""
+                route = ROUTE_FILES
                 viewModel.stopSearching()
             }
 
@@ -312,7 +313,7 @@ fun ExpressiveFilesApp() {
     }
 
     val showBottomPill = USE_BOTTOM_PILL_NAV && selectedCount == 0 &&
-        imageViewerFile == null && propertiesFile == null && !searchExpanded
+        imageViewerFile == null && propertiesFile == null
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -413,6 +414,27 @@ fun ExpressiveFilesApp() {
                 onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } })
             )
 
+            ROUTE_SEARCH -> SearchScreen(
+                query = searchQuery,
+                state = uiState,
+                onQueryChange = { searchQuery = it },
+                onBack = {
+                    searchQuery = ""
+                    route = ROUTE_FILES
+                    viewModel.stopSearching()
+                },
+                onEntryClick = { entry ->
+                    val file = filesByPath[entry.path] ?: return@SearchScreen
+                    openEntry(context, viewModel, file)
+                    if (file.isListable) {
+                        searchQuery = ""
+                        route = ROUTE_FILES
+                    }
+                },
+                onEntryLongClick = {},
+                onEntryMenu = { entry -> actionTarget = filesByPath[entry.path] }
+            )
+
             ROUTE_LOCATIONS -> LocationsScreen(
                 state = navigationState,
                 onEntryClick = { entry ->
@@ -478,13 +500,6 @@ fun ExpressiveFilesApp() {
                     filesByPath[entry.path]?.let { viewModel.selectFile(it, true) }
                 },
                 onEntryMenu = { entry -> actionTarget = filesByPath[entry.path] },
-                onSearchClick = { searchExpanded = true },
-                onSearchQueryChange = { searchQuery = it },
-                onSearchClose = {
-                    searchExpanded = false
-                    searchQuery = ""
-                    viewModel.stopSearching()
-                },
                 onSortClick = { showSortSheet = true },
                 onLayoutToggle = {
                     viewModel.viewType = if (viewType == FileViewType.LIST) {
@@ -494,6 +509,11 @@ fun ExpressiveFilesApp() {
                     }
                 },
                 onRefresh = { viewModel.reload() },
+                onSelectAll = {
+                    if (files.isNotEmpty()) {
+                        viewModel.replaceSelectedFiles(fileItemSetOf(*files.toTypedArray()))
+                    }
+                },
                 onCreateFolder = { createTarget = true },
                 onCreateFile = { createTarget = false },
                 onPaste = {},

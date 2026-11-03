@@ -161,6 +161,11 @@ private val BottomNavDestinations = listOf(
         icon = Icons.Filled.Star
     ),
     BottomNavDestination(
+        route = "search",
+        label = "Search", // TODO: localize
+        iconRes = R.drawable.ic_expressive_search
+    ),
+    BottomNavDestination(
         route = "locations",
         label = "Locations", // TODO: localize
         iconRes = R.drawable.device_icon_white_24dp
