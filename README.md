@@ -80,3 +80,51 @@ Thank you if you choose to include Material Files in your custom ROM! However si
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+## Expressive Files fork
+
+Expressive Files is an independent, open-source fork of
+[Material Files](https://github.com/zhanghai/MaterialFiles) by Hai Zhang. It is not
+affiliated with or endorsed by the upstream project. The fork keeps the upstream
+application architecture and file-operation engine, and replaces the UI with Jetpack
+Compose and Material 3 Expressive. Application id: `dev.expressive.files`.
+
+**Goals**
+
+- A Compose-first interface built on Material3 1.4.0, with the token system documented
+  in [`docs/DESIGN.md`](docs/DESIGN.md).
+- Keep the proven NIO2/provider/job backend intact; no UI migration is allowed to
+  change file-operation semantics. See [`docs/MIGRATION.md`](docs/MIGRATION.md).
+- Accessible by default: TalkBack labels, 48dp targets, RTL, and 200% font scale.
+- No analytics, crash reporting or telemetry SDKs.
+
+**Build**
+
+Requires JDK 21, Android SDK 37, and initialized submodules
+(`git submodule update --init --recursive`). On macOS:
+
+```bash
+JAVA_HOME=$(/usr/libexec/java_home -v 21) ./gradlew :app:assembleDebug
+```
+
+On Linux, point `JAVA_HOME` at a JDK 21 installation, for example
+`JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64 ./gradlew :app:assembleDebug`.
+Unit tests run with `./gradlew :app:testDebugUnitTest`; see
+[`docs/TESTING.md`](docs/TESTING.md).
+
+**Migration status**
+
+The Compose launcher shell is migrated. Settings, onboarding, viewers and about have
+Compose implementations but are still bridged to the legacy screens. The file list,
+drawer/navigation, home, properties, operations, server management and FTP remain
+pending: the legacy `FileListActivity` still handles external directory intents while
+the Compose list is wired in. See [`docs/MIGRATION.md`](docs/MIGRATION.md) for the
+current tracker. This fork is a work in progress, not a finished redesign.
+
+**License and attribution**
+
+Expressive Files is distributed under the GNU General Public License, version 3 or
+later, the same license as the upstream project. Upstream copyright
+(C) 2018 Hai Zhang and all other upstream notices are retained. Modifications in this
+fork are also licensed under GPLv3. The program is provided without any warranty; see
+[`LICENSE`](LICENSE) for the full text.
