@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -111,7 +112,10 @@ private fun NavIcon(
             modifier = Modifier
                 .clip(CircleShape)
                 .clickable(onClick = onClick, role = Role.Tab)
-                .semantics { this.selected = selected }
+                .semantics {
+                    this.selected = selected
+                    contentDescription = destination.label
+                }
                 .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
         ) {
             Row(
@@ -123,14 +127,14 @@ private fun NavIcon(
                 if (destination.iconRes != 0) {
                     Icon(
                         painter = painterResource(destination.iconRes),
-                        contentDescription = destination.label,
+                        contentDescription = null,
                         tint = content,
                         modifier = Modifier.size(20.dp)
                     )
                 } else {
                     Icon(
                         imageVector = destination.icon ?: ExpressiveIcons.Folder,
-                        contentDescription = destination.label,
+                        contentDescription = null,
                         tint = content,
                         modifier = Modifier.size(20.dp)
                     )
