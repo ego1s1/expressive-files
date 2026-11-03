@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.BreadcrumbUi
@@ -65,7 +67,8 @@ fun FileListScreen(
     onSelectionShare: () -> Unit,
     onSelectionDelete: () -> Unit,
     onSelectionClear: () -> Unit,
-    onSelectionMore: () -> Unit
+    onSelectionMore: () -> Unit,
+    bottomOverlayPadding: Dp = 0.dp
 ) {
     val colorScheme = MaterialTheme.colorScheme
     var showListOptions by remember { mutableStateOf(false) }
@@ -142,7 +145,8 @@ fun FileListScreen(
                 canPaste = state.canPaste,
                 onCreateFolder = onCreateFolder,
                 onCreateFile = onCreateFile,
-                onPaste = onPaste
+                onPaste = onPaste,
+                modifier = Modifier.padding(bottom = bottomOverlayPadding)
             )
         }
     }
@@ -200,7 +204,7 @@ private fun FileListBody(
         else -> LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState,
-            contentPadding = PaddingValues(top = 4.dp, bottom = 96.dp)
+            contentPadding = PaddingValues(top = 4.dp, bottom = 112.dp)
         ) {
             items(
                 items = state.entries,

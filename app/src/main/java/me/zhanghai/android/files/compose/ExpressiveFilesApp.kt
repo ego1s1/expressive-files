@@ -388,8 +388,7 @@ fun ExpressiveFilesApp() {
                         scaleY = scale
                     }
                     .padding(
-                        start = if (showNavigation && useNavigationRail) 88.dp else 0.dp,
-                        bottom = if (showNavigation && !useNavigationRail) 88.dp else 0.dp
+                        start = if (showNavigation && useNavigationRail) 88.dp else 0.dp
                     )
             ) {
         val textEditor = textEditorFile
@@ -606,7 +605,8 @@ fun ExpressiveFilesApp() {
                 },
                 onSelectionDelete = { showDelete = true },
                 onSelectionClear = { viewModel.clearSelectedFiles() },
-                onSelectionMore = { showSelectionOptions = true }
+                onSelectionMore = { showSelectionOptions = true },
+                bottomOverlayPadding = if (useNavigationRail) 0.dp else 96.dp
             )
         }
             }

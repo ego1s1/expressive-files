@@ -95,7 +95,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    contentPadding = PaddingValues(bottom = 24.dp)
+                    contentPadding = PaddingValues(bottom = 112.dp)
                 ) {
                     item(key = "home-section-header") {
                         HomeSectionHeader(isFavorites = isFavorites)
