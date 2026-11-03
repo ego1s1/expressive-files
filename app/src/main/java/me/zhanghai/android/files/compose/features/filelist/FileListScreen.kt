@@ -47,7 +47,6 @@ import me.zhanghai.android.files.compose.model.FileListUiState
 @Composable
 fun FileListScreen(
     state: FileListUiState,
-    onOpenDrawer: (() -> Unit)?,
     onNavigateUp: () -> Unit,
     onBreadcrumbClick: (BreadcrumbUi) -> Unit,
     onEntryClick: (FileEntryUi) -> Unit,
@@ -90,7 +89,6 @@ fun FileListScreen(
             } else {
                 FileListTopBar(
                     state = state,
-                    onOpenDrawer = onOpenDrawer,
                     onNavigateUp = onNavigateUp
                 )
             }
@@ -240,7 +238,6 @@ private fun PreviewFileListScreen(state: FileListUiState) {
     MaterialTheme {
         FileListScreen(
             state = state,
-            onOpenDrawer = {},
             onNavigateUp = {},
             onBreadcrumbClick = {},
             onEntryClick = {},

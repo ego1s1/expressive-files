@@ -27,7 +27,7 @@ Compose preview alone is not a migration.
 | Launcher / app shell | `app/AppActivity`, `compose/MainActivity` | `compose/`, `compose/theme/` | **migrated** | Compose `MainActivity` is the launcher; theme, edge-to-edge, file list, bottom navigation, recents/favorites, settings, about and basic properties are routed. Legacy screens remain reachable where noted below. |
 | File list | `filelist/FileListFragment`, `FileListAdapter`, `FileListViewModel` | `compose/features/filelist` | **migrated** | Compose list/grid, search, selection, FAB menu, create/rename/delete and breadcrumbs use the existing `FileListViewModel`. Phase 2 slims the top bar to back/title/subtitle only: search becomes a pill destination and sort, list/grid and refresh move to breadcrumb-row chips. Legacy `FileListActivity` stays exported only for external `VIEW`/picker intents. |
 | Breadcrumbs | `filelist/BreadcrumbLiveData` | `compose/features/filelist` | **migrated** | Compose breadcrumb rail with current pill and horizontal scroll; legacy layout remains for external legacy screens. |
-| Drawer / navigation | `navigation/`, `compose/features/navigation/AppDrawer.kt` | `compose/features/navigation/BottomPillNav.kt` | **bridged** | Phase 1 floating icon-only pill (Files/Recents/Favorites/Locations, no labels, 48dp targets, tooltips) is the production navigation (`USE_BOTTOM_PILL_NAV = true`). Phase 2 adds Search as a fifth destination; the drawer remains behind the flag as a fallback until Phase 3 removes it and enables the ≥600dp rail. See [NAVIGATION.md](NAVIGATION.md). |
+| Drawer / navigation | retired | `compose/features/navigation/BottomPillNav.kt`, `PillNavRail` | **migrated** | Icon-only floating pill on phones (Files/Recents/Favorites/Search/Locations) and a vertical pill rail at ≥600dp. Drawer, `AppDrawer`, `AppNavigationRail`, the fallback flag and `onOpenDrawer` plumbing are removed. See [NAVIGATION.md](NAVIGATION.md). |
 | Home / bookmarks / recents | legacy home section under `navigation/` | `compose/features/home` | **migrated** | Recents and Favorites routes use real `RecentsStore`/`FavoritesStore` flows; storages and bookmarks moved to the Locations hub. |
 | Settings | `settings/` fragments and preference classes | `compose/features/settings` | **bridged** | Compose settings is routed from Locations; three real toggles are wired and the footer opens legacy settings for the remaining preference tree. |
 | Onboarding / permissions | legacy first-run and rationale dialogs | `compose/features/onboarding` | **bridged** | A Compose rationale sheet exists but is not wired. Storage permission and SAF flows must keep the exact request/result contract. |
@@ -46,7 +46,7 @@ geometry and component list; this tracker only records phase state.
 
 1. **Phase 1 — floating icon-only pill (shipped).** `BottomPillNav` owns
    Files/Recents/Favorites/Locations with no persistent labels, ≥48dp targets,
-   selected-state semantics and tooltips. `USE_BOTTOM_PILL_NAV = true` makes it the
+   selected-state semantics and tooltips. It is the production navigation on phones;
    production path; the drawer remains behind the flag as the fallback. The pill is
    hidden during selection, search, viewers and properties.
 2. **Phase 2 — Search as a destination (next).** Search becomes a fifth pill
@@ -56,8 +56,8 @@ geometry and component list; this tracker only records phase state.
    gesture. Expected files: `SearchScreen`/`SearchStates`, `BreadcrumbRow`,
    `BreadcrumbActions`, plus edits to `BottomPillNav`, `FileListTopBar`,
    `FileListScreen` and the integrator-owned `ExpressiveFilesApp`.
-3. **Phase 3 — retire the drawer and enable the rail.** Delete `AppDrawer` and the
-   `USE_BOTTOM_PILL_NAV` fallback, including `onOpenDrawer` plumbing. Promote
+3. **Phase 3 — retire the drawer and enable the rail (done).** `AppDrawer`, the
+   fallback flag and `onOpenDrawer` plumbing are deleted. Promote
    `AppNavigationRail` at widths ≥600dp with Files/Search/Recents/Favorites/Locations
    plus Settings/About; keep Locations as the storage/bookmark hub.
 4. **Phase 4 — polish.** Use the theme motion tokens for pill selection and route

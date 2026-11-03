@@ -1,12 +1,12 @@
 # Navigation migration
 
 This document is the navigation contract for the Compose shell. It records the
-shipped Phase 1 floating pill, the Phase 2 plan that moves browse actions out of the
-app bar, and the Phase 3–4 work that retires the drawer and adds motion. It is
-subordinate to [`DESIGN.md`](DESIGN.md) for tokens and to
+shipped Phase 1 floating pill, the Phase 2 slim app bar and search destination, and the
+Phase 3 drawer removal with a ≥600dp pill rail. It is subordinate to [`DESIGN.md`](DESIGN.md) for tokens and to
 [`COMPOSE_CONTRACT.md`](COMPOSE_CONTRACT.md) for package ownership.
 
-**Snapshot:** 2026-11-03, Phase 1 shipped behind `USE_BOTTOM_PILL_NAV = true`.
+**Snapshot:** 2026-11-03, Phases 1–3 shipped. The drawer has been removed; the floating
+icon-only pill is the phone navigation and the vertical pill rail is the ≥600dp navigation.
 
 ## Principles
 
@@ -16,9 +16,9 @@ subordinate to [`DESIGN.md`](DESIGN.md) for tokens and to
   packages. A screen receives state and callbacks; it does not navigate itself.
 - The pill is icon-only. Tooltips and content descriptions carry the labels.
 - Selection mode is contextual chrome and always outranks destination chrome.
-- The drawer is a fallback only. New navigation work must not add drawer entries.
+- There is no drawer. New navigation work must add a pill destination or a Locations row.
 
-## Phase 1 — icon-only floating pill (current)
+## Phase 1 — icon-only floating pill (shipped)
 
 `compose/features/navigation/BottomPillNav.kt` renders a floating circular surface
 with four destinations and no persistent labels.
@@ -47,21 +47,13 @@ Geometry and behavior:
 - The pill is hidden while `selectedCount > 0`, while the inline search field is
   expanded, and while a viewer or properties screen is open.
 
-### Drawer fallback
+### Drawer removal
 
-`ExpressiveFilesApp.kt` gates the whole migration on:
-
-```kotlin
-private const val USE_BOTTOM_PILL_NAV = true
-```
-
-- `true`: the pill is the production navigation. The drawer is not composed,
-  drawer gestures are disabled, and screens receive `onOpenDrawer = null`.
-- `false`: `ModalNavigationDrawer` + `AppDrawer` return, drawer gestures are enabled
-  on the Files route, and the top bar/home screens get an `onOpenDrawer` callback.
-
-The flag is temporary. Phase 3 removes it rather than adding a second navigation
-implementation beside it.
+The drawer is gone. `AppDrawer`, `AppNavigationRail`, `ModalNavigationDrawer`, the
+`USE_BOTTOM_PILL_NAV` fallback and every `onOpenDrawer` parameter were deleted in
+Phase 3. `BottomPillNav` is the only phone navigation surface and `PillNavRail` is its
+vertical ≥600dp form; both come from the same destination list in
+`compose/features/navigation/BottomPillNav.kt`.
 
 ### Selection rule
 
@@ -129,12 +121,14 @@ Search route rules:
 - Selection inside search uses the same `SelectionBar` rule. The pill is hidden while
   a search result is selected.
 
-## Phase 3 — retire the drawer, add the rail at ≥600dp
+## Phase 3 — retire the drawer, add the rail at ≥600dp (shipped)
 
-- Delete `compose/features/navigation/AppDrawer.kt` and its preview; remove
-  `ModalNavigationDrawer`, `drawerState`, `USE_BOTTOM_PILL_NAV`, and every
-  `onOpenDrawer` parameter from the shell, `FileListScreen`, `FileListTopBar`, and
-  `HomeScreen`.
+- Done: deleted `compose/features/navigation/AppDrawer.kt` and
+  `AppNavigationRail.kt`; removed `ModalNavigationDrawer`, `drawerState`,
+  `USE_BOTTOM_PILL_NAV`, and every `onOpenDrawer` parameter from the shell,
+  `FileListScreen`, `FileListTopBar`, and `HomeScreen`.
+- The ≥600dp rail is `PillNavRail` in `BottomPillNav.kt`; the app selects it with
+  `BoxWithConstraints` at 600dp and reserves an 88dp start strip.
 - Promote `AppNavigationRail.kt` from orphaned component to production navigation for
   window widths **≥600dp**. The rail uses `NavigationRailItem` with visible labels
   and keeps the 80dp collapsed width. It must gain the `search` and `locations`

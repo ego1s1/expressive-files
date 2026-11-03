@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -70,6 +71,38 @@ fun BottomPillNav(
                 .selectableGroup(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            BottomNavDestinations.forEach { destination ->
+                NavIcon(
+                    selected = currentRoute == destination.route,
+                    onClick = { onNavigate(destination.route) },
+                    destination = destination
+                )
+            }
+        }
+    }
+}
+
+/** Vertical floating navigation for medium and expanded windows. */
+@Composable
+fun PillNavRail(
+    currentRoute: String,
+    onNavigate: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        tonalElevation = 0.dp,
+        shadowElevation = 3.dp,
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(4.dp)
+                .selectableGroup(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             BottomNavDestinations.forEach { destination ->
                 NavIcon(

@@ -40,7 +40,6 @@ private const val TOP_BAR_HEIGHT_DP = 64
 @Composable
 fun FileListTopBar(
     state: FileListUiState,
-    onOpenDrawer: (() -> Unit)?,
     onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -68,17 +67,6 @@ fun FileListTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Navigate up" // TODO: localize
-                    )
-                }
-
-                onOpenDrawer != null -> IconButton(
-                    onClick = onOpenDrawer,
-                    modifier = Modifier.size(48.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.menu_icon_control_normal_24dp),
-                        contentDescription = "Open navigation drawer", // TODO: localize
-                        modifier = Modifier.size(24.dp)
                     )
                 }
 
@@ -122,7 +110,6 @@ private fun FileListTopBarPreview() {
             subtitle = "12 items • 4.2 GB free", // TODO: localize
             canNavigateUp = true
         ),
-        onOpenDrawer = null,
         onNavigateUp = {}
     )
 }

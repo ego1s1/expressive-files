@@ -20,13 +20,17 @@ import android.os.Environment
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -34,7 +38,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -44,7 +47,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -68,8 +70,8 @@ import me.zhanghai.android.files.compose.features.filelist.FileListScreen
 import me.zhanghai.android.files.compose.features.filelist.FileSortBy
 import me.zhanghai.android.files.compose.features.filelist.SortSheet
 import me.zhanghai.android.files.compose.features.home.HomeScreen
-import me.zhanghai.android.files.compose.features.navigation.AppDrawer
 import me.zhanghai.android.files.compose.features.navigation.BottomPillNav
+import me.zhanghai.android.files.compose.features.navigation.PillNavRail
 import me.zhanghai.android.files.compose.features.navigation.LocationsScreen
 import me.zhanghai.android.files.compose.features.onboarding.PermissionRationaleSheet
 import me.zhanghai.android.files.compose.features.operations.CreateEntrySheet
@@ -122,9 +124,6 @@ private const val ROUTE_ABOUT = "about"
 private const val ROUTE_LOCATIONS = "locations"
 private const val ROUTE_SEARCH = "search"
 
-/** Phase 1 of the bottom-navigation migration; flip to false to restore the drawer. */
-private const val USE_BOTTOM_PILL_NAV = true
-
 /**
  * Compose-first application shell.
  *
@@ -143,9 +142,6 @@ fun ExpressiveFilesApp() {
             viewModel.resetTo(defaultPath())
         }
     }
-    val scope = rememberCoroutineScope()
-    val drawerState = rememberDrawerState(initialValue = androidx.compose.material3.DrawerValue.Closed)
-
     var hasStorageAccess by remember { mutableStateOf(isStorageAccessGranted(context)) }
     var permissionDismissed by rememberSaveable { mutableStateOf(false) }
     val allFilesLauncher = rememberLauncherForActivityResult(
@@ -312,45 +308,19 @@ fun ExpressiveFilesApp() {
         )
     }
 
-    val showBottomPill = USE_BOTTOM_PILL_NAV && selectedCount == 0 &&
+    val showNavigation = selectedCount == 0 &&
         imageViewerFile == null && propertiesFile == null
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        gesturesEnabled = !USE_BOTTOM_PILL_NAV && route == ROUTE_FILES,
-        drawerContent = {
-            if (!USE_BOTTOM_PILL_NAV) AppDrawer(
-                state = navigationState,
-                currentRoute = route,
-                onNavigate = { newRoute ->
-                    route = newRoute
-                    scope.launch { drawerState.close() }
-                },
-                onEntryClick = { entry ->
-                    scope.launch { drawerState.close() }
-                    when (entry.id) {
-                        NavigationStateBuilder.ACTION_SETTINGS -> route = ROUTE_SETTINGS
-                        NavigationStateBuilder.ACTION_ABOUT -> route = ROUTE_ABOUT
-                        else -> openPath(viewModel, entry.id)
-                    }
-                },
-                onSettings = {
-                    scope.launch { drawerState.close() }
-                    route = ROUTE_SETTINGS
-                },
-                onAbout = {
-                    scope.launch { drawerState.close() }
-                    route = ROUTE_ABOUT
-                },
-                onClose = { scope.launch { drawerState.close() } }
-            )
-        }
-    ) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val useNavigationRail = maxWidth >= 600.dp
         Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = if (showBottomPill) 88.dp else 0.dp)
+                    .padding(
+                        start = if (showNavigation && useNavigationRail) 88.dp else 0.dp,
+                        bottom = if (showNavigation && !useNavigationRail) 88.dp else 0.dp
+                    )
             ) {
         val imageViewer = imageViewerFile
         val properties = propertiesFile
@@ -392,7 +362,6 @@ fun ExpressiveFilesApp() {
                         .getOrNull()
                         ?.let(FavoritesStore::remove)
                 },
-                onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } })
             )
 
             ROUTE_FAVORITES -> HomeScreen(
@@ -411,7 +380,6 @@ fun ExpressiveFilesApp() {
                         .getOrNull()
                         ?.let(FavoritesStore::remove)
                 },
-                onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } })
             )
 
             ROUTE_SEARCH -> SearchScreen(
@@ -482,7 +450,6 @@ fun ExpressiveFilesApp() {
 
             else -> FileListScreen(
                 state = uiState,
-                onOpenDrawer = if (USE_BOTTOM_PILL_NAV) null else ({ scope.launch { drawerState.open() } }),
                 onNavigateUp = { viewModel.navigateUp() },
                 onBreadcrumbClick = { crumb -> openPath(viewModel, crumb.path) },
                 onEntryClick = { entry ->
@@ -531,15 +498,32 @@ fun ExpressiveFilesApp() {
             )
         }
             }
-            if (showBottomPill) {
-                BottomPillNav(
-                    currentRoute = route,
-                    onNavigate = { route = it },
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding()
-                        .padding(bottom = 16.dp)
-                )
+            if (showNavigation) {
+                if (useNavigationRail) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .fillMaxHeight()
+                            .width(88.dp)
+                            .background(MaterialTheme.colorScheme.surface),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        PillNavRail(
+                            currentRoute = route,
+                            onNavigate = { route = it },
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                } else {
+                    BottomPillNav(
+                        currentRoute = route,
+                        onNavigate = { route = it },
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .navigationBarsPadding()
+                            .padding(bottom = 16.dp)
+                    )
+                }
             }
         }
     }

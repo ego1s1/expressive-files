@@ -53,8 +53,7 @@ fun HomeScreen(
     title: String,
     state: HomeUiState,
     onOpen: (ShortcutEntryUi) -> Unit,
-    onToggleFavorite: (ShortcutEntryUi) -> Unit,
-    onOpenDrawer: (() -> Unit)?
+    onToggleFavorite: (ShortcutEntryUi) -> Unit
 ) {
     val isFavorites = title.contains("favorite", ignoreCase = true)
     val entries = if (isFavorites) state.favorites else state.recents
@@ -71,8 +70,7 @@ fun HomeScreen(
         Column(Modifier.fillMaxSize()) {
             HomeHeader(
                 title = title,
-                supportingText = supportingText,
-                onOpenDrawer = onOpenDrawer
+                supportingText = supportingText
             )
 
             if (state.isLoading && entries.isNotEmpty()) {
@@ -121,25 +119,15 @@ fun HomeScreen(
 @Composable
 private fun HomeHeader(
     title: String,
-    supportingText: String,
-    onOpenDrawer: (() -> Unit)?
+    supportingText: String
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(112.dp)
-            .padding(start = if (onOpenDrawer != null) 4.dp else 24.dp, end = 24.dp),
+            .padding(start = 24.dp, end = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (onOpenDrawer != null) {
-            IconButton(onClick = onOpenDrawer) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Open navigation drawer" // TODO: localize
-                )
-            }
-            Spacer(Modifier.width(8.dp))
-        }
         Column(Modifier.weight(1f)) {
             Text(
                 text = title,
@@ -274,7 +262,6 @@ private fun HomeScreenPreview() {
             state = PreviewHomeState,
             onOpen = {},
             onToggleFavorite = {},
-            onOpenDrawer = {}
         )
     }
 }
