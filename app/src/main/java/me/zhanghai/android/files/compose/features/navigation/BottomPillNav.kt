@@ -149,7 +149,9 @@ private fun NavIcon(
     TooltipBox(
         positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
         tooltip = { PlainTooltip { Text(destination.label) } },
-        state = rememberTooltipState()
+        state = rememberTooltipState(),
+        // Icon-only chrome must not pop a label just because the item received focus.
+        focusable = false
     ) {
         Box(
             contentAlignment = Alignment.Center,

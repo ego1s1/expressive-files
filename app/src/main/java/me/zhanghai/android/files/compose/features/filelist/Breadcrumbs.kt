@@ -5,8 +5,11 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -83,7 +86,11 @@ fun Breadcrumbs(
 
     LaunchedEffect(breadcrumbs) {
         if (currentIndex >= 0) {
-            listState.animateScrollToItem(currentIndex)
+            if (breadcrumbs.size <= 2) {
+                listState.scrollToItem(0)
+            } else {
+                listState.animateScrollToItem(currentIndex)
+            }
         }
     }
 
@@ -101,7 +108,7 @@ fun Breadcrumbs(
             LazyRow(
                 modifier = Modifier.fillMaxSize(),
                 state = listState,
-                contentPadding = PaddingValues(horizontal = 12.dp),
+                contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 itemsIndexed(
@@ -212,33 +219,18 @@ private fun BreadcrumbSortChip(
     ) {
         Row(
             modifier = Modifier
-                .height(BREADCRUMB_SORT_CHIP_HEIGHT_DP.dp)
+                .size(36.dp)
                 .clip(MaterialTheme.shapes.small)
-                .background(colorScheme.surfaceContainerHigh)
-                .padding(horizontal = 12.dp),
+                .background(colorScheme.surfaceContainerHighest)
+                .border(1.dp, colorScheme.outlineVariant, MaterialTheme.shapes.small),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = icon,
-                contentDescription = null,
-                modifier = Modifier.size(16.dp),
-                tint = colorScheme.onSurfaceVariant
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = label,
-                modifier = Modifier.widthIn(max = BREADCRUMB_SORT_LABEL_MAX_WIDTH_DP.dp),
-                color = colorScheme.onSurface,
-                style = MaterialTheme.typography.labelLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(Modifier.width(4.dp))
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowDown,
-                contentDescription = null,
-                modifier = Modifier.size(16.dp),
-                tint = colorScheme.onSurfaceVariant
+                contentDescription = "Sort and view, sorted by $label", // TODO: localize
+                modifier = Modifier.size(18.dp),
+                tint = colorScheme.onSurface
             )
         }
     }
