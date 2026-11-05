@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 
 /** Centered empty state with a large tonal icon, supporting copy, and an optional action. */
 @Composable
@@ -82,8 +84,9 @@ fun EmptyState(
 /** Centered progress indicator with a short status label. */
 @Composable
 fun LoadingState(
-    label: String = "Loading…", // TODO: localize
+    label: String? = null,
 ) {
+    val resolvedLabel = label ?: stringResource(R.string.compose_loading_ellipsis)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +97,7 @@ fun LoadingState(
         CircularProgressIndicator()
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = label,
+            text = resolvedLabel,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -130,7 +133,7 @@ fun ErrorState(
         if (retry != null) {
             Spacer(modifier = Modifier.height(24.dp))
             FilledTonalButton(onClick = retry) {
-                Text(text = "Retry") // TODO: localize
+                Text(text = stringResource(R.string.retry))
             }
         }
     }

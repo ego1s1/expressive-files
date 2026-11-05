@@ -47,9 +47,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.features.filelist.FileRow
@@ -129,7 +132,7 @@ private fun SearchHeader(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Close search" // TODO: localize
+                contentDescription = stringResource(R.string.compose_close_search)
             )
         }
         Surface(
@@ -173,7 +176,7 @@ private fun SearchHeader(
                         Box(contentAlignment = Alignment.CenterStart) {
                             if (query.isEmpty()) {
                                 Text(
-                                    text = "Search files", // TODO: localize
+                                    text = stringResource(R.string.compose_search_files),
                                     color = colorScheme.onSurfaceVariant,
                                     style = MaterialTheme.typography.bodyLarge,
                                     maxLines = 1,
@@ -195,7 +198,7 @@ private fun SearchHeader(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Close,
-                            contentDescription = "Clear search", // TODO: localize
+                            contentDescription = stringResource(R.string.compose_clear_search),
                             modifier = Modifier.size(SEARCH_ICON_SIZE_DP.dp)
                         )
                     }
@@ -244,8 +247,8 @@ private fun SearchBody(
 @Composable
 private fun SearchPrompt() {
     SearchMessage(
-        title = "Search files", // TODO: localize
-        body = "Find files and folders by name across your storage.", // TODO: localize
+        title = stringResource(R.string.compose_search_files),
+        body = stringResource(R.string.compose_find_files_and_folders_by_name_across_your_storage),
         iconTint = MaterialTheme.colorScheme.onSecondaryContainer,
         iconContainerColor = MaterialTheme.colorScheme.secondaryContainer
     )
@@ -254,8 +257,8 @@ private fun SearchPrompt() {
 @Composable
 private fun SearchNoResults() {
     SearchMessage(
-        title = "No matching files", // TODO: localize
-        body = "Try a different name or check the spelling.", // TODO: localize
+        title = stringResource(R.string.compose_no_matching_files),
+        body = stringResource(R.string.compose_try_a_different_name_or_check_the_spelling),
         iconTint = MaterialTheme.colorScheme.onSecondaryContainer,
         iconContainerColor = MaterialTheme.colorScheme.secondaryContainer
     )
@@ -263,8 +266,11 @@ private fun SearchNoResults() {
 
 @Composable
 private fun SearchLoading() {
+    val loadingDescription = stringResource(R.string.loading)
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .semantics { contentDescription = loadingDescription },
         contentAlignment = Alignment.Center
     ) {
         Box(

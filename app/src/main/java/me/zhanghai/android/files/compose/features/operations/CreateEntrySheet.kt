@@ -43,10 +43,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 
 /**
  * Bottom sheet for creating an empty file or folder in the current directory.
@@ -107,19 +109,19 @@ private fun CreateEntrySheetContent(
     val showError = touched && error != null
 
     val title = if (isDirectory) {
-        "New folder" // TODO: localize
+        stringResource(R.string.file_create_directory_title)
     } else {
-        "New file" // TODO: localize
+        stringResource(R.string.file_create_file_title)
     }
     val subtitle = if (isDirectory) {
-        "Create a folder in this location" // TODO: localize
+        stringResource(R.string.compose_create_a_folder_in_this_location)
     } else {
-        "Create an empty file in this location" // TODO: localize
+        stringResource(R.string.compose_create_an_empty_file_in_this_location)
     }
     val label = if (isDirectory) {
-        "Folder name" // TODO: localize
+        stringResource(R.string.compose_folder_name)
     } else {
-        "File name" // TODO: localize
+        stringResource(R.string.file_list_create_file_name_hint)
     }
 
     // The sheet animates in, so wait for the first frame before claiming focus.
@@ -204,7 +206,7 @@ private fun CreateEntrySheetContent(
                     .weight(1f)
                     .heightIn(min = 48.dp)
             ) {
-                Text(text = "Cancel") // TODO: localize
+                Text(text = stringResource(R.string.compose_cancel))
             }
             Button(
                 onClick = { submit() },
@@ -212,7 +214,7 @@ private fun CreateEntrySheetContent(
                     .weight(1f)
                     .heightIn(min = 48.dp)
             ) {
-                Text(text = "Create") // TODO: localize
+                Text(text = stringResource(R.string.compose_create))
             }
         }
     }
@@ -223,10 +225,13 @@ private fun CreateEntrySheetContent(
  *
  * This is shared by the create, rename and archive sheets so their rules stay consistent.
  */
+@Composable
 internal fun entryNameError(name: String, existingNames: List<String> = emptyList()): String? = when {
-    name.isEmpty() -> "Enter a name" // TODO: localize
-    '/' in name -> "A name can't contain /" // TODO: localize
-    name == "." || name == ".." -> "That name is reserved" // TODO: localize
-    existingNames.any { it == name } -> "An item with this name already exists" // TODO: localize
+    name.isEmpty() -> stringResource(R.string.compose_enter_a_name)
+    '/' in name -> stringResource(R.string.compose_a_name_can_t_contain)
+    name == "." || name == ".." -> stringResource(R.string.compose_that_name_is_reserved)
+    existingNames.any { it == name } -> {
+        stringResource(R.string.compose_an_item_with_this_name_already_exists)
+    }
     else -> null
 }

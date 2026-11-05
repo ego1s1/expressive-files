@@ -32,8 +32,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 
 /** Confirmation dialog with an optional destructive confirm action. */
 @Composable
@@ -75,7 +77,7 @@ fun ConfirmDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Cancel") // TODO: localize
+                Text(text = stringResource(R.string.compose_cancel))
             }
         }
     )
@@ -87,13 +89,14 @@ fun TextInputDialog(
     title: String,
     label: String,
     initialValue: String = "",
-    confirmLabel: String = "OK", // TODO: localize
+    confirmLabel: String? = null,
     validate: (String) -> String? = { null },
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     var value by rememberSaveable { mutableStateOf(initialValue) }
     var showError by rememberSaveable { mutableStateOf(false) }
+    val resolvedConfirmLabel = confirmLabel ?: stringResource(R.string.compose_ok)
     val focusRequester = remember { FocusRequester() }
 
     val error = if (showError) validate(value) else null
@@ -146,12 +149,12 @@ fun TextInputDialog(
         },
         confirmButton = {
             TextButton(onClick = { submit() }) {
-                Text(text = confirmLabel)
+                Text(text = resolvedConfirmLabel)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Cancel") // TODO: localize
+                Text(text = stringResource(R.string.compose_cancel))
             }
         }
     )

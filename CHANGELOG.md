@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The fork starts from Material Files `1.7.5` (versionCode 40); release versions will be
 declared when the first standalone build is tagged.
 
+## [1.0.0] - 2026-11-06
+
+### Added
+
+- Material 3 Expressive theme with `MaterialExpressiveTheme`, expressive motion,
+  20/32/48dp shape steps, true black and dynamic color.
+- Dynamic color and animation settings wired into the Compose shell.
+- Compose UI tests for selection semantics, row clicks and true-black surfaces.
+- Release runbook (`docs/RELEASE.md`) and a Material 3 Expressive audit
+  (`docs/M3_EXPRESSIVE_AUDIT.md`).
+
+### Changed
+
+- Material3 upgraded to 1.5.0-rc01; minimum SDK is now 24.
+- All shipping Compose strings are externalized in `strings_compose.xml`.
+- Selection is exposed with a check icon and semantics, not only a container color.
+- File rows, bars and sheets grow with font scale instead of clipping.
+- Store title and app branding are now Expressive Files.
+
 ## [Unreleased]
 
 ### Added

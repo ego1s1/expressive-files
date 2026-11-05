@@ -33,7 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 import me.zhanghai.android.files.compose.model.FileListUiState
 
@@ -45,9 +47,9 @@ internal fun EmptyState(
     CenteredMessageState(
         icon = ExpressiveIcons.Folder,
         iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-        headline = state.emptyTitle ?: "This folder is empty", // TODO: localize
+        headline = state.emptyTitle ?: stringResource(R.string.compose_this_folder_is_empty),
         body = state.emptyBody,
-        actionLabel = "New folder", // TODO: localize
+        actionLabel = stringResource(R.string.file_create_directory_title),
         actionIcon = Icons.Filled.Add,
         onAction = onCreateFolder
     )
@@ -61,9 +63,9 @@ internal fun ErrorState(
     CenteredMessageState(
         icon = Icons.Filled.Warning,
         iconTint = MaterialTheme.colorScheme.error,
-        headline = "Can't load this folder", // TODO: localize
+        headline = stringResource(R.string.compose_can_t_load_this_folder),
         body = message,
-        actionLabel = "Retry", // TODO: localize
+        actionLabel = stringResource(R.string.retry),
         actionIcon = Icons.Filled.Refresh,
         onAction = onRetry
     )
@@ -93,7 +95,7 @@ internal fun LoadingState() {
         }
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Loading...", // TODO: localize
+            text = stringResource(R.string.compose_loading),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium
         )

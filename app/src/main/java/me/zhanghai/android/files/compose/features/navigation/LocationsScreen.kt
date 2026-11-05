@@ -31,7 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.DrawerEntryUi
 import me.zhanghai.android.files.compose.model.DrawerSectionUi
 import me.zhanghai.android.files.compose.model.NavigationUiState
@@ -92,14 +94,14 @@ private fun LocationsHeader() {
     ) {
         Column(Modifier.weight(1f)) {
             Text(
-                text = "Locations", // TODO: localize
+                text = stringResource(R.string.compose_locations),
                 style = MaterialTheme.typography.headlineLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "Storages and bookmarks", // TODO: localize
+                text = stringResource(R.string.compose_storages_and_bookmarks),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,

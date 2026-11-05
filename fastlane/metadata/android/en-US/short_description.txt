@@ -1,1 +1,1 @@
-Open source Material Design file manager
+Material 3 Expressive open source file manager

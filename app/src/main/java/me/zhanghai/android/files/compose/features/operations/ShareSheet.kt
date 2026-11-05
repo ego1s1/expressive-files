@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
@@ -91,7 +92,7 @@ private fun ShareSheetContent(
             .padding(vertical = 8.dp)
     ) {
         Text(
-            text = "Share", // TODO: localize
+            text = stringResource(R.string.share),
             modifier = Modifier.padding(horizontal = 24.dp),
             style = MaterialTheme.typography.titleLarge,
             color = colorScheme.onSurface
@@ -105,22 +106,22 @@ private fun ShareSheetContent(
         Spacer(Modifier.height(16.dp))
         ShareActionRow(
             icon = Icons.Filled.Share,
-            label = "Send to app", // TODO: localize
+            label = stringResource(R.string.compose_send_to_app),
             onClick = onSend
         )
         ShareActionRow(
             icon = ExpressiveIcons.Folder,
-            label = "Save to location", // TODO: localize
+            label = stringResource(R.string.compose_save_to_location),
             onClick = onSave
         )
         ShareActionRow(
             icon = Icons.Filled.List,
-            label = "Copy path", // TODO: localize
+            label = stringResource(R.string.file_list_action_copy_path),
             onClick = onCopyPath
         )
         ShareActionRow(
             icon = Icons.Filled.Add,
-            label = "Compress and share", // TODO: localize
+            label = stringResource(R.string.compose_compress_and_share),
             onClick = onCompress
         )
         Spacer(Modifier.height(8.dp))

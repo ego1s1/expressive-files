@@ -27,7 +27,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.BreadcrumbUi
 
 private val BREADCRUMB_ROW_HEIGHT = 40.dp
@@ -71,7 +73,7 @@ fun Breadcrumbs(
                     text = crumb.label,
                     modifier = Modifier
                         .widthIn(max = BREADCRUMB_LABEL_MAX_WIDTH)
-                        .clickable(onClickLabel = "Open folder") { // TODO: localize
+                        .clickable(onClickLabel = stringResource(R.string.compose_open_folder)) {
                             onBreadcrumbClick(crumb)
                         }
                         .padding(horizontal = 4.dp, vertical = 12.dp),

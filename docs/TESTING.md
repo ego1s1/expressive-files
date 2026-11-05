@@ -1,8 +1,8 @@
 # Testing Expressive Files
 
-The fork currently has JVM unit tests only. Compose UI tests and screenshot tests are
-planned; this document defines how to run what exists and the manual matrix that must
-pass before a Compose surface is called migrated.
+The fork has JVM unit tests plus Robolectric-backed Compose UI tests. Screenshot goldens
+are still planned; this document defines how to run what exists and the manual matrix
+that must pass before a Compose surface is called migrated.
 
 ## Prerequisites
 
@@ -63,9 +63,10 @@ The models do not validate input. Tests must not assert clamping of negative
 first. When a model gains behavior, add a test in the same package and keep test data
 explicit.
 
-UI behavior, resources, intents and Android framework calls are **not** covered by
-these JVM tests. They require Compose UI tests or manual verification until the
-screenshot/instrumentation harness exists.
+`FileRowTest` and `ThemeComposeTest` run Compose under Robolectric and cover selected
+semantics, row clicks, true-black surfaces and the standard dark palette. Intents,
+real file IO and device-only behavior still require instrumentation or manual
+verification.
 
 ## CI
 
@@ -74,11 +75,10 @@ request, both with JDK 21:
 
 | Job | Command | Blocking? |
 |---|---|---|
-| Unit tests and debug build | `./gradlew :app:testDebugUnitTest :app:assembleDebug -x lint` | Yes |
-| Lint | `./gradlew :app:lintDebug` | No (`continue-on-error`); report is uploaded as an artifact |
+| Unit tests, lint and debug build | `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` | Yes |
+| Lint | `./gradlew :app:lintDebug` | Yes; report is uploaded as an artifact |
 
 Artifacts: `app-debug-apk`, `unit-test-reports`, `lint-report` (10-day retention).
-A lint finding is a follow-up, not a reason to block a visual migration PR.
 
 ## Screenshot matrix (to add)
 

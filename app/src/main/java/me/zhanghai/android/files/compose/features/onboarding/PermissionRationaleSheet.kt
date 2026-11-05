@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 
@@ -100,9 +101,9 @@ fun PermissionRationaleSheet(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PermissionBenefit("Browse files on your device and SD cards") // TODO: localize
-                PermissionBenefit("Organize, copy, move, and delete files freely") // TODO: localize
-                PermissionBenefit("Your files stay on your device — nothing is uploaded") // TODO: localize
+                PermissionBenefit(stringResource(R.string.compose_browse_files_on_your_device_and_sd_cards))
+                PermissionBenefit(stringResource(R.string.compose_organize_copy_move_and_delete_files_freely))
+                PermissionBenefit(stringResource(R.string.compose_your_files_stay_on_your_device_nothing_is_uploaded))
             }
             Spacer(Modifier.height(24.dp))
             Button(
@@ -119,7 +120,7 @@ fun PermissionRationaleSheet(
                     .fillMaxWidth()
                     .heightIn(min = 48.dp)
             ) {
-                Text("Not now") // TODO: localize
+                Text(stringResource(R.string.compose_not_now))
             }
         }
     }

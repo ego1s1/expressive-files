@@ -56,7 +56,7 @@ fun mapFileListState(
     val emptyTitle = when {
         !isLoading && error != null && entries.isEmpty() -> context.getString(R.string.error)
         !isLoading && error == null && entries.isEmpty() && isSearching ->
-            "No matching files" // TODO: localize
+            context.getString(R.string.compose_no_matching_files)
         !isLoading && error == null && entries.isEmpty() ->
             context.getString(R.string.file_list_empty)
         else -> null

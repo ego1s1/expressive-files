@@ -50,6 +50,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
@@ -117,7 +118,7 @@ fun CreateFabMenu(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FabMenuItem(
-                        label = "New folder", // TODO: localize
+                        label = stringResource(R.string.file_create_directory_title),
                         onClick = {
                             expanded = false
                             onCreateFolder()
@@ -130,7 +131,7 @@ fun CreateFabMenu(
                         )
                     }
                     FabMenuItem(
-                        label = "New file", // TODO: localize
+                        label = stringResource(R.string.file_create_file_title),
                         onClick = {
                             expanded = false
                             onCreateFile()
@@ -143,7 +144,7 @@ fun CreateFabMenu(
                         )
                     }
                     FabMenuItem(
-                        label = "Paste", // TODO: localize
+                        label = stringResource(R.string.paste),
                         enabled = canPaste,
                         onClick = {
                             expanded = false
@@ -168,9 +169,9 @@ fun CreateFabMenu(
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = if (expanded) {
-                        "Close create menu" // TODO: localize
+                        stringResource(R.string.compose_close_create_menu)
                     } else {
-                        "Create new item" // TODO: localize
+                        stringResource(R.string.compose_create_new_item)
                     },
                     modifier = Modifier.rotate(iconRotation)
                 )

@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileListUiState
@@ -47,7 +48,7 @@ fun FileListTopBar(
     modifier: Modifier = Modifier
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    val title = state.title.ifBlank { "Files" } // TODO: localize
+    val title = state.title.ifBlank { stringResource(R.string.file_list_title) }
     val subtitle = state.subtitle
 
     Surface(
@@ -69,7 +70,7 @@ fun FileListTopBar(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Navigate up" // TODO: localize
+                        contentDescription = stringResource(R.string.compose_navigate_up)
                     )
                 }
             } else {
@@ -103,7 +104,7 @@ fun FileListTopBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_expressive_search),
-                    contentDescription = "Search files", // TODO: localize
+                    contentDescription = stringResource(R.string.compose_search_files),
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -113,7 +114,10 @@ fun FileListTopBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_expressive_sort),
-                    contentDescription = "Sort and view, sorted by ${state.sortLabel}", // TODO: localize
+                    contentDescription = stringResource(
+                        R.string.compose_sort_and_view_sorted_by,
+                        state.sortLabel
+                    ),
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -123,7 +127,7 @@ fun FileListTopBar(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.more_vertical_icon_white_24dp),
-                    contentDescription = "View options", // TODO: localize
+                    contentDescription = stringResource(R.string.compose_view_options),
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -137,7 +141,7 @@ private fun FileListTopBarPreview() {
     FileListTopBar(
         state = FileListUiState(
             title = "Downloads",
-            subtitle = "12 items • 4.2 GB free", // TODO: localize
+            subtitle = stringResource(R.string.compose_12_items_4_2_gb_free),
             canNavigateUp = false
         ),
         onNavigateUp = {},

@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import me.zhanghai.android.files.R
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -28,6 +29,8 @@ import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 /**
@@ -63,11 +66,15 @@ fun SelectionBar(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Close,
-                    contentDescription = "Exit selection mode" // TODO: localize
+                    contentDescription = stringResource(R.string.compose_exit_selection_mode)
                 )
             }
             Text(
-                text = "$selectedCount selected", // TODO: localize
+                text = pluralStringResource(
+                    R.plurals.compose_selected_count,
+                    selectedCount,
+                    selectedCount
+                ),
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp)
@@ -82,7 +89,7 @@ fun SelectionBar(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Share,
-                    contentDescription = "Share selected items" // TODO: localize
+                    contentDescription = stringResource(R.string.compose_share_selected_items)
                 )
             }
             IconButton(
@@ -91,7 +98,7 @@ fun SelectionBar(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Delete selected items", // TODO: localize
+                    contentDescription = stringResource(R.string.compose_delete_selected_items),
                     tint = colorScheme.error
                 )
             }
@@ -101,7 +108,7 @@ fun SelectionBar(
             ) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "More selection actions" // TODO: localize
+                    contentDescription = stringResource(R.string.compose_more_selection_actions)
                 )
             }
         }

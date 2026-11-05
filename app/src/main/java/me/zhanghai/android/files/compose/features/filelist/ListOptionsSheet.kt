@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 
@@ -69,13 +70,13 @@ fun ListOptionsSheet(
                 .padding(bottom = 8.dp)
         ) {
             Text(
-                text = "View options", // TODO: localize
+                text = stringResource(R.string.compose_view_options),
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge
             )
             OptionRow(
-                title = "Sort and view", // TODO: localize
+                title = stringResource(R.string.compose_sort_and_view),
                 leadingContent = {
                     Icon(
                         painter = painterResource(R.drawable.ic_expressive_sort),
@@ -93,9 +94,9 @@ fun ListOptionsSheet(
             )
             OptionRow(
                 title = if (isGrid) {
-                    "Switch to list" // TODO: localize
+                    stringResource(R.string.compose_switch_to_list)
                 } else {
-                    "Switch to grid" // TODO: localize
+                    stringResource(R.string.compose_switch_to_grid)
                 },
                 leadingContent = {
                     Icon(
@@ -112,7 +113,7 @@ fun ListOptionsSheet(
                 onClick = { dismissAfter(onToggleLayout) }
             )
             OptionRow(
-                title = "Refresh", // TODO: localize
+                title = stringResource(R.string.refresh),
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Filled.Refresh,
@@ -122,7 +123,7 @@ fun ListOptionsSheet(
                 onClick = { dismissAfter(onRefresh) }
             )
             OptionRow(
-                title = "Select all", // TODO: localize
+                title = stringResource(R.string.select_all),
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Filled.Check,

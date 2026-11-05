@@ -32,7 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 import me.zhanghai.android.files.compose.model.ShortcutEntryUi
 
@@ -49,7 +51,7 @@ internal fun ShortcutRow(
             .fillMaxWidth()
             .heightIn(min = 72.dp)
             .clickable(
-                onClickLabel = "Open", // TODO: localize
+                onClickLabel = stringResource(R.string.compose_open),
                 role = Role.Button,
                 onClick = onOpen
             )
@@ -94,9 +96,9 @@ internal fun ShortcutRow(
                     Icons.Outlined.Star
                 },
                 contentDescription = if (entry.isFavorite) {
-                    "Remove from favorites" // TODO: localize
+                    stringResource(R.string.compose_remove_from_favorites)
                 } else {
-                    "Add to favorites" // TODO: localize
+                    stringResource(R.string.compose_add_to_favorites)
                 },
                 tint = if (entry.isFavorite) {
                     MaterialTheme.colorScheme.primary

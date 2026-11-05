@@ -49,15 +49,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.PropertiesUiState
 import me.zhanghai.android.files.compose.model.PropertyRowUi
 import me.zhanghai.android.files.compose.model.PropertySectionUi
 
-private const val BACK = "Back" // TODO: localize
-private const val PROPERTIES = "Properties" // TODO: localize
-private const val EMPTY = "No properties to show" // TODO: localize
+
 
 /**
  * Stateless properties browser: a file header, tabbed property groups and copyable rows.
@@ -121,11 +120,11 @@ private fun PropertiesTopBar(onBack: () -> Unit) {
         IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = BACK
+                contentDescription = stringResource(R.string.compose_back)
             )
         }
         Text(
-            text = PROPERTIES,
+            text = stringResource(R.string.file_item_action_properties),
             modifier = Modifier.padding(horizontal = 8.dp),
             style = MaterialTheme.typography.titleLarge,
             maxLines = 1,
@@ -243,7 +242,7 @@ private fun PropertiesContent(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = EMPTY,
+                text = stringResource(R.string.compose_no_properties_to_show),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -343,7 +342,7 @@ private fun PropertyRow(
             IconButton(onClick = { onCopy(row.value) }) {
                 Icon(
                     painter = painterResource(R.drawable.copy_icon_control_normal_24dp),
-                    contentDescription = "Copy ${row.label}", // TODO: localize
+                    contentDescription = stringResource(R.string.compose_copy_label, row.label),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

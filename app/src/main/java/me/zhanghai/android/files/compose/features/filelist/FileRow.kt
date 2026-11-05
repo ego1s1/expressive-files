@@ -38,6 +38,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileEntryUi
@@ -91,7 +92,7 @@ fun FileRow(
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick,
-                onLongClickLabel = "Select item", // TODO: localize
+                onLongClickLabel = stringResource(R.string.compose_select_item),
                 role = Role.Button
             )
             .semantics { selected = entry.isSelected }
@@ -147,7 +148,10 @@ fun FileRow(
         ) {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
-                contentDescription = "More options for ${entry.name}", // TODO: localize
+                contentDescription = stringResource(
+                    R.string.compose_more_options_for,
+                    entry.name
+                ),
                 tint = trailingColor
             )
         }

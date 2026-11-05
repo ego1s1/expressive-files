@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -53,7 +56,11 @@ fun SelectionOptionsSheet(
                 .padding(bottom = 16.dp)
         ) {
             Text(
-                text = "$selectedCount selected", // TODO: localize
+                text = pluralStringResource(
+                    R.plurals.compose_selected_count,
+                    selectedCount,
+                    selectedCount
+                ),
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                 style = MaterialTheme.typography.titleLarge
             )
@@ -62,7 +69,7 @@ fun SelectionOptionsSheet(
                 color = MaterialTheme.colorScheme.outlineVariant
             )
             SelectionOptionRow(
-                label = "Select all", // TODO: localize
+                label = stringResource(R.string.select_all),
                 icon = Icons.Filled.Check,
                 onClick = {
                     onSelectAll()
@@ -70,7 +77,7 @@ fun SelectionOptionsSheet(
                 }
             )
             SelectionOptionRow(
-                label = "Deselect all", // TODO: localize
+                label = stringResource(R.string.compose_deselect_all),
                 icon = Icons.Filled.Clear,
                 onClick = {
                     onDeselectAll()

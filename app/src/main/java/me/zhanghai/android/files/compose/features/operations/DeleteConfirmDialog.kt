@@ -30,9 +30,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 
 /**
  * Confirmation dialog for deleting [count] items.
@@ -86,7 +89,7 @@ private fun DeleteDialogBody(count: Int, names: List<String>) {
 
     Column {
         Text(
-            text = "This can't be undone.", // TODO: localize
+            text = stringResource(R.string.compose_this_can_t_be_undone),
             style = MaterialTheme.typography.bodyMedium,
             color = colorScheme.onSurfaceVariant
         )
@@ -113,7 +116,11 @@ private fun DeleteDialogBody(count: Int, names: List<String>) {
                     }
                     if (moreCount > 0) {
                         Text(
-                            text = "+$moreCount more", // TODO: localize
+                            text = pluralStringResource(
+                                R.plurals.compose_more_items,
+                                moreCount,
+                                moreCount
+                            ),
                             style = MaterialTheme.typography.labelMedium,
                             color = colorScheme.onSurfaceVariant
                         )
@@ -133,7 +140,7 @@ private fun DeleteConfirmButton(onConfirm: () -> Unit) {
             contentColor = MaterialTheme.colorScheme.error
         )
     ) {
-        Text(text = "Delete") // TODO: localize
+        Text(text = stringResource(R.string.delete))
     }
 }
 
@@ -143,7 +150,7 @@ private fun DeleteDismissButton(onDismiss: () -> Unit) {
         onClick = onDismiss,
         modifier = Modifier.heightIn(min = 48.dp)
     ) {
-        Text(text = "Cancel") // TODO: localize
+        Text(text = stringResource(R.string.compose_cancel))
     }
 }
 
@@ -197,8 +204,9 @@ private fun DeleteConfirmDialogPreview() {
     }
 }
 
-private fun deleteTitle(count: Int): String = if (count == 1) {
-    "Delete 1 item?" // TODO: localize
-} else {
-    "Delete $count items?" // TODO: localize
-}
+@Composable
+private fun deleteTitle(count: Int): String = pluralStringResource(
+    R.plurals.compose_delete_items,
+    count,
+    count
+)

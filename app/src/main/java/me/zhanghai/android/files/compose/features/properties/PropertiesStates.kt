@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.properties
 
+import me.zhanghai.android.files.R
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
-private const val LOADING = "Loading properties..." // TODO: localize
-private const val LOAD_ERROR = "Unable to load properties" // TODO: localize
+
 
 @Composable
 internal fun PropertiesLoading(modifier: Modifier = Modifier) {
@@ -39,7 +40,7 @@ internal fun PropertiesLoading(modifier: Modifier = Modifier) {
             CircularProgressIndicator()
             Spacer(Modifier.height(16.dp))
             Text(
-                text = LOADING,
+                text = stringResource(R.string.compose_loading_properties),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -68,7 +69,7 @@ internal fun PropertiesError(
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                text = LOAD_ERROR,
+                text = stringResource(R.string.compose_unable_to_load_properties),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )

@@ -48,7 +48,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.ConflictUi
 
 /**
@@ -121,7 +123,7 @@ private fun ConflictSheetContent(
             .padding(top = 8.dp, bottom = 16.dp)
     ) {
         Text(
-            text = "File already exists", // TODO: localize
+            text = stringResource(R.string.compose_file_already_exists),
             style = MaterialTheme.typography.titleLarge,
             color = colorScheme.onSurface
         )
@@ -141,12 +143,12 @@ private fun ConflictSheetContent(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Apply to all", // TODO: localize
+                        text = stringResource(R.string.compose_apply_to_all),
                         style = MaterialTheme.typography.bodyLarge,
                         color = colorScheme.onSurface
                     )
                     Text(
-                        text = "Use this choice for the remaining conflicts", // TODO: localize
+                        text = stringResource(R.string.compose_use_this_choice_for_the_remaining_conflicts),
                         style = MaterialTheme.typography.bodySmall,
                         color = colorScheme.onSurfaceVariant
                     )
@@ -165,7 +167,7 @@ private fun ConflictSheetContent(
                 touched = true
             },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "New name") }, // TODO: localize
+            label = { Text(text = stringResource(R.string.file_job_conflict_name_hint)) },
             singleLine = true,
             isError = showRenameError,
             supportingText = if (showRenameError) {
@@ -187,7 +189,7 @@ private fun ConflictSheetContent(
                     .weight(1f)
                     .heightIn(min = 48.dp)
             ) {
-                Text(text = "Skip") // TODO: localize
+                Text(text = stringResource(R.string.skip))
             }
             FilledTonalButton(
                 onClick = { submitRename() },
@@ -196,7 +198,7 @@ private fun ConflictSheetContent(
                     .heightIn(min = 48.dp),
                 enabled = renameError == null
             ) {
-                Text(text = "Rename") // TODO: localize
+                Text(text = stringResource(R.string.rename))
             }
         }
         Spacer(Modifier.height(12.dp))
@@ -206,7 +208,7 @@ private fun ConflictSheetContent(
                 .fillMaxWidth()
                 .heightIn(min = 48.dp)
         ) {
-            Text(text = "Replace") // TODO: localize
+            Text(text = stringResource(R.string.replace))
         }
     }
 }
@@ -247,7 +249,10 @@ private fun ConflictFileCard(conflict: ConflictUi) {
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "“${conflict.existingName}” already exists", // TODO: localize
+                    text = stringResource(
+                        R.string.compose_already_exists,
+                        conflict.existingName
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = colorScheme.onSurfaceVariant,
                     maxLines = 1,

@@ -3,7 +3,7 @@
 **Snapshot:** 2026-11-05
 **Scope:** the Compose-first shell in `app/src/main/java/me/zhanghai/android/files/compose/**`
 (56 files, ~9,770 LOC), the shared theme, and the design contract documents.
-**Decision record:** Excellent intensity, Material3 1.5.0-alpha26, minSdk 24, hybrid
+**Decision record:** Excellent intensity, Material3 1.5.0-rc01, minSdk 24, hybrid
 navigation, accessibility first, fully wired theming, screenshot + UI tests.
 
 ## Verdict
@@ -29,7 +29,7 @@ truthful settings, and documentation that promised APIs Material3 1.4.0 did not 
 
 These were checked against the cached artifacts, not assumed from the docs.
 
-| API | 1.4.0 | 1.5.0-alpha26 |
+| API | 1.4.0 | 1.5.0-rc01 |
 |---|---|---|
 | `MotionScheme` interface | public | public |
 | `MotionScheme.expressive()` | internal (`expressive$material3`) | **public** |
@@ -49,7 +49,7 @@ upgrade removes the excuse: the theme now uses `MaterialExpressiveTheme` and
 
 | Finding | Resolution |
 |---|---|
-| Design doc demanded `ButtonGroup` / loading indicator that 1.4.0 did not ship | Upgraded to 1.5.0-alpha26; expressive components are now available. |
+| Design doc demanded `ButtonGroup` / loading indicator that 1.4.0 did not ship | Upgraded to 1.5.0-rc01; expressive components are now available. |
 | No expressive motion scheme | `ExpressiveFilesTheme` uses `MaterialExpressiveTheme` + `MotionScheme.expressive()`. |
 | Custom motion specs were off-spec (`0.9/700`) | `ExpressiveMotion` now uses `0.8/380` spatial, `0.8/800` fast, `0.8/200` slow, `1.0/1600` effects. |
 | Fixed heights clipped at 200% font scale | File rows, top bars, search fields, sort rows, FAB menu rows and home headers now use `heightIn(min = …)`. |
@@ -90,9 +90,11 @@ upgrade removes the excuse: the theme now uses `MaterialExpressiveTheme` and
    real actions (create group, long operations, destructive split action).
 8. **Adaptive layout is two literals.** `600.dp` and `390.dp` are hardcoded in
    `ExpressiveFilesApp.kt`; there is no expanded two-pane layout.
-9. **230 `TODO: localize` strings.** The Compose shell is still English-only.
-10. **No Compose UI or screenshot tests.** Only two JVM model tests exist; CI has no
-    visual job.
+9. **Translations are still pending.** Every shipping Compose string is now externalized
+   (`res/values/strings_compose.xml`, plurals included); new keys need translated
+   resources before a locale-expanded release.
+10. **Screenshot goldens are still missing.** Compose UI tests now cover selected
+    semantics, row clicks and the true-black palette; CI has no visual job yet.
 
 ## Plan
 
@@ -103,8 +105,8 @@ upgrade removes the excuse: the theme now uses `MaterialExpressiveTheme` and
 | **2. Theme foundation** | Expressive theme + motion scheme; 20/32/48 shapes; true black; dynamic-color setting; token cleanup. | **done** |
 | **3. Components + nav** | `selectable` nav semantics, 24dp icons, rail geometry; app bar decision; FAB menu → `FloatingActionButtonMenu`; `ButtonGroup` / `LoadingIndicator`; sheet shape unification. | next |
 | **4. Adaptive** | Centralize breakpoints; medium rail; expanded two-pane at ≥840dp; inset/FAB clearance. | pending |
-| **5. Quality** | Roborazzi goldens (light/dark, list/grid/selection/empty/error/settings); Compose UI tests for selection, back, sheets; non-blocking CI screenshot job. | pending |
-| **6. Localization** | Migrate 230 strings to `R.string`; add translation placeholders; retire “Open legacy settings”. | pending |
+| **5. Quality** | Compose UI tests for selection, row clicks and true black (done); Roborazzi goldens and a CI visual job remain. | **UI tests done**, screenshots pending |
+| **6. Localization** | Externalize all shipping Compose strings; add locale translations; retire “Open legacy settings”. | **strings externalized**, translations pending |
 
 ### Phase 3 detail
 
@@ -142,8 +144,8 @@ A screen is M3 Expressive compliant when:
 
 ## Risks
 
-- **1.5.0-alpha26 is an alpha.** Pin it, keep the BOM for Compose UI/runtime, and
-  re-check the API surface before every upgrade. Deprecations already surfaced:
+- **1.5.0-rc01 is a release candidate.** Pin it, keep the BOM for Compose UI/runtime,
+  and re-check the API surface before every upgrade. Deprecations already surfaced:
   `rememberModalBottomSheetState`, `ListItem` overload, `Icons.Filled.ArrowBack`,
   `Icons.Filled.KeyboardArrowRight`.
 - **MaterialExpressiveTheme affects built-in motion globally.** Verify dialogs and
@@ -152,7 +154,7 @@ A screen is M3 Expressive compliant when:
   use black for cards that need separation.
 - **Dynamic color can break brand assumptions.** Keep the seeded fallback palette
   reviewed and provide a dynamic-color toggle (now wired).
-- **Compose 1.12.1 + Material3 1.5.0-alpha26** is a mixed-version pair. Compile and
+- **Compose 1.12.1 + Material3 1.5.0-rc01** is a mixed-version pair. Compile and
   smoke-test before release; do not upgrade both blindly.
 - **minSdk moved from 23 to 24.** Material3 1.5 requires it. Android 5.0 is no longer
   supported; README, the test matrix and release notes must say Android 7.0+.

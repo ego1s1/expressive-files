@@ -49,7 +49,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.SettingsItemKind
 import me.zhanghai.android.files.compose.model.SettingsItemUi
 
@@ -75,7 +77,7 @@ internal fun SettingsTopBar(
         IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back", // TODO: localize
+                contentDescription = stringResource(R.string.compose_back),
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -96,6 +98,7 @@ private fun SettingsSearchField(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val searchSettingsDescription = stringResource(R.string.compose_search_settings)
     Surface(
         modifier = modifier,
         shape = CircleShape,
@@ -120,7 +123,7 @@ private fun SettingsSearchField(
                 modifier = Modifier
                     .weight(1f)
                     .semantics {
-                        contentDescription = "Search settings" // TODO: localize
+                        contentDescription = searchSettingsDescription
                     },
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.onSurface
@@ -137,7 +140,7 @@ private fun SettingsSearchField(
                     ) {
                         if (query.isEmpty()) {
                             Text(
-                                text = "Search settings", // TODO: localize
+                                text = stringResource(R.string.compose_search_settings),
                                 modifier = Modifier.clearAndSetSemantics {},
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -153,7 +156,7 @@ private fun SettingsSearchField(
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = "Clear search", // TODO: localize
+                        contentDescription = stringResource(R.string.compose_clear_search),
                         tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(20.dp)
                     )
@@ -339,9 +342,9 @@ internal fun SettingsEmptyState(
         Spacer(Modifier.height(16.dp))
         Text(
             text = if (isSearching) {
-                "No settings found" // TODO: localize
+                stringResource(R.string.compose_no_settings_found)
             } else {
-                "No settings available" // TODO: localize
+                stringResource(R.string.compose_no_settings_available)
             },
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
@@ -350,9 +353,9 @@ internal fun SettingsEmptyState(
         Spacer(Modifier.height(8.dp))
         Text(
             text = if (isSearching) {
-                "Try a different search term." // TODO: localize
+                stringResource(R.string.compose_try_a_different_search_term)
             } else {
-                "Settings will appear here once they are available." // TODO: localize
+                stringResource(R.string.compose_settings_will_appear_here_once_they_are_available)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -373,7 +376,7 @@ internal fun OpenLegacySettingsButton(
         contentAlignment = Alignment.Center
     ) {
         TextButton(onClick = onClick) {
-            Text("Open legacy settings") // TODO: localize
+            Text(stringResource(R.string.compose_open_legacy_settings))
         }
     }
 }

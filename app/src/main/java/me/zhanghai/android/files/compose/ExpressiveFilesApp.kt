@@ -66,6 +66,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Observer
 import androidx.compose.runtime.livedata.observeAsState
@@ -110,6 +111,7 @@ import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
 import me.zhanghai.android.files.compose.state.mapFileListState
+import me.zhanghai.android.files.compose.theme.WindowSizes
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 import me.zhanghai.android.files.file.FileItem
 import me.zhanghai.android.files.file.fileSize
@@ -154,8 +156,8 @@ fun ExpressiveFilesApp() {
     val context = LocalContext.current
     val viewModel: FileListViewModel = viewModel()
     // The legacy LiveData graph requires a non-null trail before it is observed.
-    // This is an idempotent initialization, not a per-frame side effect.
-    remember(viewModel) {
+    // Run the idempotent initialization once, after the first composition.
+    LaunchedEffect(viewModel) {
         if (!viewModel.hasTrail) {
             viewModel.resetTo(defaultPath())
         }
@@ -264,10 +266,10 @@ fun ExpressiveFilesApp() {
         FileLayoutMode.LIST
     }
     val sortLabel = when (sortOptions.by) {
-        FileSortOptions.By.NAME -> "Name" // TODO: localize
-        FileSortOptions.By.TYPE -> "Type" // TODO: localize
-        FileSortOptions.By.SIZE -> "Size" // TODO: localize
-        FileSortOptions.By.LAST_MODIFIED -> "Modified" // TODO: localize
+        FileSortOptions.By.NAME -> stringResource(R.string.file_list_action_sort_by_name)
+        FileSortOptions.By.TYPE -> stringResource(R.string.file_list_action_sort_by_type)
+        FileSortOptions.By.SIZE -> stringResource(R.string.file_list_action_sort_by_size)
+        FileSortOptions.By.LAST_MODIFIED -> stringResource(R.string.compose_modified)
     }
     val uiState: me.zhanghai.android.files.compose.model.FileListUiState = remember(
         fileListStateful,
@@ -353,9 +355,9 @@ fun ExpressiveFilesApp() {
 
     if (!hasStorageAccess && !permissionDismissed) {
         PermissionRationaleSheet(
-            title = "Allow access to your files", // TODO: localize
-            body = "Expressive Files needs file access to browse, copy, and organize files on this device.", // TODO: localize
-            primaryLabel = "Continue", // TODO: localize
+            title = stringResource(R.string.compose_allow_access_to_your_files),
+            body = stringResource(R.string.compose_expressive_files_needs_file_access_to_browse_copy_an),
+            primaryLabel = stringResource(R.string.compose_continue),
             onPrimary = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     val intent = Intent(
@@ -386,8 +388,8 @@ fun ExpressiveFilesApp() {
         propertiesFile == null && textEditorFile == null && route != ROUTE_SEARCH
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        val useNavigationRail = maxWidth >= 600.dp
-        val showNavLabels = maxWidth >= 390.dp
+        val useNavigationRail = maxWidth >= WindowSizes.MediumMinWidth
+        val showNavLabels = maxWidth >= WindowSizes.PillLabelMinWidth
         Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
@@ -469,7 +471,7 @@ fun ExpressiveFilesApp() {
         ) { animatedRoute ->
             when (animatedRoute) {
             ROUTE_FAVORITES -> HomeScreen(
-                title = "Favorites", // TODO: localize
+                title = stringResource(R.string.compose_favorites),
                 state = HomeUiState(favorites = favorites),
                 onOpen = { shortcut ->
                     if (shortcut.isDirectory) {
@@ -543,8 +545,8 @@ fun ExpressiveFilesApp() {
             }
 
             ROUTE_ABOUT -> AboutScreen(
-                appName = context.getString(R.string.app_name),
-                version = runCatching { context.getString(R.string.app_version) }.getOrDefault(""),
+                appName = stringResource(R.string.app_name),
+                version = stringResource(R.string.app_version),
                 onBack = { route = ROUTE_SETTINGS },
                 onOpenLink = { url ->
                     runCatching {
@@ -644,9 +646,9 @@ fun ExpressiveFilesApp() {
 
     if (showDiscardText) {
         ConfirmDialog(
-            title = "Discard changes?", // TODO: localize
-            message = "Your edits will be lost.", // TODO: localize
-            confirmLabel = "Discard", // TODO: localize
+            title = stringResource(R.string.compose_discard_changes),
+            message = stringResource(R.string.compose_your_edits_will_be_lost),
+            confirmLabel = stringResource(R.string.discard),
             destructive = true,
             onConfirm = {
                 showDiscardText = false
@@ -830,20 +832,24 @@ private fun FileActionSheet(
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
             )
-            ActionRow("Open", onOpen) // TODO: localize
-            ActionRow("Rename", onRename) // TODO: localize
-            ActionRow("Share", onShare) // TODO: localize
+            ActionRow(stringResource(R.string.compose_open), onOpen)
+            ActionRow(stringResource(R.string.rename), onRename)
+            ActionRow(stringResource(R.string.share), onShare)
             ActionRow(
-                if (isFavorite) "Remove from favorites" else "Add to favorites", // TODO: localize
+                if (isFavorite) {
+                    stringResource(R.string.compose_remove_from_favorites)
+                } else {
+                    stringResource(R.string.compose_add_to_favorites)
+                },
                 onToggleFavorite
             )
-            ActionRow("Copy path", onCopyPath) // TODO: localize
-            ActionRow("Properties", onProperties) // TODO: localize
+            ActionRow(stringResource(R.string.file_list_action_copy_path), onCopyPath)
+            ActionRow(stringResource(R.string.file_item_action_properties), onProperties)
             HorizontalDivider(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 color = MaterialTheme.colorScheme.outlineVariant
             )
-            ActionRow("Delete", onDelete, destructive = true) // TODO: localize
+            ActionRow(stringResource(R.string.delete), onDelete, destructive = true)
         }
     }
 }
@@ -872,21 +878,42 @@ private fun ActionRow(
 private fun buildPropertiesUiState(context: Context, file: FileItem): PropertiesUiState {
     val attributes = file.attributes
     val rows = buildList {
-        add(PropertyRowUi("Name", file.name, copyable = true)) // TODO: localize
-        add(PropertyRowUi("Path", file.path.toString(), copyable = true)) // TODO: localize
+        add(
+            PropertyRowUi(
+                context.getString(R.string.file_list_action_sort_by_name),
+                file.name,
+                copyable = true
+            )
+        )
+        add(
+            PropertyRowUi(
+                context.getString(R.string.storage_edit_device_storage_path),
+                file.path.toString(),
+                copyable = true
+            )
+        )
         if (!attributes.isDirectory) {
-            add(PropertyRowUi("Size", attributes.fileSize.formatHumanReadable(context))) // TODO: localize
+            add(
+                PropertyRowUi(
+                    context.getString(R.string.file_list_action_sort_by_size),
+                    attributes.fileSize.formatHumanReadable(context)
+                )
+            )
         }
         add(
             PropertyRowUi(
-                "Modified", // TODO: localize
+                context.getString(R.string.compose_modified),
                 attributes.lastModifiedTime().toInstant().formatShort(context)
             )
         )
         add(
             PropertyRowUi(
-                "Type", // TODO: localize
-                if (attributes.isDirectory) "Folder" else file.mimeType.value // TODO: localize
+                context.getString(R.string.file_list_action_sort_by_type),
+                if (attributes.isDirectory) {
+                    context.getString(R.string.file_open_as_type_directory)
+                } else {
+                    file.mimeType.value
+                }
             )
         )
     }
@@ -894,9 +921,11 @@ private fun buildPropertiesUiState(context: Context, file: FileItem): Properties
         title = file.name,
         subtitle = file.path.toString(),
         iconRes = file.mimeType.icon.resourceId,
-        tabTitles = listOf("Basic"), // TODO: localize
+        tabTitles = listOf(context.getString(R.string.file_properties_basic)),
         selectedTab = 0,
-        sections = listOf(PropertySectionUi("File", rows)) // TODO: localize
+        sections = listOf(
+            PropertySectionUi(context.getString(R.string.file_list_action_create_file), rows)
+        )
     )
 }
 

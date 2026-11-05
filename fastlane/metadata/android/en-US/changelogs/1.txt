@@ -1,0 +1,4 @@
+- Material 3 Expressive theme, motion and shape scale
+- True black, dynamic color and animation settings
+- Accessibility improvements for large font sizes and selection
+- Completely rewritten Compose file browser shell

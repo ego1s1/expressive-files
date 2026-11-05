@@ -31,12 +31,12 @@ object SettingsStateBuilder {
 
         val appearance = SettingsSectionUi(
             id = "appearance",
-            title = "Appearance", // TODO: localize
+            title = context.getString(R.string.compose_appearance),
             items = listOf(
                 SettingsItemUi(
                     key = "appearance_black_theme",
                     title = context.getString(R.string.settings_black_night_mode),
-                    summary = "Use pure black backgrounds in dark mode", // TODO: localize
+                    summary = context.getString(R.string.compose_use_pure_black_backgrounds_in_dark_mode),
                     iconRes = R.drawable.settings_icon_white_24dp,
                     kind = SettingsItemKind.SWITCH,
                     checked = blackTheme ?: false,
@@ -45,7 +45,7 @@ object SettingsStateBuilder {
                 SettingsItemUi(
                     key = "appearance_animations",
                     title = context.getString(R.string.settings_file_list_animation_title),
-                    summary = "Animate file list changes", // TODO: localize
+                    summary = context.getString(R.string.compose_animate_file_list_changes),
                     iconRes = R.drawable.settings_icon_white_24dp,
                     kind = SettingsItemKind.SWITCH,
                     checked = animations ?: false,
@@ -53,8 +53,8 @@ object SettingsStateBuilder {
                 ),
                 SettingsItemUi(
                     key = "appearance_dynamic_color",
-                    title = "Dynamic color", // TODO: localize
-                    summary = "Match the system wallpaper", // TODO: localize
+                    title = context.getString(R.string.compose_dynamic_color),
+                    summary = context.getString(R.string.compose_match_the_system_wallpaper),
                     iconRes = R.drawable.settings_icon_white_24dp,
                     kind = SettingsItemKind.SWITCH,
                     checked = dynamicColor ?: true,
@@ -63,10 +63,10 @@ object SettingsStateBuilder {
                 SettingsItemUi(
                     key = "appearance_theme",
                     title = context.getString(R.string.settings_theme_color_title),
-                    summary = "Choose the app accent color", // TODO: localize
+                    summary = context.getString(R.string.compose_choose_the_app_accent_color),
                     iconRes = R.drawable.settings_icon_white_24dp,
                     kind = SettingsItemKind.ACTION,
-                    valueLabel = "System default" // TODO: localize
+                    valueLabel = context.getString(R.string.system_default)
                 )
             )
         )
@@ -78,7 +78,7 @@ object SettingsStateBuilder {
                 SettingsItemUi(
                     key = "behavior_show_hidden",
                     title = context.getString(R.string.file_list_action_show_hidden_files),
-                    summary = "Show dotfiles and hidden folders", // TODO: localize
+                    summary = context.getString(R.string.compose_show_dotfiles_and_hidden_folders),
                     iconRes = R.drawable.directory_icon_white_24dp,
                     kind = SettingsItemKind.SWITCH,
                     checked = showHidden ?: false,
@@ -87,14 +87,14 @@ object SettingsStateBuilder {
                 SettingsItemUi(
                     key = "behavior_default_folder",
                     title = context.getString(R.string.settings_default_directory_title),
-                    summary = "Choose the folder that opens on launch", // TODO: localize
+                    summary = context.getString(R.string.compose_choose_the_folder_that_opens_on_launch),
                     iconRes = R.drawable.directory_icon_white_24dp,
                     kind = SettingsItemKind.ACTION
                 ),
                 SettingsItemUi(
                     key = "behavior_bookmarks",
                     title = context.getString(R.string.settings_bookmark_directories_title),
-                    summary = "Manage folders pinned to the drawer", // TODO: localize
+                    summary = context.getString(R.string.compose_manage_folders_pinned_to_the_drawer),
                     iconRes = R.drawable.directory_icon_white_24dp,
                     kind = SettingsItemKind.ACTION
                 )
@@ -103,26 +103,26 @@ object SettingsStateBuilder {
 
         val advanced = SettingsSectionUi(
             id = "advanced",
-            title = "Advanced", // TODO: localize
+            title = context.getString(R.string.compose_advanced),
             items = listOf(
                 SettingsItemUi(
                     key = "advanced_root_mode",
                     title = context.getString(R.string.settings_root_strategy_title),
-                    summary = "Choose how root file access is requested", // TODO: localize
+                    summary = context.getString(R.string.compose_choose_how_root_file_access_is_requested),
                     iconRes = R.drawable.settings_icon_white_24dp,
                     kind = SettingsItemKind.ACTION
                 ),
                 SettingsItemUi(
                     key = "advanced_archive_encoding",
                     title = context.getString(R.string.settings_archive_file_name_encoding_title),
-                    summary = "Encoding used for archive entry names", // TODO: localize
+                    summary = context.getString(R.string.compose_encoding_used_for_archive_entry_names),
                     iconRes = R.drawable.settings_icon_white_24dp,
                     kind = SettingsItemKind.ACTION
                 ),
                 SettingsItemUi(
                     key = "advanced_reset",
-                    title = "Reset preferences", // TODO: localize
-                    summary = "Restore all settings to their defaults", // TODO: localize
+                    title = context.getString(R.string.compose_reset_preferences),
+                    summary = context.getString(R.string.compose_restore_all_settings_to_their_defaults),
                     iconRes = R.drawable.reset_icon_white_24dp,
                     kind = SettingsItemKind.ACTION
                 )

@@ -41,22 +41,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 
 // The image canvas is always black, so its foreground colors deliberately do not
 // follow the light/dark color scheme.
 private val MediaForeground = Color.White
 private val MediaForegroundSecondary = Color.White.copy(alpha = 0.78f)
 
-private const val BACK = "Back" // TODO: localize
-private const val SHARE = "Share" // TODO: localize
-private const val DELETE = "Delete" // TODO: localize
-private const val INFO = "Info" // TODO: localize
-private const val IMAGE = "Image preview" // TODO: localize
-private const val LOADING = "Loading image..." // TODO: localize
-private const val LOADING_HINT = "Large or unsupported images may not preview." // TODO: localize
+
 
 /**
  * Stateless full-screen image viewer.
@@ -83,7 +79,9 @@ fun ImageViewerScreen(
         if (bitmap != null) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
-                contentDescription = title.ifBlank { IMAGE },
+                contentDescription = title.ifBlank {
+                    stringResource(R.string.compose_image_preview)
+                },
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
             )
@@ -131,7 +129,7 @@ private fun ImageViewerTopBar(
         IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = BACK,
+                contentDescription = stringResource(R.string.compose_back),
                 tint = MediaForeground
             )
         }
@@ -179,13 +177,13 @@ private fun ImagePlaceholder(modifier: Modifier = Modifier) {
         CircularProgressIndicator(color = MediaForeground)
         Spacer(Modifier.height(16.dp))
         Text(
-            text = LOADING,
+            text = stringResource(R.string.compose_loading_image),
             color = MediaForeground,
             style = MaterialTheme.typography.bodyLarge
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = LOADING_HINT,
+            text = stringResource(R.string.compose_large_or_unsupported_images_may_not_preview),
             color = MediaForegroundSecondary,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center
@@ -216,19 +214,19 @@ private fun ImageViewerToolbar(
             IconButton(onClick = onShare) {
                 Icon(
                     imageVector = Icons.Filled.Share,
-                    contentDescription = SHARE
+                    contentDescription = stringResource(R.string.share)
                 )
             }
             IconButton(onClick = onInfo) {
                 Icon(
                     imageVector = Icons.Filled.Info,
-                    contentDescription = INFO
+                    contentDescription = stringResource(R.string.compose_info)
                 )
             }
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = DELETE,
+                    contentDescription = stringResource(R.string.delete),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

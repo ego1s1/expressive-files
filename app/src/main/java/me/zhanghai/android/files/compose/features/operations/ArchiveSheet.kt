@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.operations
 
+import me.zhanghai.android.files.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,19 +45,21 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.annotation.StringRes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
-private data class ArchiveFormatOption(val label: String, val value: String)
+private data class ArchiveFormatOption(@StringRes val labelRes: Int, val value: String)
 
 private val ArchiveFormatOptions = listOf(
-    ArchiveFormatOption(label = "ZIP", value = "zip"), // TODO: localize
-    ArchiveFormatOption(label = "TAR.XZ", value = "tar.xz"), // TODO: localize
-    ArchiveFormatOption(label = "7Z", value = "7z") // TODO: localize
+    ArchiveFormatOption(labelRes = R.string.compose_zip, value = "zip"),
+    ArchiveFormatOption(labelRes = R.string.compose_tar_xz, value = "tar.xz"),
+    ArchiveFormatOption(labelRes = R.string.compose_7z, value = "7z")
 )
 
 /**
@@ -129,12 +132,12 @@ fun ArchiveSheet(
                 Spacer(Modifier.size(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Create archive", // TODO: localize
+                        text = stringResource(R.string.file_create_archive_title),
                         style = MaterialTheme.typography.titleLarge,
                         color = colorScheme.onSurface
                     )
                     Text(
-                        text = "Choose a name and format", // TODO: localize
+                        text = stringResource(R.string.compose_choose_a_name_and_format),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colorScheme.onSurfaceVariant
                     )
@@ -148,7 +151,7 @@ fun ArchiveSheet(
                     touched = true
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Archive name") }, // TODO: localize
+                label = { Text(text = stringResource(R.string.compose_archive_name)) },
                 singleLine = true,
                 isError = showNameError,
                 supportingText = if (showNameError) {
@@ -161,7 +164,7 @@ fun ArchiveSheet(
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                text = "Format", // TODO: localize
+                text = stringResource(R.string.compose_format),
                 style = MaterialTheme.typography.labelLarge,
                 color = colorScheme.onSurfaceVariant
             )
@@ -176,7 +179,7 @@ fun ArchiveSheet(
                             index = index,
                             count = ArchiveFormatOptions.size
                         ),
-                        label = { Text(text = option.label) }
+                        label = { Text(text = stringResource(option.labelRes)) }
                     )
                 }
             }
@@ -186,11 +189,11 @@ fun ArchiveSheet(
                     value = password,
                     onValueChange = { password = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Password (optional)") }, // TODO: localize
+                    label = { Text(text = stringResource(R.string.file_create_archive_password)) },
                     singleLine = true,
                     supportingText = {
                         Text(
-                            text = "Leave empty to create an archive without a password." // TODO: localize
+                            text = stringResource(R.string.compose_leave_empty_to_create_an_archive_without_a_password)
                         )
                     },
                     visualTransformation = PasswordVisualTransformation(),
@@ -212,7 +215,7 @@ fun ArchiveSheet(
                         .weight(1f)
                         .heightIn(min = 48.dp)
                 ) {
-                    Text(text = "Cancel") // TODO: localize
+                    Text(text = stringResource(R.string.compose_cancel))
                 }
                 Button(
                     onClick = { submit() },
@@ -220,7 +223,7 @@ fun ArchiveSheet(
                         .weight(1f)
                         .heightIn(min = 48.dp)
                 ) {
-                    Text(text = "Create") // TODO: localize
+                    Text(text = stringResource(R.string.compose_create))
                 }
             }
         }

@@ -1,7 +1,7 @@
 # Expressive Files — design system
 
 This document is the visual contract for the Compose-first fork. It maps Material 3
-Expressive intent onto the tokens available in **Material3 1.5.0-alpha26** and the shared
+Expressive intent onto the tokens available in **Material3 1.5.0-rc01** and the shared
 [`COMPOSE_CONTRACT.md`](COMPOSE_CONTRACT.md). Material3 1.5 is pinned deliberately so
 `MaterialExpressiveTheme`, `MotionScheme.expressive()`, `ButtonGroup`,
 `LoadingIndicator`, `FloatingActionButtonMenu`, `SplitButton` and `MaterialShapes` are
@@ -273,7 +273,7 @@ Adaptive rules:
   a text label; never replace the file name with a spinner.
 - Shape morphing belongs to the component's state transition (for example FAB to
   extended FAB). Do not morph file rows or grid tiles on scroll.
-- Material3 1.5.0-alpha26 is the pinned ceiling. Prefer the first-party expressive
+- Material3 1.5.0-rc01 is the pinned ceiling. Prefer the first-party expressive
   components (`FloatingActionButtonMenu`, `ButtonGroup`, `LoadingIndicator`,
   `SplitButton`, `FloatingToolbar`) over bespoke equivalents. Keep the custom create
   menu only if it preserves the file-specific actions and has UI tests.

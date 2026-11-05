@@ -409,6 +409,7 @@
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
             android:authorities="${applicationId}.firebaseinitprovider"
+            tools:ignore="MissingClass"
             tools:node="remove" />
 
         <provider

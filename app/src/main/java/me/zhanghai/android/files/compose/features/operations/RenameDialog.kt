@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.operations
 
+import me.zhanghai.android.files.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -30,6 +31,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 /**
@@ -95,7 +97,7 @@ fun RenameDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         shape = MaterialTheme.shapes.extraLarge,
-        title = { Text(text = "Rename") }, // TODO: localize
+        title = { Text(text = stringResource(R.string.rename)) },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
@@ -107,7 +109,7 @@ fun RenameDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
-                    label = { Text(text = "Name") }, // TODO: localize
+                    label = { Text(text = stringResource(R.string.file_list_action_sort_by_name)) },
                     singleLine = true,
                     isError = showError,
                     supportingText = if (showError) {
@@ -125,7 +127,7 @@ fun RenameDialog(
                 onClick = { submit() },
                 modifier = Modifier.heightIn(min = 48.dp)
             ) {
-                Text(text = "Rename") // TODO: localize
+                Text(text = stringResource(R.string.rename))
             }
         },
         dismissButton = {
@@ -133,7 +135,7 @@ fun RenameDialog(
                 onClick = onDismiss,
                 modifier = Modifier.heightIn(min = 48.dp)
             ) {
-                Text(text = "Cancel") // TODO: localize
+                Text(text = stringResource(R.string.compose_cancel))
             }
         }
     )

@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.components
 
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 /**
@@ -101,7 +104,7 @@ private fun ExpressiveTopBar(
                 IconButton(onClick = onNavigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Navigate up" // TODO: localize
+                        contentDescription = stringResource(R.string.compose_navigate_up)
                     )
                 }
             } else {
@@ -160,11 +163,15 @@ fun SelectionTopBar(
             IconButton(onClick = onClose) {
                 Icon(
                     imageVector = Icons.Filled.Close,
-                    contentDescription = "Exit selection" // TODO: localize
+                    contentDescription = stringResource(R.string.compose_exit_selection)
                 )
             }
             Text(
-                text = "$selectedCount selected", // TODO: localize
+                text = pluralStringResource(
+                    R.plurals.compose_selected_count,
+                    selectedCount,
+                    selectedCount
+                ),
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
@@ -186,14 +193,14 @@ fun SelectionTopBar(
 private fun ExpressiveScaffoldPreview() {
     ExpressiveFilesPreview {
         ExpressiveScaffold(
-            title = "Files", // TODO: localize
-            subtitle = "Internal storage", // TODO: localize
+            title = stringResource(R.string.file_list_title),
+            subtitle = stringResource(R.string.compose_internal_storage),
             onNavigateUp = {},
             actions = {
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "Search" // TODO: localize
+                        contentDescription = stringResource(R.string.search)
                     )
                 }
             }
@@ -204,7 +211,7 @@ private fun ExpressiveScaffoldPreview() {
                     .padding(paddingValues)
             ) {
                 Text(
-                    text = "Content", // TODO: localize
+                    text = stringResource(R.string.compose_content),
                     modifier = Modifier.padding(16.dp)
                 )
             }

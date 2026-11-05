@@ -42,6 +42,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 
@@ -95,59 +96,59 @@ fun AboutScreen(
             if (version.isNotBlank()) {
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "Version $version", // TODO: localize
+                    text = stringResource(R.string.compose_version, version),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
             }
             Spacer(Modifier.height(32.dp))
-            AboutCard(title = "Links") { // TODO: localize
+            AboutCard(title = stringResource(R.string.compose_links)) {
                 AboutLinkRow(
-                    title = "View on GitHub", // TODO: localize
-                    subtitle = "Source code and releases", // TODO: localize
+                    title = stringResource(R.string.about_github_title),
+                    subtitle = stringResource(R.string.compose_source_code_and_releases),
                     url = GITHUB_URL,
                     onOpenLink = onOpenLink
                 )
                 AboutDivider()
                 AboutLinkRow(
-                    title = "Report an issue", // TODO: localize
+                    title = stringResource(R.string.compose_report_an_issue),
                     url = ISSUES_URL,
                     onOpenLink = onOpenLink
                 )
             }
             Spacer(Modifier.height(16.dp))
-            AboutCard(title = "Legal") { // TODO: localize
+            AboutCard(title = stringResource(R.string.compose_legal)) {
                 AboutLinkRow(
-                    title = "Licenses", // TODO: localize
-                    subtitle = "Open-source licenses", // TODO: localize
+                    title = stringResource(R.string.about_licenses_title),
+                    subtitle = stringResource(R.string.compose_open_source_licenses),
                     url = LICENSE_URL,
                     onOpenLink = onOpenLink
                 )
                 AboutDivider()
                 AboutLinkRow(
-                    title = "Privacy policy", // TODO: localize
+                    title = stringResource(R.string.about_privacy_policy_title),
                     url = PRIVACY_POLICY_URL,
                     onOpenLink = onOpenLink
                 )
             }
             Spacer(Modifier.height(16.dp))
-            AboutCard(title = "Author") { // TODO: localize
+            AboutCard(title = stringResource(R.string.about_author_title)) {
                 AboutLinkRow(
-                    title = "Hai Zhang", // TODO: localize
-                    subtitle = "Maintainer", // TODO: localize
+                    title = stringResource(R.string.about_author_name_title),
+                    subtitle = stringResource(R.string.compose_maintainer),
                     url = AUTHOR_RESUME_URL,
                     onOpenLink = onOpenLink
                 )
                 AboutDivider()
                 AboutLinkRow(
-                    title = "Follow on GitHub", // TODO: localize
+                    title = stringResource(R.string.about_author_github_title),
                     url = AUTHOR_GITHUB_URL,
                     onOpenLink = onOpenLink
                 )
                 AboutDivider()
                 AboutLinkRow(
-                    title = "Follow on Twitter", // TODO: localize
+                    title = stringResource(R.string.about_author_twitter_title),
                     url = AUTHOR_TWITTER_URL,
                     onOpenLink = onOpenLink
                 )
@@ -171,12 +172,12 @@ private fun AboutTopBar(onBack: () -> Unit) {
         IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back", // TODO: localize
+                contentDescription = stringResource(R.string.compose_back),
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
         Text(
-            text = "About", // TODO: localize
+            text = stringResource(R.string.about_title),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface
         )

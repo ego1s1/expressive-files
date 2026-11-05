@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.home
 
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.compose.model.HomeUiState
 import me.zhanghai.android.files.compose.model.ShortcutEntryUi
@@ -60,9 +62,9 @@ fun HomeScreen(
     val isFavorites = title.contains("favorite", ignoreCase = true)
     val entries = if (isFavorites) state.favorites else state.recents
     val supportingText = if (isFavorites) {
-        "Files and folders you starred" // TODO: localize
+        stringResource(R.string.compose_files_and_folders_you_starred)
     } else {
-        "Recently opened files and folders" // TODO: localize
+        stringResource(R.string.compose_recently_opened_files_and_folders)
     }
 
     Surface(
@@ -153,7 +155,11 @@ private fun HomeHeader(
 @Composable
 private fun HomeSectionHeader(isFavorites: Boolean) {
     Text(
-        text = if (isFavorites) "Starred" else "Recently opened", // TODO: localize
+        text = if (isFavorites) {
+            stringResource(R.string.compose_starred)
+        } else {
+            stringResource(R.string.compose_recently_opened)
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 4.dp)
@@ -186,9 +192,9 @@ private fun HomeEmptyState(
         Spacer(Modifier.height(16.dp))
         Text(
             text = if (isFavorites) {
-                "No favorites yet" // TODO: localize
+                stringResource(R.string.compose_no_favorites_yet)
             } else {
-                "No recents yet" // TODO: localize
+                stringResource(R.string.compose_no_recents_yet)
             },
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center
@@ -196,9 +202,9 @@ private fun HomeEmptyState(
         Spacer(Modifier.height(4.dp))
         Text(
             text = if (isFavorites) {
-                "Tap the star on any file or folder to keep it here." // TODO: localize
+                stringResource(R.string.compose_tap_the_star_on_any_file_or_folder_to_keep_it_here)
             } else {
-                "Files and folders you open will appear here." // TODO: localize
+                stringResource(R.string.compose_files_and_folders_you_open_will_appear_here)
             },
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -217,7 +223,7 @@ private fun HomeLoadingState(modifier: Modifier = Modifier) {
         CircularProgressIndicator()
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Loading…", // TODO: localize
+            text = stringResource(R.string.loading),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

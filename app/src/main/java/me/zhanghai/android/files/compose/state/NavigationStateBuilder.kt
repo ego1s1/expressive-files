@@ -37,7 +37,7 @@ object NavigationStateBuilder {
                 add(
                     DrawerSectionUi(
                         id = "favorites",
-                        title = "Favorites", // TODO: localize
+                        title = context.getString(R.string.compose_favorites),
                         entries = favorites
                     )
                 )
@@ -46,7 +46,7 @@ object NavigationStateBuilder {
                 add(
                     DrawerSectionUi(
                         id = "storages",
-                        title = "Storages", // TODO: localize
+                        title = context.getString(R.string.compose_storages),
                         entries = storages
                     )
                 )
@@ -55,7 +55,7 @@ object NavigationStateBuilder {
                 add(
                     DrawerSectionUi(
                         id = "bookmarks",
-                        title = "Bookmarks", // TODO: localize
+                        title = context.getString(R.string.compose_bookmarks),
                         entries = bookmarks
                     )
                 )
@@ -63,7 +63,7 @@ object NavigationStateBuilder {
             add(
                 DrawerSectionUi(
                     id = "more",
-                    title = "More", // TODO: localize
+                    title = context.getString(R.string.compose_more),
                     entries = listOf(
                         DrawerEntryUi(
                             id = ACTION_SETTINGS,

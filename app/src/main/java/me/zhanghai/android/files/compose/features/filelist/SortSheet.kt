@@ -32,8 +32,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 
 /**
@@ -83,12 +85,12 @@ fun SortSheet(
                 .padding(horizontal = 24.dp)
         ) {
             Text(
-                text = "Sort and view", // TODO: localize
+                text = stringResource(R.string.compose_sort_and_view),
                 style = MaterialTheme.typography.titleLarge
             )
             Spacer(Modifier.height(20.dp))
             Text(
-                text = "View", // TODO: localize
+                text = stringResource(R.string.view),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelLarge
             )
@@ -111,7 +113,7 @@ fun SortSheet(
             }
             Spacer(Modifier.height(24.dp))
             Text(
-                text = "Sort by", // TODO: localize
+                text = stringResource(R.string.compose_sort_by),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.labelLarge
             )
@@ -127,12 +129,12 @@ fun SortSheet(
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             Spacer(Modifier.height(8.dp))
             SwitchRow(
-                title = "Ascending", // TODO: localize
+                title = stringResource(R.string.file_list_action_sort_order_ascending),
                 checked = ascending,
                 onCheckedChange = onAscendingChange
             )
             SwitchRow(
-                title = "Folders first", // TODO: localize
+                title = stringResource(R.string.file_list_action_sort_directories_first),
                 checked = foldersFirst,
                 onCheckedChange = onFoldersFirstChange
             )
@@ -201,14 +203,16 @@ private fun SwitchRow(
     }
 }
 
+@Composable
 private fun layoutModeLabel(mode: FileLayoutMode): String = when (mode) {
-    FileLayoutMode.LIST -> "List" // TODO: localize
-    FileLayoutMode.GRID -> "Grid" // TODO: localize
+    FileLayoutMode.LIST -> stringResource(R.string.file_list_action_view_list)
+    FileLayoutMode.GRID -> stringResource(R.string.file_list_action_view_grid)
 }
 
+@Composable
 private fun sortByLabel(option: FileSortBy): String = when (option) {
-    FileSortBy.NAME -> "Name" // TODO: localize
-    FileSortBy.TYPE -> "Type" // TODO: localize
-    FileSortBy.SIZE -> "Size" // TODO: localize
-    FileSortBy.LAST_MODIFIED -> "Last modified" // TODO: localize
+    FileSortBy.NAME -> stringResource(R.string.file_list_action_sort_by_name)
+    FileSortBy.TYPE -> stringResource(R.string.file_list_action_sort_by_type)
+    FileSortBy.SIZE -> stringResource(R.string.file_list_action_sort_by_size)
+    FileSortBy.LAST_MODIFIED -> stringResource(R.string.file_list_action_sort_by_last_modified)
 }

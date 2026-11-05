@@ -30,8 +30,8 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Run unit tests and build debug APK
-        run: ./gradlew :app:testDebugUnitTest :app:assembleDebug -x lint --stacktrace
+      - name: Run unit tests, lint and build debug APK
+        run: ./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --stacktrace
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
@@ -53,10 +53,9 @@ jobs:
           retention-days: 10
 
   lint:
-    name: Lint (non-blocking)
+    name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    continue-on-error: true
 
     steps:
       - name: Check out repository
@@ -72,7 +71,6 @@ jobs:
           cache: gradle
 
       - name: Run Android lint
-        continue-on-error: true
         run: ./gradlew :app:lintDebug --stacktrace
 
       - name: Upload lint report

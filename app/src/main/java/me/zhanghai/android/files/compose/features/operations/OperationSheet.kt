@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.operations
 
+import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.compose.model.OperationUi
 import kotlin.math.roundToInt
@@ -126,8 +128,11 @@ internal fun OperationSheetContent(
             OperationErrorCard(error = error)
         } else {
             val progressLabel = when {
-                operation.isComplete -> "Complete" // TODO: localize
-                progress != null -> "${(progress * 100).roundToInt()}%" // TODO: localize
+                operation.isComplete -> stringResource(R.string.compose_complete)
+                progress != null -> stringResource(
+                    R.string.compose_progress,
+                    (progress * 100).roundToInt()
+                )
                 else -> null
             }
             if (progressLabel != null) {
@@ -168,7 +173,7 @@ internal fun OperationSheetContent(
                     .fillMaxWidth()
                     .heightIn(min = 48.dp)
             ) {
-                Text(text = "Done") // TODO: localize
+                Text(text = stringResource(R.string.compose_done))
             }
             error != null -> Button(
                 onClick = onDismiss,
@@ -176,7 +181,7 @@ internal fun OperationSheetContent(
                     .fillMaxWidth()
                     .heightIn(min = 48.dp)
             ) {
-                Text(text = "Dismiss") // TODO: localize
+                Text(text = stringResource(R.string.compose_dismiss))
             }
             operation.canCancel -> OutlinedButton(
                 onClick = onCancel,
@@ -184,7 +189,7 @@ internal fun OperationSheetContent(
                     .fillMaxWidth()
                     .heightIn(min = 48.dp)
             ) {
-                Text(text = "Cancel") // TODO: localize
+                Text(text = stringResource(R.string.compose_cancel))
             }
         }
     }
@@ -263,7 +268,7 @@ private fun OperationSheetPreview() {
             OperationSheetContent(
                 operation = OperationUi(
                     id = "preview",
-                    title = "Copying 3 items", // TODO: localize
+                    title = stringResource(R.string.compose_copying_3_items),
                     detail = "/storage/emulated/0/DCIM/IMG_2041.jpg",
                     progress = 0.42f
                 ),
@@ -285,9 +290,9 @@ private fun OperationSheetErrorPreview() {
             OperationSheetContent(
                 operation = OperationUi(
                     id = "preview-error",
-                    title = "Copying 3 items", // TODO: localize
+                    title = stringResource(R.string.compose_copying_3_items),
                     detail = "/storage/emulated/0/DCIM/IMG_2041.jpg",
-                    error = "Not enough free space" // TODO: localize
+                    error = stringResource(R.string.compose_not_enough_free_space)
                 ),
                 onCancel = {},
                 onDismiss = {}

@@ -40,14 +40,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.R
 
-private const val BACK = "Back" // TODO: localize
-private const val RELOAD = "Reload" // TODO: localize
-private const val SAVE = "Save" // TODO: localize
-private const val UNSAVED = "Unsaved changes" // TODO: localize
-private const val UNSAVED_LABEL = "Unsaved" // TODO: localize
+
 
 /**
  * Stateless plain-text editor.
@@ -119,7 +117,7 @@ private fun TextEditorTopBar(
         IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
-                contentDescription = BACK
+                contentDescription = stringResource(R.string.compose_back)
             )
         }
         Row(
@@ -143,7 +141,7 @@ private fun TextEditorTopBar(
         IconButton(onClick = onReload) {
             Icon(
                 imageVector = Icons.Filled.Refresh,
-                contentDescription = RELOAD
+                contentDescription = stringResource(R.string.reload)
             )
         }
         TextButton(
@@ -151,18 +149,19 @@ private fun TextEditorTopBar(
             enabled = isDirty,
             modifier = Modifier.heightIn(min = 48.dp)
         ) {
-            Text(SAVE)
+            Text(stringResource(R.string.save))
         }
     }
 }
 
 @Composable
 private fun DirtyIndicator() {
+    val unsavedDescription = stringResource(R.string.compose_unsaved_changes)
     Box(
         modifier = Modifier
             .size(8.dp)
             .background(MaterialTheme.colorScheme.primary, CircleShape)
-            .semantics { contentDescription = UNSAVED }
+            .semantics { contentDescription = unsavedDescription }
     )
 }
 
@@ -172,7 +171,7 @@ private fun TextEditorStatusBar(
     isDirty: Boolean
 ) {
     val lineCount = text.count { it == '\n' } + 1
-    val info = "${text.length} characters \u00B7 $lineCount lines" // TODO: localize
+    val info = stringResource(R.string.compose_characters_lines, text.length, lineCount)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -192,7 +191,7 @@ private fun TextEditorStatusBar(
         )
         if (isDirty) {
             Text(
-                text = UNSAVED_LABEL,
+                text = stringResource(R.string.compose_unsaved),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary
             )

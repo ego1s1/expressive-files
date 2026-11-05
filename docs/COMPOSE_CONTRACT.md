@@ -6,7 +6,7 @@ Read this before writing code. This is a parallel build: **file ownership is str
 
 - Kotlin 2.4.20, AGP 9.4.1, minSdk 24, compileSdk 37
 - `androidx.compose:compose-bom:2026.09.00` → Compose UI 1.12.1
-- `androidx.compose.material3:material3:1.5.0-alpha26` pinned explicitly (first-party
+- `androidx.compose.material3:material3:1.5.0-rc01` pinned explicitly (first-party
   expressive APIs; the BOM still pins the compatible Compose UI/runtime artifacts)
 - activity-compose, lifecycle-runtime/viewmodel-compose, navigation-compose
 - `androidx.compose.material:material-icons-core`
@@ -18,8 +18,8 @@ Read this before writing code. This is a parallel build: **file ownership is str
 1. **Only edit files inside your assignment globs.** Never reformat or touch
    existing layouts, activities, adapters, themes, or `app/build.gradle`.
 2. **No new dependencies without an explicit decision record.** The Material3
-   `1.5.0-alpha26` pin is approved; do not add others ad hoc.
-3. Material3 **1.5.0-alpha26** is the ceiling. Prefer first-party expressive APIs:
+   `1.5.0-rc01` pin is approved; do not add others ad hoc.
+3. Material3 **1.5.0-rc01** is the ceiling. Prefer first-party expressive APIs:
    `MaterialExpressiveTheme`, `MotionScheme.expressive()`, `ButtonGroup`,
    `LoadingIndicator`, `FloatingActionButtonMenu`, `SplitButton`, `MaterialShapes`.
    Do not use APIs from 1.6+ or replace a first-party component with a bespoke one

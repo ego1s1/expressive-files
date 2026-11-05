@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -18,7 +19,6 @@ import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,10 +51,10 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
@@ -141,6 +142,7 @@ private fun NavIcon(
     destination: BottomNavDestination,
     showLabel: Boolean = false
 ) {
+    val label = stringResource(destination.labelRes)
     val motionEnabled = rememberMotionEnabled()
     val container by animateColorAsState(
         targetValue = if (selected) {
@@ -168,7 +170,7 @@ private fun NavIcon(
     val haptics = LocalHapticFeedback.current
     TooltipBox(
         positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-        tooltip = { PlainTooltip { Text(destination.label) } },
+        tooltip = { PlainTooltip { Text(label) } },
         state = rememberTooltipState(),
         // Icon-only chrome must not pop a label just because the item received focus.
         focusable = false
@@ -177,7 +179,8 @@ private fun NavIcon(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .clip(CircleShape)
-                .clickable(
+                .selectable(
+                    selected = selected,
                     onClick = {
                         haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
                         onClick()
@@ -185,8 +188,7 @@ private fun NavIcon(
                     role = Role.Tab
                 )
                 .semantics {
-                    this.selected = selected
-                    contentDescription = destination.label
+                    contentDescription = label
                 }
                 .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
         ) {
@@ -202,7 +204,7 @@ private fun NavIcon(
                         contentDescription = null,
                         tint = content,
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(24.dp)
                             .graphicsLayer {
                                 scaleX = iconScale
                                 scaleY = iconScale
@@ -214,7 +216,7 @@ private fun NavIcon(
                         contentDescription = null,
                         tint = content,
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(24.dp)
                             .graphicsLayer {
                                 scaleX = iconScale
                                 scaleY = iconScale
@@ -237,7 +239,7 @@ private fun NavIcon(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            text = destination.label,
+                            text = label,
                             modifier = Modifier.clearAndSetSemantics {},
                             style = MaterialTheme.typography.labelMedium,
                             maxLines = 1
@@ -252,29 +254,29 @@ private fun NavIcon(
 private val BottomNavDestinations = listOf(
     BottomNavDestination(
         route = "files",
-        label = "Files", // TODO: localize
+        labelRes = R.string.file_list_title,
         icon = ExpressiveIcons.Folder
     ),
     BottomNavDestination(
         route = "favorites",
-        label = "Favorites", // TODO: localize
+        labelRes = R.string.compose_favorites,
         iconRes = R.drawable.ic_expressive_star_filled
     ),
     BottomNavDestination(
         route = "locations",
-        label = "Locations", // TODO: localize
+        labelRes = R.string.compose_locations,
         iconRes = R.drawable.device_icon_white_24dp
     ),
     BottomNavDestination(
         route = "settings",
-        label = "Settings", // TODO: localize
+        labelRes = R.string.settings_title,
         iconRes = R.drawable.settings_icon_white_24dp
     )
 )
 
 private class BottomNavDestination(
     val route: String,
-    val label: String,
+    @StringRes val labelRes: Int,
     val icon: ImageVector? = null,
     val iconRes: Int = 0
 )
