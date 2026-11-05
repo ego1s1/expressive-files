@@ -156,11 +156,13 @@ fun ExpressiveFilesApp() {
     val context = LocalContext.current
     val viewModel: FileListViewModel = viewModel()
     // The legacy LiveData graph requires a non-null trail before it is observed.
-    // Run the idempotent initialization once, after the first composition.
-    LaunchedEffect(viewModel) {
+    // This must stay a synchronous remember: moving it to LaunchedEffect lets the
+    // BreadcrumbLiveData observer attach while the trail is still null and crash.
+    remember(viewModel) {
         if (!viewModel.hasTrail) {
             viewModel.resetTo(defaultPath())
         }
+        viewModel.hasTrail
     }
     var hasStorageAccess by remember { mutableStateOf(isStorageAccessGranted(context)) }
     var permissionDismissed by rememberSaveable { mutableStateOf(false) }
