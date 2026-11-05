@@ -92,6 +92,10 @@ Local verification on 2026-11-06:
 - Release APK installs and launches on emulator `sdk_gphone64_arm64`, API 35.
 - Files, Favorites, Settings, selection, FAB menu, true black, 200% font scale and
   medium rail were smoke-tested.
+- Release APK installs and launches on API 24 (`expressive-api24`, Android 7.0).
+- Arabic RTL and German long-label runs passed; the accessibility tree reports
+  29/29 clickable nodes with text or content descriptions.
+- Store phone screenshots were replaced with 1080x1920 captures from the release UI.
 
 The local test key is not a store key. Replace it with the Play upload key before
 publishing.
