@@ -66,14 +66,15 @@ fun PropertiesScreen(
     state: PropertiesUiState,
     onTabSelected: (Int) -> Unit,
     onCopy: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    showBackButton: Boolean = true
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.surface
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            PropertiesTopBar(onBack = onBack)
+            PropertiesTopBar(onBack = onBack, showBackButton = showBackButton)
             PropertiesHeader(state = state)
             if (state.tabTitles.isNotEmpty()) {
                 PropertiesTabs(
@@ -107,7 +108,7 @@ fun PropertiesScreen(
 }
 
 @Composable
-private fun PropertiesTopBar(onBack: () -> Unit) {
+private fun PropertiesTopBar(onBack: () -> Unit, showBackButton: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,11 +118,15 @@ private fun PropertiesTopBar(onBack: () -> Unit) {
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onBack) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.compose_back)
-            )
+        if (showBackButton) {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.compose_back)
+                )
+            }
+        } else {
+            Spacer(modifier = Modifier.width(16.dp))
         }
         Text(
             text = stringResource(R.string.file_item_action_properties),

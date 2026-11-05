@@ -38,6 +38,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,6 +51,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -101,6 +103,7 @@ import me.zhanghai.android.files.compose.features.settings.SettingsScreen
 import me.zhanghai.android.files.compose.features.viewer.ImageViewerScreen
 import me.zhanghai.android.files.compose.features.viewer.TextEditorScreen
 import me.zhanghai.android.files.compose.components.ConfirmDialog
+import me.zhanghai.android.files.compose.components.EmptyState
 import me.zhanghai.android.files.compose.components.LoadingState
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 import me.zhanghai.android.files.compose.model.HomeUiState
@@ -392,6 +395,7 @@ fun ExpressiveFilesApp() {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= WindowSizes.MediumMinWidth
         val showNavLabels = maxWidth >= WindowSizes.PillLabelMinWidth
+        val useTwoPane = maxWidth >= WindowSizes.ExpandedMinWidth
         Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
@@ -557,7 +561,9 @@ fun ExpressiveFilesApp() {
                 }
             )
 
-            else -> FileListScreen(
+            else -> {
+                val fileList: @Composable () -> Unit = {
+                    FileListScreen(
                 state = uiState,
                 onNavigateUp = { viewModel.navigateUp() },
                 onBreadcrumbClick = { crumb -> openPath(viewModel, crumb.path) },
@@ -603,7 +609,35 @@ fun ExpressiveFilesApp() {
                 onSelectionClear = { viewModel.clearSelectedFiles() },
                 onSelectionMore = { showSelectionOptions = true },
                 bottomOverlayPadding = 0.dp
-            )
+                    )
+                }
+                if (useTwoPane) {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                        ) {
+                            fileList()
+                        }
+                        Box(
+                            modifier = Modifier
+                                .width(1.dp)
+                                .fillMaxHeight()
+                                .background(MaterialTheme.colorScheme.outlineVariant)
+                        )
+                        TwoPaneDetails(
+                            file = selectedFiles.firstOrNull(),
+                            context = context,
+                            modifier = Modifier
+                                .width(360.dp)
+                                .fillMaxHeight()
+                        )
+                    }
+                } else {
+                    fileList()
+                }
+            }
             }
         }
             }
@@ -875,6 +909,38 @@ private fun ActionRow(
             .clickable(onClick = onClick)
             .padding(horizontal = 24.dp, vertical = 16.dp)
     )
+}
+
+@Composable
+private fun TwoPaneDetails(
+    file: FileItem?,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.surface
+    ) {
+        if (file == null) {
+            EmptyState(
+                title = stringResource(R.string.compose_no_properties_to_show),
+                body = stringResource(R.string.compose_select_item)
+            )
+        } else {
+            PropertiesScreen(
+                state = remember(file) { buildPropertiesUiState(context, file) },
+                onTabSelected = {},
+                onCopy = { value ->
+                    val clipboard = context.getSystemService(
+                        Context.CLIPBOARD_SERVICE
+                    ) as ClipboardManager
+                    clipboard.setPrimaryClip(ClipData.newPlainText("value", value))
+                },
+                onBack = {},
+                showBackButton = false
+            )
+        }
+    }
 }
 
 private fun buildPropertiesUiState(context: Context, file: FileItem): PropertiesUiState {

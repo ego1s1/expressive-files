@@ -95,7 +95,14 @@ Local verification on 2026-11-06:
 - Release APK installs and launches on API 24 (`expressive-api24`, Android 7.0).
 - Arabic RTL and German long-label runs passed; the accessibility tree reports
   29/29 clickable nodes with text or content descriptions.
-- Store phone screenshots were replaced with 1080x1920 captures from the release UI.
+- Expanded two-pane layout verified at 1920x1200 (1920dp wide): selection shows
+  properties in the right pane.
+- Store phone screenshots were replaced with 1080x1920 captures; tablet screenshots
+  were captured at 1920x1200.
+- All supported locales now have draft Compose translations; native review is still
+  recommended.
+- Expanded two-pane layout and selected-row properties verified at 1920x1200.
+- File-row screenshot goldens run in `:app:testDebugUnitTest`.
 
 The local test key is not a store key. Replace it with the Play upload key before
 publishing.

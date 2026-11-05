@@ -1,8 +1,9 @@
 # Testing Expressive Files
 
-The fork has JVM unit tests plus Robolectric-backed Compose UI tests. Screenshot goldens
-are still planned; this document defines how to run what exists and the manual matrix
-that must pass before a Compose surface is called migrated.
+The fork has JVM unit tests, Robolectric-backed Compose UI tests, and file-row
+screenshot goldens. Broader screen goldens are still planned; this document defines
+how to run what exists and the manual matrix that must pass before a Compose surface
+is called migrated.
 
 ## Prerequisites
 
@@ -80,12 +81,21 @@ request, both with JDK 21:
 
 Artifacts: `app-debug-apk`, `unit-test-reports`, `lint-report` (10-day retention).
 
-## Screenshot matrix (to add)
+## Golden tests
 
-No screenshot test framework is committed yet. The intended choice is a JVM renderer
+`FileRowGoldenTest` renders the unselected and selected row under Robolectric native
+graphics and compares a 32×32 color signature against
+`app/src/test/resources/goldens/file_row_*.png`. It runs in the normal
+`:app:testDebugUnitTest` job, so a theme, layout or selection regression fails CI.
+
+To update a golden intentionally, render the row, replace the matching baseline in
+`app/src/test/resources/goldens/`, and review the PNG diff in the PR.
+
+## Screenshot matrix (broader coverage to add)
+
+Broader screen goldens are still planned. The intended choice is a JVM renderer
 (Paparazzi or Roborazzi), so screenshots render in JVM test tasks without an emulator.
-Do not add the dependency until the theme and the first screens are stable; when it
-lands, wire it into CI as a separate, non-blocking job first.
+Wire it into CI as a separate, non-blocking job first.
 
 ### Smoke set (must pass for every UI PR)
 

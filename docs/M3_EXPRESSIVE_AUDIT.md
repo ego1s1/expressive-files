@@ -88,14 +88,14 @@ upgrade removes the excuse: the theme now uses `MaterialExpressiveTheme` and
 7. **Remaining expressive components are unused.** `ButtonGroup`, `LoadingIndicator`,
    `SplitButton` and `MaterialShapes` are available now. Adopt them where they map to
    real actions (create group, long operations, destructive split action).
-8. **Adaptive layout is two literals.** `600.dp` and `390.dp` are hardcoded in
-   `ExpressiveFilesApp.kt`; there is no expanded two-pane layout.
-9. **Translations are partial.** Every shipping Compose string is externalized
-   (`res/values/strings_compose.xml`, plurals included); Arabic and German are
-   translated, the remaining locales still fall back to English.
-10. **Screenshot goldens are still missing.** Compose UI tests cover selected
-    semantics, row clicks and the true-black palette; store phone screenshots are
-    current, but CI has no golden-image job.
+8. **Adaptive layout is now implemented.** Breakpoints live in `WindowSizes.kt`;
+   medium widths use the rail and ≥840dp uses a list + properties two-pane.
+9. **Translations are drafted for every supported locale.** Every shipping Compose
+   string is externalized and translated; the new non-English strings are
+   machine-drafted and should get a native review before a major release.
+10. **Golden coverage is minimal.** `FileRowGoldenTest` compares unselected and
+    selected row renders inside the normal unit-test CI job; broader screen goldens
+    are still a follow-up. Phone and tablet store screenshots are current.
 
 ## Plan
 
@@ -105,9 +105,9 @@ upgrade removes the excuse: the theme now uses `MaterialExpressiveTheme` and
 | **1. Accessibility P0** | Remove fixed heights; selection check icon; reduced-motion policy; truthful settings; font-scale pass. | **code done**, verification pending |
 | **2. Theme foundation** | Expressive theme + motion scheme; 20/32/48 shapes; true black; dynamic-color setting; token cleanup. | **done** |
 | **3. Components + nav** | `selectable` nav semantics, 24dp icons, rail geometry; app bar decision; FAB menu → `FloatingActionButtonMenu`; `ButtonGroup` / `LoadingIndicator`; sheet shape unification. | next |
-| **4. Adaptive** | Centralize breakpoints; medium rail; expanded two-pane at ≥840dp; inset/FAB clearance. | **medium rail done**, expanded pane pending |
-| **5. Quality** | Compose UI tests for selection, row clicks and true black (done); store phone screenshots refreshed; Roborazzi goldens and a CI visual job remain. | **UI tests + store shots done**, goldens pending |
-| **6. Localization** | Externalize all shipping Compose strings; add locale translations; retire “Open legacy settings”. | **Arabic + German done**, other locales fall back |
+| **4. Adaptive** | Centralize breakpoints; medium rail; expanded two-pane at ≥840dp; inset/FAB clearance. | **done** |
+| **5. Quality** | Compose UI tests for selection, row clicks and true black; file-row goldens; phone/tablet screenshots. | **done** |
+| **6. Localization** | Externalize all shipping Compose strings; add locale translations; retire “Open legacy settings”. | **done (draft translations)** |
 
 ### Phase 3 detail
 
@@ -182,8 +182,15 @@ local test key.
 - TalkBack itself is not available in the `google_apis` API 24 image (no Play Store
   and no TalkBack package), so spoken feedback is still a manual device step.
 
-Remaining manual work: TalkBack speech pass, expanded two-pane, remaining locale
-translations.
+**Expanded layout** — API 35, 1920x1200 @ 160dpi (1920dp wide).
+
+- File list and properties render side by side at ≥840dp.
+- Long-press selection shows the check icon on the left and the selected file's
+  properties on the right; the selection bar and FAB behave correctly.
+- Tablet store screenshots were captured at 1920x1200.
+
+Remaining manual work: TalkBack speech pass and a native review of the
+machine-drafted translations.
 
 ## Test matrix to run next
 
