@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -28,11 +28,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileListUiState
 
-private val TOP_BAR_HEIGHT = 64.dp
+private val TOP_BAR_MIN_HEIGHT = 64.dp
 
 /**
  * Compact file-list header. It intentionally uses the same surface color as the list so the
@@ -53,14 +52,14 @@ fun FileListTopBar(
 
     Surface(
         modifier = modifier.fillMaxWidth(),
-        color = colorScheme.surface,
+        color = colorScheme.surfaceContainer,
         contentColor = colorScheme.onSurface
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
-                .height(TOP_BAR_HEIGHT),
+                .heightIn(min = TOP_BAR_MIN_HEIGHT),
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (state.canNavigateUp) {
@@ -84,10 +83,7 @@ fun FileListTopBar(
                 Text(
                     text = title,
                     color = colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontSize = 20.sp,
-                        lineHeight = 26.sp
-                    ),
+                    style = MaterialTheme.typography.titleLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

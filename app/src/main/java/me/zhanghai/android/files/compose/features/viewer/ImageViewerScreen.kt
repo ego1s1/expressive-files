@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -123,7 +124,7 @@ private fun ImageViewerTopBar(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.55f))
             .windowInsetsPadding(WindowInsets.statusBars)
-            .height(56.dp)
+            .heightIn(min = 56.dp)
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -208,7 +209,7 @@ private fun ImageViewerToolbar(
     ) {
         Row(
             modifier = Modifier
-                .height(64.dp)
+                .heightIn(min = 64.dp)
                 .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.operations
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -254,7 +255,7 @@ private fun OperationErrorCard(error: String) {
 @Preview(showBackground = true, widthDp = 400)
 @Composable
 private fun OperationSheetPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,
             color = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -276,7 +277,7 @@ private fun OperationSheetPreview() {
 @Preview(showBackground = true, widthDp = 400)
 @Composable
 private fun OperationSheetErrorPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,
             color = MaterialTheme.colorScheme.surfaceContainerHigh

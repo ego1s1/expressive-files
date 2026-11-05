@@ -26,6 +26,7 @@ object SettingsStateBuilder {
     fun build(context: Context, query: String = ""): SettingsUiState {
         val blackTheme = readBooleanSetting { Settings.BLACK_NIGHT_MODE.valueCompat }
         val animations = readBooleanSetting { Settings.FILE_LIST_ANIMATION.valueCompat }
+        val dynamicColor = readBooleanSetting { Settings.DYNAMIC_COLOR.valueCompat }
         val showHidden = readBooleanSetting { Settings.FILE_LIST_SHOW_HIDDEN_FILES.valueCompat }
 
         val appearance = SettingsSectionUi(
@@ -49,6 +50,15 @@ object SettingsStateBuilder {
                     kind = SettingsItemKind.SWITCH,
                     checked = animations ?: false,
                     enabled = animations != null
+                ),
+                SettingsItemUi(
+                    key = "appearance_dynamic_color",
+                    title = "Dynamic color", // TODO: localize
+                    summary = "Match the system wallpaper", // TODO: localize
+                    iconRes = R.drawable.settings_icon_white_24dp,
+                    kind = SettingsItemKind.SWITCH,
+                    checked = dynamicColor ?: true,
+                    enabled = dynamicColor != null
                 ),
                 SettingsItemUi(
                     key = "appearance_theme",

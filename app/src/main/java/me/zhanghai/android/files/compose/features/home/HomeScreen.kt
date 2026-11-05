@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.home
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -124,7 +126,7 @@ private fun HomeHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(112.dp)
+            .heightIn(min = 112.dp)
             .padding(start = 24.dp, end = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -256,7 +258,7 @@ private val PreviewHomeState = HomeUiState(
 @Preview(showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
 private fun HomeScreenPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         HomeScreen(
             title = "Recents",
             state = PreviewHomeState,

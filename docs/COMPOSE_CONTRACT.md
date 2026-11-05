@@ -4,8 +4,10 @@ Read this before writing code. This is a parallel build: **file ownership is str
 
 ## Stack (already on the classpath)
 
-- Kotlin 2.4.20, AGP 9.4.1, minSdk 23, compileSdk 37
-- `androidx.compose:compose-bom:2026.09.00` → Compose UI 1.12.1, Material3 **1.4.0**
+- Kotlin 2.4.20, AGP 9.4.1, minSdk 24, compileSdk 37
+- `androidx.compose:compose-bom:2026.09.00` → Compose UI 1.12.1
+- `androidx.compose.material3:material3:1.5.0-alpha26` pinned explicitly (first-party
+  expressive APIs; the BOM still pins the compatible Compose UI/runtime artifacts)
 - activity-compose, lifecycle-runtime/viewmodel-compose, navigation-compose
 - `androidx.compose.material:material-icons-core`
 - Existing app: `me.zhanghai.android.files` (namespace/R). New code lives in
@@ -15,13 +17,16 @@ Read this before writing code. This is a parallel build: **file ownership is str
 
 1. **Only edit files inside your assignment globs.** Never reformat or touch
    existing layouts, activities, adapters, themes, or `app/build.gradle`.
-2. **No new dependencies.** No Gradle runs (other agents build concurrently).
-   Write compilable Kotlin by inspection.
-3. Material3 **1.4.0 stable APIs only.** Do not use 1.5 beta APIs
-   (`FloatingActionButtonMenu`, `SelectableDropdownMenuItem`, etc.). For a FAB
-   menu, build it from `FloatingActionButton` + `AnimatedVisibility`.
+2. **No new dependencies without an explicit decision record.** The Material3
+   `1.5.0-alpha26` pin is approved; do not add others ad hoc.
+3. Material3 **1.5.0-alpha26** is the ceiling. Prefer first-party expressive APIs:
+   `MaterialExpressiveTheme`, `MotionScheme.expressive()`, `ButtonGroup`,
+   `LoadingIndicator`, `FloatingActionButtonMenu`, `SplitButton`, `MaterialShapes`.
+   Do not use APIs from 1.6+ or replace a first-party component with a bespoke one
+   without a documented reason.
 4. Experimental APIs must be annotated:
-   `@OptIn(ExperimentalMaterial3Api::class)` / `ExperimentalLayoutApi`.
+   `@OptIn(ExperimentalMaterial3Api::class)` /
+   `ExperimentalMaterial3ExpressiveApi` / `ExperimentalLayoutApi`.
 5. New UI copy: plain English string literals with `// TODO: localize` on the
    same line. Do not invent `R.string` keys (they will not compile). If you use
    an existing key, verify it with grep first.
@@ -66,7 +71,7 @@ inside your own package.
 | Secondary text | `colorScheme.onSurfaceVariant` |
 | Divider | `colorScheme.outlineVariant` |
 | Destructive | `colorScheme.error` / `onError` |
-| Shapes | extraSmall 4, small 8, medium 12, large 16, extraLarge 28 |
+| Shapes | extraSmall 4, small 8, medium 12, large 16, largeIncreased 20, extraLarge 28, extraLargeIncreased 32, extraExtraLarge 48 |
 | Type | titleLarge, titleMedium, bodyLarge, bodyMedium, labelLarge |
 | Spacing | 4, 8, 12, 16, 24, 32 |
 | Heights | top bar 64, list row 72, grid tile 1:1, bottom bar 64, chip 32 |

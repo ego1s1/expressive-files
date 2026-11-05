@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.settings
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -200,7 +201,7 @@ private val PreviewSettingsState = SettingsUiState(
 @Preview(showBackground = true)
 @Composable
 private fun SettingsScreenPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         SettingsScreen(
             state = PreviewSettingsState,
             onQueryChange = {},

@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.search
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,7 +16,7 @@ import me.zhanghai.android.files.compose.model.FileListUiState
 @Preview(name = "Search - empty", showBackground = true)
 @Composable
 private fun SearchScreenEmptyPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         SearchScreen(
             query = "budget",
             state = FileListUiState(isSearching = true),
@@ -31,7 +32,7 @@ private fun SearchScreenEmptyPreview() {
 @Preview(name = "Search - results", showBackground = true)
 @Composable
 private fun SearchScreenResultsPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         SearchScreen(
             query = "report",
             state = previewSearchState(),
@@ -47,7 +48,7 @@ private fun SearchScreenResultsPreview() {
 @Preview(name = "Search - prompt", showBackground = true)
 @Composable
 private fun SearchScreenPromptPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         SearchScreen(
             query = "",
             state = FileListUiState(isSearching = true),

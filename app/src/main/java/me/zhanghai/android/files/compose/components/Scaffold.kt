@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.components
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -92,7 +93,7 @@ private fun ExpressiveTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .heightIn(min = 64.dp)
                 .padding(horizontal = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -152,7 +153,7 @@ fun SelectionTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .heightIn(min = 64.dp)
                 .padding(horizontal = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -183,7 +184,7 @@ fun SelectionTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun ExpressiveScaffoldPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         ExpressiveScaffold(
             title = "Files", // TODO: localize
             subtitle = "Internal storage", // TODO: localize

@@ -22,7 +22,10 @@ import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -107,6 +110,7 @@ import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
 import me.zhanghai.android.files.compose.state.mapFileListState
+import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 import me.zhanghai.android.files.file.FileItem
 import me.zhanghai.android.files.file.fileSize
 import me.zhanghai.android.files.file.formatShort
@@ -299,6 +303,7 @@ fun ExpressiveFilesApp() {
     }
     val predictiveBackEnabled = imageViewerFile == null && propertiesFile == null &&
         textEditorFile == null && selectedCount == 0 && route != ROUTE_FILES
+    val motionEnabled = rememberMotionEnabled()
     val backProgress = remember { Animatable(0f) }
     PredictiveBackHandler(enabled = predictiveBackEnabled) { progress ->
         try {
@@ -310,7 +315,10 @@ fun ExpressiveFilesApp() {
             route = predictiveBackTarget
             backProgress.snapTo(0f)
         } catch (e: CancellationException) {
-            backProgress.animateTo(0f, animationSpec = spring(stiffness = 700f))
+            backProgress.animateTo(
+                targetValue = 0f,
+                animationSpec = if (motionEnabled) spring(stiffness = 700f) else snap()
+            )
             throw e
         }
     }
@@ -450,8 +458,12 @@ fun ExpressiveFilesApp() {
         } else AnimatedContent(
             targetState = route,
             transitionSpec = {
-                (fadeIn(tween(220)) + slideInHorizontally(tween(220)) { it / 12 }) togetherWith
-                    (fadeOut(tween(160)) + slideOutHorizontally(tween(160)) { -it / 12 })
+                if (motionEnabled) {
+                    (fadeIn(tween(220)) + slideInHorizontally(tween(220)) { it / 12 }) togetherWith
+                        (fadeOut(tween(160)) + slideOutHorizontally(tween(160)) { -it / 12 })
+                } else {
+                    EnterTransition.None togetherWith ExitTransition.None
+                }
             },
             label = "route"
         ) { animatedRoute ->
@@ -953,6 +965,7 @@ private fun shareFiles(context: Context, files: List<FileItem>) {
 private fun applySetting(context: Context, key: String, checked: Boolean) {
     when (key) {
         "appearance_black_theme" -> Settings.BLACK_NIGHT_MODE.putValue(!checked)
+        "appearance_dynamic_color" -> Settings.DYNAMIC_COLOR.putValue(!checked)
         "appearance_animations" -> Settings.FILE_LIST_ANIMATION.putValue(!checked)
         "behavior_show_hidden" -> Settings.FILE_LIST_SHOW_HIDDEN_FILES.putValue(!checked)
         else -> context.startActivity(Intent(context, SettingsActivity::class.java))

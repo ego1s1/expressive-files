@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.settings
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -163,7 +164,7 @@ private fun AboutTopBar(onBack: () -> Unit) {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainer)
             .statusBarsPadding()
-            .height(64.dp)
+            .heightIn(min = 64.dp)
             .padding(end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -267,7 +268,7 @@ private const val AUTHOR_TWITTER_URL = "https://twitter.com/zhanghai95"
 @Preview(showBackground = true)
 @Composable
 private fun AboutScreenPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         AboutScreen(
             appName = "Expressive Files",
             version = "1.7.5 (40)",

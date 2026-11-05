@@ -8,8 +8,12 @@ package me.zhanghai.android.files.compose
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import me.zhanghai.android.files.app.AppActivity
 import me.zhanghai.android.files.compose.theme.ExpressiveFilesTheme
+import me.zhanghai.android.files.settings.Settings
+import me.zhanghai.android.files.util.valueCompat
 
 /**
  * Compose-first entry point for Expressive Files.
@@ -22,7 +26,20 @@ class MainActivity : AppActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ExpressiveFilesTheme {
+            val blackTheme by Settings.BLACK_NIGHT_MODE.observeAsState(
+                Settings.BLACK_NIGHT_MODE.valueCompat
+            )
+            val dynamicColor by Settings.DYNAMIC_COLOR.observeAsState(
+                Settings.DYNAMIC_COLOR.valueCompat
+            )
+            val animationsEnabled by Settings.FILE_LIST_ANIMATION.observeAsState(
+                Settings.FILE_LIST_ANIMATION.valueCompat
+            )
+            ExpressiveFilesTheme(
+                blackTheme = blackTheme,
+                dynamicColor = dynamicColor,
+                animationsEnabled = animationsEnabled
+            ) {
                 ExpressiveFilesApp()
             }
         }

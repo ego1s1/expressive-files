@@ -69,7 +69,7 @@ internal fun SettingsTopBar(
             .background(MaterialTheme.colorScheme.surfaceContainer)
             .statusBarsPadding()
             .padding(horizontal = 4.dp)
-            .height(64.dp),
+            .heightIn(min = 64.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = onBack) {
@@ -84,7 +84,7 @@ internal fun SettingsTopBar(
             onQueryChange = onQueryChange,
             modifier = Modifier
                 .weight(1f)
-                .height(48.dp)
+                .heightIn(min = 48.dp)
         )
         Spacer(Modifier.width(4.dp))
     }
@@ -180,9 +180,10 @@ internal fun SettingsSectionHeader(
  * A single row of a segmented settings card. Only the first and last rows get
  * the outer 16dp corners; rows in between use 4dp corners.
  */
+@Composable
 internal fun settingsRowShape(index: Int, count: Int): Shape {
-    val outer = 16.dp
-    val inner = 4.dp
+    val outer = MaterialTheme.shapes.large.topStart
+    val inner = MaterialTheme.shapes.extraSmall.topStart
     val top = if (index == 0) outer else inner
     val bottom = if (index == count - 1) outer else inner
     return RoundedCornerShape(

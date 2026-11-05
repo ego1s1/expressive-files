@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.properties
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
 
 import androidx.compose.foundation.background
@@ -113,7 +114,7 @@ private fun PropertiesTopBar(onBack: () -> Unit) {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainer)
             .windowInsetsPadding(WindowInsets.statusBars)
-            .height(64.dp)
+            .heightIn(min = 64.dp)
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -384,7 +385,7 @@ private val PreviewPropertiesState = PropertiesUiState(
 @Preview(showBackground = true)
 @Composable
 private fun PropertiesScreenPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         PropertiesScreen(
             state = PreviewPropertiesState,
             onTabSelected = {},

@@ -6,13 +6,17 @@
 package me.zhanghai.android.files.compose.features.navigation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -54,6 +58,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
+import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
  * Floating navigation pill.
@@ -136,12 +141,14 @@ private fun NavIcon(
     destination: BottomNavDestination,
     showLabel: Boolean = false
 ) {
+    val motionEnabled = rememberMotionEnabled()
     val container by animateColorAsState(
         targetValue = if (selected) {
             MaterialTheme.colorScheme.secondaryContainer
         } else {
             Color.Transparent
         },
+        animationSpec = if (motionEnabled) tween(durationMillis = 200) else snap(),
         label = "navContainer"
     )
     val content = if (selected) {
@@ -151,7 +158,11 @@ private fun NavIcon(
     }
     val iconScale by animateFloatAsState(
         targetValue = if (selected) 1.06f else 1f,
-        animationSpec = spring(dampingRatio = 0.9f, stiffness = 700f),
+        animationSpec = if (motionEnabled) {
+            spring(dampingRatio = 0.8f, stiffness = 380f)
+        } else {
+            snap()
+        },
         label = "navIconScale"
     )
     val haptics = LocalHapticFeedback.current
@@ -212,8 +223,16 @@ private fun NavIcon(
                 }
                 AnimatedVisibility(
                     visible = selected && showLabel,
-                    enter = fadeIn() + expandHorizontally(),
-                    exit = fadeOut() + shrinkHorizontally()
+                    enter = if (motionEnabled) {
+                        fadeIn() + expandHorizontally()
+                    } else {
+                        EnterTransition.None
+                    },
+                    exit = if (motionEnabled) {
+                        fadeOut() + shrinkHorizontally()
+                    } else {
+                        ExitTransition.None
+                    }
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(Modifier.width(8.dp))

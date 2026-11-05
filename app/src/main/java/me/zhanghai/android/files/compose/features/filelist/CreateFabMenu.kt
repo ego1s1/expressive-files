@@ -7,7 +7,10 @@ package me.zhanghai.android.files.compose.features.filelist
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -22,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,6 +53,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
+import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
  * A compact, scrim-less create menu built from a [FloatingActionButton] and
@@ -63,9 +68,10 @@ fun CreateFabMenu(
     modifier: Modifier = Modifier
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
+    val motionEnabled = rememberMotionEnabled()
     val iconRotation by animateFloatAsState(
         targetValue = if (expanded) 45f else 0f,
-        animationSpec = tween(durationMillis = 180),
+        animationSpec = if (motionEnabled) tween(durationMillis = 180) else snap(),
         label = "createFabIconRotation"
     )
 
@@ -93,10 +99,18 @@ fun CreateFabMenu(
         ) {
             AnimatedVisibility(
                 visible = expanded,
-                enter = fadeIn(animationSpec = tween(150)) +
-                    slideInVertically(animationSpec = tween(200)) { height -> height / 3 },
-                exit = fadeOut(animationSpec = tween(120)) +
-                    slideOutVertically(animationSpec = tween(150)) { height -> height / 3 }
+                enter = if (motionEnabled) {
+                    fadeIn(animationSpec = tween(150)) +
+                        slideInVertically(animationSpec = tween(200)) { height -> height / 3 }
+                } else {
+                    EnterTransition.None
+                },
+                exit = if (motionEnabled) {
+                    fadeOut(animationSpec = tween(120)) +
+                        slideOutVertically(animationSpec = tween(150)) { height -> height / 3 }
+                } else {
+                    ExitTransition.None
+                }
             ) {
                 Column(
                     horizontalAlignment = Alignment.End,
@@ -186,7 +200,7 @@ private fun FabMenuItem(
     ) {
         Row(
             modifier = Modifier
-                .height(56.dp)
+                .heightIn(min = 56.dp)
                 .clickable(
                     enabled = enabled,
                     role = Role.Button,

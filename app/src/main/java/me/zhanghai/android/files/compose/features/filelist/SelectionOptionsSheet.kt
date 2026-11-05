@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -101,7 +102,7 @@ private fun SelectionOptionRow(
 @Preview(showBackground = true)
 @Composable
 private fun SelectionOptionsSheetPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         SelectionOptionsSheet(
             selectedCount = 3,
             onDismiss = {},

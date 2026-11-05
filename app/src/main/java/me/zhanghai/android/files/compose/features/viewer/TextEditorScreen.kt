@@ -112,7 +112,7 @@ private fun TextEditorTopBar(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainer)
             .windowInsetsPadding(WindowInsets.statusBars)
-            .height(64.dp)
+            .heightIn(min = 64.dp)
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

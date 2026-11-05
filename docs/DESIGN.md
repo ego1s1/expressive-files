@@ -1,9 +1,12 @@
 # Expressive Files — design system
 
 This document is the visual contract for the Compose-first fork. It maps Material 3
-Expressive intent onto the tokens available in **Material3 1.4.0** and the shared
-[`COMPOSE_CONTRACT.md`](COMPOSE_CONTRACT.md). Screens must consume the theme through
-`MaterialTheme`; this file is the source of truth when a component spec is ambiguous.
+Expressive intent onto the tokens available in **Material3 1.5.0-alpha26** and the shared
+[`COMPOSE_CONTRACT.md`](COMPOSE_CONTRACT.md). Material3 1.5 is pinned deliberately so
+`MaterialExpressiveTheme`, `MotionScheme.expressive()`, `ButtonGroup`,
+`LoadingIndicator`, `FloatingActionButtonMenu`, `SplitButton` and `MaterialShapes` are
+available. Screens must consume the theme through `MaterialTheme`; this file is the
+source of truth when a component spec is ambiguous.
 
 The one rule that outranks everything else: **tokens, not literals**. No screen may
 hardcode a hex color, `sp` size, corner radius, elevation, or spring. If a token is
@@ -16,7 +19,7 @@ ExpressiveFilesTheme
 ├── colorScheme   MaterialTheme.colorScheme (light / dark; true black is a future variant)
 ├── typography    MaterialTheme.typography (M3 type scale + emphasized weights)
 ├── shapes        MaterialTheme.shapes (M3 shape scale, expressive extensions)
-└── motionScheme  M3 Expressive spatial/effects specs (where the theme exposes them)
+└── motionScheme  MaterialExpressiveTheme + MotionScheme.expressive()
 ```
 
 Every screen is stateless and receives `state` plus callbacks. Colors, type, shape and
@@ -103,7 +106,9 @@ Expressive emphasis:
 | `medium` | 12dp | Grid tiles, list-row leading thumbnails, menu items |
 | `large` | 16dp | Cards, grouped settings sections, banners |
 | `extraLarge` | 28dp | Dialogs, bottom sheets (top corners), large cards |
-| Expressive extensions | 20 / 32 / 48dp | Not enabled yet; add them to `ExpressiveShapes` before use |
+| `largeIncreased` | 20dp | Expressive large cards, grouped actions |
+| `extraLargeIncreased` | 32dp | Floating toolbars, hero sheets |
+| `extraExtraLarge` | 48dp | Full-screen dialogs and immersive surfaces |
 
 Rules:
 
@@ -119,19 +124,21 @@ Rules:
 
 M3 Expressive separates **spatial** motion (position, size, bounds, scale) from
 **effects** motion (color, alpha, tonal elevation). Material3 1.4.0 does not expose an
-expressive public `MotionScheme`, so the theme provides two helpers in
-`compose/theme/Motion.kt`. Use these for custom motion; built-in Material components
-keep their internal specs.
+expressive public `MotionScheme` in 1.4.0, so the project upgraded to Material3 1.5,
+where `MotionScheme.expressive()` is public. `MaterialExpressiveTheme` installs it for
+built-in components; `compose/theme/Motion.kt` re-exports the same specs for custom
+animations.
 
 | Token | Spring | Use |
 |---|---|---|
-| `ExpressiveMotion.spatial()` | damping `0.9`, stiffness `700` | Row expansion, sheet position, FAB morph, shape changes |
+| `ExpressiveMotion.spatial()` | damping `0.8`, stiffness `380` | Row expansion, sheet position, FAB morph, shape changes |
+| `ExpressiveMotion.spatialFast()` | damping `0.8`, stiffness `800` | Small, immediate state changes |
+| `ExpressiveMotion.spatialSlow()` | damping `0.8`, stiffness `200` | Large surfaces such as sheets |
 | `ExpressiveMotion.effects()` | damping `1.0`, stiffness `1600` | Container color, alpha, tonal elevation |
 
-Reference values from the Material 3 Expressive spec, for when a public motion scheme
-becomes available: default spatial damping `0.8` / stiffness `380`, fast spatial
-`0.8` / `800`, slow spatial `0.8` / `200`; default effects `1.0` / `1600`, fast effects
-`1.0` / `3800`, slow effects `1.0` / `800`. Do not hand-roll these in a feature package.
+Do not hand-roll duration specs in a feature package. When `rememberMotionEnabled()` is
+false (system animator scale 0 or the app animation switch off), every custom transition
+must snap to the final state.
 
 Rules:
 
@@ -266,9 +273,10 @@ Adaptive rules:
   a text label; never replace the file name with a spinner.
 - Shape morphing belongs to the component's state transition (for example FAB to
   extended FAB). Do not morph file rows or grid tiles on scroll.
-- Material3 1.4.0 is the ceiling. Build a FAB menu from `FloatingActionButton` plus
-  `AnimatedVisibility`; do not use 1.5-beta `FloatingActionButtonMenu`,
-  `SelectableDropdownMenuItem` or any API the Compose contract excludes.
+- Material3 1.5.0-alpha26 is the pinned ceiling. Prefer the first-party expressive
+  components (`FloatingActionButtonMenu`, `ButtonGroup`, `LoadingIndicator`,
+  `SplitButton`, `FloatingToolbar`) over bespoke equivalents. Keep the custom create
+  menu only if it preserves the file-specific actions and has UI tests.
 - Expressive personality is allowed in motion, shape and type weight. It is not
   allowed in destructive confirmations, permission prompts or error recovery.
 
@@ -288,7 +296,7 @@ Adaptive rules:
 **Don't**
 
 - Hardcode colors, `sp` sizes, corner radii, elevations, or spring values.
-- Use Material 2 components or Material3 1.5-beta APIs (see the Compose contract).
+- Use Material 2 components or unapproved Material3 alpha APIs (see the Compose contract).
 - Encode selection, status, or errors with color alone.
 - Shrink or clip text to preserve a fixed row height.
 - Animate the file list on scroll or loop motion behind content.

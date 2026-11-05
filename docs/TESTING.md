@@ -123,7 +123,7 @@ variant lands.
 | Window | Edge-to-edge with gesture nav, three-button nav, display cutout |
 | Input | Touch, keyboard focus visible, TalkBack focus highlight |
 | Motion | Animations on, animations off (animator duration scale 0) |
-| Density | mdpi (legacy API 23 device), xxxhdpi |
+| Density | mdpi (legacy API 24 device), xxxhdpi |
 | Theme | Light, dark, dynamic color on/off; true black if available |
 
 File naming convention for future golden images:
@@ -202,7 +202,7 @@ Display cutout/force resize where relevant).
 
 | API | Why |
 |---|---|
-| 23 | Minimum SDK; legacy permission and rendering paths |
+| 24 | Minimum SDK; legacy permission and rendering paths |
 | 29 | Scoped storage transition |
 | 33 | Notification permission (FTP foreground service) |
 | 35 | Edge-to-edge enforcement |

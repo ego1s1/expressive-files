@@ -17,7 +17,8 @@ android {
     ndkVersion '27.2.12479018'
     defaultConfig {
         applicationId 'dev.expressive.files'
-        minSdk 23
+        // Material3 1.5 requires API 24.
+        minSdk 24
         // Not supporting the ACCESS_LOCAL_NETWORK runtime permission yet.
         //noinspection OldTargetApi
         targetSdk 36
@@ -207,7 +208,11 @@ dependencies {
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.foundation:foundation'
-    implementation 'androidx.compose.material3:material3'
+    // Deliberately newer than the BOM: 1.5.0-alpha26 is the first cached line that
+    // exposes MotionScheme.expressive(), ButtonGroup, LoadingIndicator, SplitButton,
+    // FloatingToolbar and MaterialShapes. The BOM still pins the compatible
+    // Compose 1.12.1 runtime/foundation/ui artifacts.
+    implementation 'androidx.compose.material3:material3:1.5.0-alpha26'
     implementation 'androidx.compose.material:material-icons-core'
     implementation 'androidx.compose.runtime:runtime-livedata'
     implementation 'androidx.activity:activity-compose:1.13.0'

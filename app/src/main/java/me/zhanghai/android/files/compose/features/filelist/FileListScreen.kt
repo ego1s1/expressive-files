@@ -5,7 +5,10 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -45,6 +48,7 @@ import me.zhanghai.android.files.compose.model.BreadcrumbUi
 import me.zhanghai.android.files.compose.model.FileEntryUi
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 import me.zhanghai.android.files.compose.model.FileListUiState
+import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
  * The stateless Expressive Files file browser.
@@ -77,6 +81,7 @@ fun FileListScreen(
     bottomOverlayPadding: Dp = 0.dp
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val motionEnabled = rememberMotionEnabled()
     var showListOptions by remember { mutableStateOf(false) }
     val selectionMode = state.selectedCount > 0
     val showFab = !selectionMode &&
@@ -148,8 +153,16 @@ fun FileListScreen(
         }
         AnimatedVisibility(
             visible = showFab,
-            enter = fadeIn() + scaleIn(initialScale = 0.8f),
-            exit = fadeOut() + scaleOut(targetScale = 0.8f)
+            enter = if (motionEnabled) {
+                fadeIn() + scaleIn(initialScale = 0.8f)
+            } else {
+                EnterTransition.None
+            },
+            exit = if (motionEnabled) {
+                fadeOut() + scaleOut(targetScale = 0.8f)
+            } else {
+                ExitTransition.None
+            }
         ) {
             CreateFabMenu(
                 canPaste = state.canPaste,
@@ -259,7 +272,7 @@ private fun FileListScreenSelectionPreview() {
 
 @Composable
 private fun PreviewFileListScreen(state: FileListUiState) {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         FileListScreen(
             state = state,
             onNavigateUp = {},

@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -69,7 +71,7 @@ fun FileRow(
         colorScheme.onSurface
     }
     val supportingColor = if (entry.isSelected) {
-        colorScheme.onSecondaryContainer.copy(alpha = 0.72f)
+        colorScheme.onSecondaryContainer
     } else {
         colorScheme.onSurfaceVariant
     }
@@ -84,7 +86,7 @@ fun FileRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(LIST_ROW_HEIGHT_DP.dp)
+            .heightIn(min = LIST_ROW_HEIGHT_DP.dp)
             .background(containerColor)
             .combinedClickable(
                 onClick = onClick,
@@ -110,8 +112,8 @@ fun FileRow(
                     text = entry.name,
                     modifier = Modifier.weight(1f),
                     color = titleColor,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 if (badgeText != null) {
@@ -129,6 +131,14 @@ fun FileRow(
                     overflow = TextOverflow.Ellipsis
                 )
             }
+        }
+        if (entry.isSelected) {
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = null,
+                tint = colorScheme.onSecondaryContainer,
+                modifier = Modifier.size(20.dp)
+            )
         }
         Spacer(Modifier.width(4.dp))
         IconButton(
@@ -190,8 +200,8 @@ private fun TypeBadge(
     ) {
         Box(
             modifier = Modifier
-                .height(18.dp)
-                .padding(horizontal = 6.dp),
+                .heightIn(min = 18.dp)
+                .padding(horizontal = 6.dp, vertical = 1.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(

@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.operations
 
+import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -149,7 +150,7 @@ private fun DeleteDismissButton(onDismiss: () -> Unit) {
 @Preview(showBackground = true, widthDp = 380)
 @Composable
 private fun DeleteConfirmDialogPreview() {
-    MaterialTheme {
+    ExpressiveFilesPreview {
         Surface(
             modifier = Modifier.padding(16.dp),
             shape = MaterialTheme.shapes.extraLarge,

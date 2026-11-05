@@ -110,6 +110,12 @@ object Settings {
             R.string.pref_key_material_design_3, R.bool.pref_default_value_material_design_3
         )
 
+    /** Whether the Compose shell derives its palette from the system wallpaper. */
+    val DYNAMIC_COLOR: SettingLiveData<Boolean> =
+        BooleanSettingLiveData(
+            R.string.pref_key_dynamic_color, R.bool.pref_default_value_dynamic_color
+        )
+
     val NIGHT_MODE: SettingLiveData<NightMode> =
         EnumSettingLiveData(
             R.string.pref_key_night_mode, R.string.pref_default_value_night_mode,
