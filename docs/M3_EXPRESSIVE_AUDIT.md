@@ -159,6 +159,19 @@ A screen is M3 Expressive compliant when:
 - **minSdk moved from 23 to 24.** Material3 1.5 requires it. Android 5.0 is no longer
   supported; README, the test matrix and release notes must say Android 7.0+.
 
+## Device verification (2026-11-06)
+
+Emulator: `sdk_gphone64_arm64`, API 35, 1080x2400 @ 420dpi, release APK signed
+with a local test key.
+
+- Release APK installs, launches and reaches the file list with no fatal logcat entry.
+- Files, Favorites, Settings, selection mode, the create FAB menu, true black,
+  200% font scale and the medium-width rail (1600x2560 @ 240dpi) were exercised.
+- Device smoke found and fixed a startup `TrailData` null crash and a missing
+  status-bar inset on the Favorites/Recents header.
+
+Remaining device work: API 24, RTL, TalkBack and store screenshots.
+
 ## Test matrix to run next
 
 | Dimension | Values |

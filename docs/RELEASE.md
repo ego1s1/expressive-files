@@ -80,6 +80,22 @@ test key is acceptable only for local smoke builds.
 - [ ] `README.md` and `PRIVACY.md` are current.
 - [ ] The GPLv3 attribution to Material Files remains visible in About/licenses.
 
+## Verification record
+
+Local verification on 2026-11-06:
+
+- `:app:testDebugUnitTest` — 26 tests, 0 failures.
+- `:app:lintDebug` — 0 errors.
+- `:app:assembleDebug` — passed.
+- `:app:assembleRelease` — passed, V2-signed test APK verified with `apksigner`.
+- `:app:bundleRelease` — passed.
+- Release APK installs and launches on emulator `sdk_gphone64_arm64`, API 35.
+- Files, Favorites, Settings, selection, FAB menu, true black, 200% font scale and
+  medium rail were smoke-tested.
+
+The local test key is not a store key. Replace it with the Play upload key before
+publishing.
+
 ## Known release constraints
 
 - Material3 `1.5.0-rc01` is a release candidate. Pin it, review the diff on each
