@@ -1,15 +1,14 @@
-一个开源的 Material Design 文件管理器。
+Expressive Files 是一个使用 Material 3 Expressive 构建的开源文件管理器。
 
-特性：
-- 开源：轻量、简洁并且安全。
-- Material Design：遵循 Material Design 规范，并且注重细节。
-- 面包屑导航栏：点击导航栏所显示路径中的任一文件夹即可快速访问。
-- Root 支持：使用 root 权限查看和管理文件。
-- 压缩文件支持：查看、提取和创建常见的压缩文件。
-- NAS 支持：查看和管理 FTP、SFTP、SMB 和 WebDAV 服务器上的文件。
-- 主题：可定制的界面颜色，以及可选纯黑的夜间模式。
-- Linux 友好：支持符号链接、文件权限和 SELinux 上下文。
-- 健壮性：使用 Linux 系统调用实现，而不是另一个 ls 解析器。
-- 实现良好：使用正确的方式打造，包括 Java NIO2 文件 API 和 LiveData。
+功能：
+- 开源、轻量且安全。
+- Material 3 Expressive：动态取色、表现力动效和无障碍组件。
+- 面包屑、列表/网格、搜索、排序和选择。
+- Root、压缩包以及 FTP/SFTP/SMB/WebDAV 服务器。
+- 纯黑主题、动态取色和动画设置。
+- 支持符号链接、权限和 SELinux 上下文。
+- 基于 Java NIO2 File API 和现代 Android 架构。
 
-https://github.com/zhanghai/MaterialFiles
+基于 Hai Zhang 的 Material Files（GPLv3）。
+
+https://github.com/ego1s1/expressive-files

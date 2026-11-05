@@ -87,7 +87,7 @@
     <string name="compose_ok">OK</string>
     <string name="compose_open">Open</string>
     <string name="compose_open_folder">Open folder</string>
-    <string name="compose_open_legacy_settings">Open legacy settings</string>
+    <string name="compose_open_legacy_settings">More settings</string>
     <string name="compose_open_source_licenses">Open-source licenses</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organize, copy, move, and delete files freely</string>
     <string name="compose_recently_opened_files_and_folders">Recently opened files and folders</string>
