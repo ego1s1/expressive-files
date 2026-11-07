@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="compose_text">.</string>
     <string name="compose_12_items_4_2_gb_free">12 Elemente • 4,2 GB frei</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Ein Name darf kein / enthalten</string>
@@ -35,6 +37,7 @@
     <string name="compose_create_a_folder_in_this_location">Ordner an diesem Ort erstellen</string>
     <string name="compose_create_an_empty_file_in_this_location">Leere Datei an diesem Ort erstellen</string>
     <string name="compose_create_new_item">Neues Element erstellen</string>
+    <string name="compose_delete_1_item">1 Element löschen?</string>
     <string name="compose_delete_selected_items">Ausgewählte Elemente löschen</string>
     <string name="compose_deselect_all">Auswahl aufheben</string>
     <string name="compose_discard_changes">Änderungen verwerfen?</string>

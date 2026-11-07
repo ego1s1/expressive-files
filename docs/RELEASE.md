@@ -82,9 +82,10 @@ test key is acceptable only for local smoke builds.
 
 ## Verification record
 
-Local verification on 2026-11-06:
+Local verification on 2026-11-07 (after the release-hardening pass):
 
-- `:app:testDebugUnitTest` — 26 tests, 0 failures.
+- `:app:testDebugUnitTest` — 33 tests, 0 failures (added `FileGridTest` and
+  `SettingsStateBuilderTest`; previously 28).
 - `:app:lintDebug` — 0 errors.
 - `:app:assembleDebug` — passed.
 - `:app:assembleRelease` — passed, V2-signed test APK verified with `apksigner`.
@@ -93,15 +94,22 @@ Local verification on 2026-11-06:
 - Files, Favorites, Settings, selection, FAB menu, true black, 200% font scale and
   medium rail were smoke-tested.
 - Release APK installs and launches on API 24 (`expressive-api24`, Android 7.0).
-- Arabic RTL and German long-label runs passed; the accessibility tree reports
-  29/29 clickable nodes with text or content descriptions.
+- Arabic (`ar-SA`) run is RTL: mirrored navigation, RTL system bar, Arabic Compose
+  strings and correct selected-row check icon. All back/chevron icons now use the
+  auto-mirrored variants, and `ar`/`de` locale coverage is complete.
+- German (`de-DE`) run renders long labels without clipping the file rows.
+- UIAutomator accessibility tree: 29/29 clickable nodes have a text or content
+  description; the selected row exposes `selected=true`.
 - Expanded two-pane layout verified at 1920x1200 (1920dp wide): selection shows
   properties in the right pane.
 - Store phone screenshots were replaced with 1080x1920 captures; tablet screenshots
   were captured at 1920x1200.
-- All supported locales now have draft Compose translations; native review is still
-  recommended.
-- Expanded two-pane layout and selected-row properties verified at 1920x1200.
+- Image preview decodes with `inSampleSize` downsampling (max 2048px) so large
+  photos cannot OOM the viewer.
+- `FavoritesStore` marks itself loaded even when the disk read fails, so one bad
+  read cannot cause repeated disk IO.
+- All supported locales now have complete Compose translations; native review is
+  still recommended.
 - File-row screenshot goldens run in `:app:testDebugUnitTest`.
 
 The local test key is not a store key. Replace it with the Play upload key before

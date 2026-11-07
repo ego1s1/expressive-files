@@ -27,6 +27,15 @@ declared when the first standalone build is tagged.
 
 ## [Unreleased]
 
+### Fixed
+
+- Image preview downsamples large photos (max 2048px) instead of decoding them at
+  full resolution.
+- Favorites no longer retry disk reads on every access after a failed load.
+- Back arrows and disclosure chevrons mirror correctly in RTL locales.
+- Completed `ar` and `de` Compose translations (`compose_delete_1_item`,
+  `compose_text`).
+
 ### Added
 
 - Compose-first launcher shell (`compose/MainActivity`) with edge-to-edge layout and a

@@ -65,7 +65,10 @@ first. When a model gains behavior, add a test in the same package and keep test
 explicit.
 
 `FileRowTest` and `ThemeComposeTest` run Compose under Robolectric and cover selected
-semantics, row clicks, true-black surfaces and the standard dark palette. Intents,
+semantics, row clicks, true-black surfaces and the standard dark palette. `FileGridTest`
+mirrors the row contract for grid tiles. `SettingsStateBuilderTest` covers the settings
+section invariants and query filtering, and `NavigationModelsTest` covers the drawer,
+breadcrumb and home model invariants. Intents,
 real file IO and device-only behavior still require instrumentation or manual
 verification.
 

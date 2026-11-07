@@ -816,6 +816,29 @@ fun ExpressiveFilesApp() {
     }
 }
 
+/** Maximum preview dimension so large photos are downsampled instead of decoded at full size. */
+private const val IMAGE_PREVIEW_MAX_DIMENSION = 2048
+
+/**
+ * Decodes [file] with `inSampleSize` downsampling so the preview never holds a full-resolution
+ * bitmap in memory. Returns null when the image cannot be decoded.
+ */
+private fun decodeBoundedBitmap(file: FileItem): Bitmap? {
+    val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+    file.path.newInputStream().use { BitmapFactory.decodeStream(it, null, bounds) }
+    if (bounds.outWidth <= 0 || bounds.outHeight <= 0) {
+        return null
+    }
+    var sampleSize = 1
+    while (bounds.outWidth / sampleSize > IMAGE_PREVIEW_MAX_DIMENSION ||
+        bounds.outHeight / sampleSize > IMAGE_PREVIEW_MAX_DIMENSION
+    ) {
+        sampleSize *= 2
+    }
+    val options = BitmapFactory.Options().apply { inSampleSize = sampleSize }
+    return file.path.newInputStream().use { BitmapFactory.decodeStream(it, null, options) }
+}
+
 @Composable
 private fun ComposeImageViewer(
     file: FileItem,
@@ -826,9 +849,7 @@ private fun ComposeImageViewer(
 ) {
     val bitmap by produceState<Bitmap?>(initialValue = null, file) {
         value = withContext(Dispatchers.IO) {
-            runCatching {
-                file.path.newInputStream().use(BitmapFactory::decodeStream)
-            }.getOrNull()
+            runCatching { decodeBoundedBitmap(file) }.getOrNull()
         }
     }
     ImageViewerScreen(

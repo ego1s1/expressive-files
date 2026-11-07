@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="compose_text">.</string>
     <string name="compose_12_items_4_2_gb_free">12 عنصرًا • 4.2 غيغابايت متاحة</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">لا يمكن أن يحتوي الاسم على /</string>
@@ -35,6 +37,7 @@
     <string name="compose_create_a_folder_in_this_location">إنشاء مجلد في هذا الموقع</string>
     <string name="compose_create_an_empty_file_in_this_location">إنشاء ملف فارغ في هذا الموقع</string>
     <string name="compose_create_new_item">إنشاء عنصر جديد</string>
+    <string name="compose_delete_1_item">حذف عنصر واحد؟</string>
     <string name="compose_delete_selected_items">حذف العناصر المحددة</string>
     <string name="compose_deselect_all">إلغاء تحديد الكل</string>
     <string name="compose_discard_changes">تجاهل التغييرات؟</string>

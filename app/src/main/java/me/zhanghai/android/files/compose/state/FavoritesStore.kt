@@ -105,11 +105,10 @@ object FavoritesStore {
             if (isLoaded) {
                 return
             }
-            val loaded = load()
-            if (loaded != null) {
-                _favorites.value = loaded
-                isLoaded = true
-            }
+            // Mark loaded even when the read fails so every access does not retry disk IO.
+            // A failed read falls back to the in-memory (possibly empty) list.
+            _favorites.value = load() ?: _favorites.value
+            isLoaded = true
         }
     }
 
