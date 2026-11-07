@@ -155,8 +155,8 @@ A screen is M3 Expressive compliant when:
   use black for cards that need separation.
 - **Dynamic color can break brand assumptions.** Keep the seeded fallback palette
   reviewed and provide a dynamic-color toggle (now wired).
-- **Compose 1.12.1 + Material3 1.5.0-rc01** is a mixed-version pair. Compile and
-  smoke-test before release; do not upgrade both blindly.
+- **Compose alpha backend + Material3 `1.5.0-rc01`** is a mixed-version pair. Compile
+  and smoke-test before release; do not upgrade both blindly.
 - **minSdk moved from 23 to 24.** Material3 1.5 requires it. Android 5.0 is no longer
   supported; README, the test matrix and release notes must say Android 7.0+.
 

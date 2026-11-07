@@ -14,6 +14,7 @@ import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
@@ -54,6 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
+import me.zhanghai.android.files.compose.theme.ExpressiveMotion
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
@@ -72,7 +74,7 @@ fun CreateFabMenu(
     val motionEnabled = rememberMotionEnabled()
     val iconRotation by animateFloatAsState(
         targetValue = if (expanded) 45f else 0f,
-        animationSpec = if (motionEnabled) tween(durationMillis = 180) else snap(),
+        animationSpec = if (motionEnabled) ExpressiveMotion.spatial() else snap(),
         label = "createFabIconRotation"
     )
 
@@ -100,12 +102,10 @@ fun CreateFabMenu(
         ) {
             AnimatedVisibility(
                 visible = expanded,
-                enter = if (motionEnabled) {
-                    fadeIn(animationSpec = tween(150)) +
-                        slideInVertically(animationSpec = tween(200)) { height -> height / 3 }
-                } else {
-                    EnterTransition.None
-                },
+                // The entrance is carried by the staggered items below, so the container
+                // appears instantly; dismissal stays a single fast fade+slide for a
+                // responsive feel.
+                enter = EnterTransition.None,
                 exit = if (motionEnabled) {
                     fadeOut(animationSpec = tween(120)) +
                         slideOutVertically(animationSpec = tween(150)) { height -> height / 3 }
@@ -118,6 +118,9 @@ fun CreateFabMenu(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FabMenuItem(
+                        visible = expanded,
+                        // Items nearest the FAB lead the cascade.
+                        enterDelayMillis = 80,
                         label = stringResource(R.string.file_create_directory_title),
                         onClick = {
                             expanded = false
@@ -131,6 +134,8 @@ fun CreateFabMenu(
                         )
                     }
                     FabMenuItem(
+                        visible = expanded,
+                        enterDelayMillis = 40,
                         label = stringResource(R.string.file_create_file_title),
                         onClick = {
                             expanded = false
@@ -144,6 +149,8 @@ fun CreateFabMenu(
                         )
                     }
                     FabMenuItem(
+                        visible = expanded,
+                        enterDelayMillis = 0,
                         label = stringResource(R.string.paste),
                         enabled = canPaste,
                         onClick = {
@@ -182,17 +189,37 @@ fun CreateFabMenu(
 
 @Composable
 private fun FabMenuItem(
+    visible: Boolean,
+    enterDelayMillis: Int,
     label: String,
     enabled: Boolean = true,
     onClick: () -> Unit,
     icon: @Composable () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val motionEnabled = rememberMotionEnabled()
     val contentColor = if (enabled) {
         colorScheme.onSurface
     } else {
         colorScheme.onSurface.copy(alpha = 0.38f)
     }
+    AnimatedVisibility(
+        visible = visible,
+        enter = if (motionEnabled) {
+            fadeIn(animationSpec = tween(durationMillis = 150, delayMillis = enterDelayMillis)) +
+                slideInVertically(
+                    animationSpec = tween(durationMillis = 220, delayMillis = enterDelayMillis)
+                ) { height -> height / 3 } +
+                scaleIn(
+                    animationSpec = tween(durationMillis = 220, delayMillis = enterDelayMillis),
+                    initialScale = 0.9f
+                )
+        } else {
+            EnterTransition.None
+        },
+        // Dismissal is owned by the outer container so a mid-entrance collapse stays snappy.
+        exit = ExitTransition.None
+    ) {
     Surface(
         shape = MaterialTheme.shapes.large,
         color = colorScheme.surfaceContainerHigh,
@@ -218,5 +245,6 @@ private fun FabMenuItem(
                 maxLines = 1
             )
         }
+    }
     }
 }

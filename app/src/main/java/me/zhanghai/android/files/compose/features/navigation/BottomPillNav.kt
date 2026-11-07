@@ -16,8 +16,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,6 +57,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.icons.ExpressiveIcons
+import me.zhanghai.android.files.compose.theme.ExpressiveMotion
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
@@ -150,7 +149,7 @@ private fun NavIcon(
         } else {
             Color.Transparent
         },
-        animationSpec = if (motionEnabled) tween(durationMillis = 200) else snap(),
+        animationSpec = if (motionEnabled) ExpressiveMotion.effects() else snap(),
         label = "navContainer"
     )
     val content = if (selected) {
@@ -161,7 +160,7 @@ private fun NavIcon(
     val iconScale by animateFloatAsState(
         targetValue = if (selected) 1.06f else 1f,
         animationSpec = if (motionEnabled) {
-            spring(dampingRatio = 0.8f, stiffness = 380f)
+            ExpressiveMotion.spatial()
         } else {
             snap()
         },

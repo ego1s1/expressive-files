@@ -6,6 +6,8 @@
 package me.zhanghai.android.files.compose.theme
 
 import android.provider.Settings
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
@@ -44,6 +46,16 @@ object ExpressiveMotion {
         stiffness = 1600f
     )
 }
+
+/**
+ * Material 3 expressive easing curves, using the official cubic-bezier values.
+ *
+ * These are defined locally (rather than depending on alpha-only easing APIs) so custom
+ * transitions stay stable across backend upgrades.
+ */
+val ExpressiveDecelerateEasing: Easing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
+val ExpressiveAccelerateEasing: Easing = CubicBezierEasing(0.3f, 0f, 0.8f, 0.15f)
+val ExpressiveStandardEasing: Easing = CubicBezierEasing(0.2f, 0f, 0f, 1f)
 
 /**
  * Whether the user allows animations.

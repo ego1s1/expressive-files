@@ -1,6 +1,6 @@
 # Release runbook
 
-**Target:** Expressive Files 1.0.0 (versionCode 1), minSdk 24, targetSdk 36,
+**Target:** Expressive Files 1.1.0-alpha01 (versionCode 2), minSdk 24, targetSdk 36,
 compileSdk 37.
 
 ## Prerequisites
@@ -8,7 +8,8 @@ compileSdk 37.
 - JDK 21 (`JAVA_HOME` must point to it)
 - Android SDK 37, build-tools 37.0.0, NDK 27.2.12479018
 - Initialized submodules
-- Material3 is pinned to `1.5.0-rc01`; do not rely on the Compose BOM for it
+- Material3 is pinned to `1.5.0-rc01`; do not rely on the Compose BOM for it. The
+  Compose backend tracks the alpha BOM (`compose-bom-alpha:2026.11.00`).
 
 ## Versioning
 
@@ -81,6 +82,20 @@ test key is acceptable only for local smoke builds.
 - [ ] The GPLv3 attribution to Material Files remains visible in About/licenses.
 
 ## Verification record
+
+Local verification on 2026-11-07 for 1.1.0-alpha01 (versionCode 2):
+
+- `:app:testDebugUnitTest` — 34 tests, 0 failures (added `CreateFabMenuTest`).
+- `:app:lintDebug` — 0 errors.
+- `:app:assembleDebug`, `:app:assembleRelease`, `:app:bundleRelease` — passed.
+- Release APK (`versionCode 2`, `1.1.0-alpha01`) V2-signed with the local test key;
+  12 MB vs 38 MB debug.
+- API 24 (`expressive-api24`): German file list renders, folder navigation and
+  empty states work, 0 fatals.
+- API 35: file list (16 folders, 110 files), permission rationale sheet, folder
+  navigation, and the full reworked FAB flow (expand → staggered menu → New folder
+  sheet → created `AlphaTest`, list refreshed) verified with screenshots,
+  0 fatals.
 
 Local verification on 2026-11-07 (after the release-hardening pass):
 

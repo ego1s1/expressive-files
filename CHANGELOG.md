@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The fork starts from Material Files `1.7.5` (versionCode 40); release versions will be
 declared when the first standalone build is tagged.
 
+## [1.1.0-alpha01] - 2026-11-07
+
+### Changed
+
+- FAB menu: spring-based icon rotation, staggered item entrances (nearest the FAB
+  first) and a fast single-shot dismissal.
+- Route transitions use the expressive emphasized easing curves (now defined in
+  `Motion.kt` so custom motion never depends on alpha-only easing APIs).
+- Navigation pill selection color follows the expressive effects motion spec.
+- Dependencies: Compose backend on the alpha BOM (`2026.11.00`), activity
+  `1.14.0-alpha03`, lifecycle `2.12.0-alpha05`, sshj `0.41.2`, guava
+  `33.8.0-android`, Robolectric `4.17`. Material3 stays pinned to `1.5.0-rc01`,
+  still the newest M3 release.
+- Version bumped to `1.1.0-alpha01` (versionCode 2).
+
+### Fixed
+
+- Image preview downsamples large photos (max 2048px) instead of decoding them at
+  full resolution.
+- Favorites no longer retry disk reads on every access after a failed load.
+- Back arrows and disclosure chevrons mirror correctly in RTL locales.
+- Completed `ar` and `de` Compose translations (`compose_delete_1_item`,
+  `compose_text`).
+
 ## [1.0.0] - 2026-11-06
 
 ### Added
@@ -26,15 +50,6 @@ declared when the first standalone build is tagged.
 - Store title and app branding are now Expressive Files.
 
 ## [Unreleased]
-
-### Fixed
-
-- Image preview downsamples large photos (max 2048px) instead of decoding them at
-  full resolution.
-- Favorites no longer retry disk reads on every access after a failed load.
-- Back arrows and disclosure chevrons mirror correctly in RTL locales.
-- Completed `ar` and `de` Compose translations (`compose_delete_1_item`,
-  `compose_text`).
 
 ### Added
 

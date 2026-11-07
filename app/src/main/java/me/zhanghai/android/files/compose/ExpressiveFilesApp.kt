@@ -114,6 +114,8 @@ import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
 import me.zhanghai.android.files.compose.state.mapFileListState
+import me.zhanghai.android.files.compose.theme.ExpressiveAccelerateEasing
+import me.zhanghai.android.files.compose.theme.ExpressiveDecelerateEasing
 import me.zhanghai.android.files.compose.theme.WindowSizes
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 import me.zhanghai.android.files.file.FileItem
@@ -467,8 +469,11 @@ fun ExpressiveFilesApp() {
             targetState = route,
             transitionSpec = {
                 if (motionEnabled) {
-                    (fadeIn(tween(220)) + slideInHorizontally(tween(220)) { it / 12 }) togetherWith
-                        (fadeOut(tween(160)) + slideOutHorizontally(tween(160)) { -it / 12 })
+                    (fadeIn(tween(300, easing = ExpressiveDecelerateEasing)) +
+                        slideInHorizontally(tween(300, easing = ExpressiveDecelerateEasing)) { it / 12 }
+                        ) togetherWith
+                        (fadeOut(tween(200, easing = ExpressiveAccelerateEasing)) +
+                            slideOutHorizontally(tween(200, easing = ExpressiveAccelerateEasing)) { -it / 12 })
                 } else {
                     EnterTransition.None togetherWith ExitTransition.None
                 }

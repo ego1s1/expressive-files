@@ -1,0 +1,4 @@
+- Smoother, spring-driven FAB menu with staggered item entrances
+- Expressive emphasized motion on route transitions and navigation
+- Latest Compose alpha backend with Material 3 Expressive 1.5
+- Image viewer downsampling, RTL mirrors and locale fixes
