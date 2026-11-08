@@ -11,8 +11,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -86,8 +88,7 @@ fun SettingsScreen(
                         Box(
                             modifier = Modifier.padding(
                                 start = 16.dp,
-                                end = 16.dp,
-                                top = if (index == 0) 0.dp else 2.dp
+                                end = 16.dp
                             )
                         ) {
                             SettingsRow(
@@ -96,6 +97,9 @@ fun SettingsScreen(
                                 onClick = { onItemClick(item) }
                             )
                         }
+                    }
+                    item(key = "gap-${section.id}") {
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }

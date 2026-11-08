@@ -8,6 +8,24 @@ package me.zhanghai.android.files.compose.state
 import android.content.Context
 import android.os.Build
 import android.text.TextUtils
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Animation
+import androidx.compose.material.icons.filled.Archive
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.Contrast
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.FolderCopy
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.material.icons.filled.SettingsBackupRestore
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.core.app.LocaleManagerCompat
 import java.nio.charset.Charset
 import java8.nio.file.Path
@@ -63,7 +81,7 @@ object SettingsStateBuilder {
                 SettingsItemUi(
                     key = "appearance_night_mode",
                     title = context.getString(R.string.settings_night_mode_title),
-                    iconRes = R.drawable.settings_icon_white_24dp,
+                    icon = Icons.Filled.DarkMode,
                     kind = SettingsItemKind.CHOICE,
                     valueLabel = nightMode?.let {
                         nightModeEntries(context).getOrNull(it.ordinal)
@@ -81,7 +99,7 @@ object SettingsStateBuilder {
                     key = "appearance_black_theme",
                     title = context.getString(R.string.settings_black_night_mode),
                     summary = context.getString(R.string.compose_use_pure_black_backgrounds_in_dark_mode),
-                    iconRes = R.drawable.settings_icon_white_24dp,
+                    icon = Icons.Filled.Contrast,
                     kind = SettingsItemKind.SWITCH,
                     checked = blackTheme ?: false,
                     enabled = blackTheme != null
@@ -90,7 +108,7 @@ object SettingsStateBuilder {
                     key = "appearance_animations",
                     title = context.getString(R.string.settings_file_list_animation_title),
                     summary = context.getString(R.string.compose_animate_file_list_changes),
-                    iconRes = R.drawable.settings_icon_white_24dp,
+                    icon = Icons.Filled.Animation,
                     kind = SettingsItemKind.SWITCH,
                     checked = animations ?: false,
                     enabled = animations != null
@@ -99,7 +117,7 @@ object SettingsStateBuilder {
                     key = "appearance_dynamic_color",
                     title = context.getString(R.string.compose_dynamic_color),
                     summary = context.getString(R.string.compose_match_the_system_wallpaper),
-                    iconRes = R.drawable.settings_icon_white_24dp,
+                    icon = Icons.Filled.Palette,
                     kind = SettingsItemKind.SWITCH,
                     checked = dynamicColor ?: true,
                     enabled = dynamicColor != null
@@ -107,7 +125,7 @@ object SettingsStateBuilder {
                 SettingsItemUi(
                     key = "appearance_ellipsize",
                     title = context.getString(R.string.settings_file_name_ellipsize_title),
-                    iconRes = R.drawable.settings_icon_white_24dp,
+                    icon = Icons.Filled.TextFields,
                     kind = SettingsItemKind.CHOICE,
                     valueLabel = ellipsize?.let {
                         ellipsizeEntries(context).getOrNull(it.ordinal)
@@ -134,7 +152,7 @@ object SettingsStateBuilder {
                         key = "behavior_show_hidden",
                         title = context.getString(R.string.file_list_action_show_hidden_files),
                         summary = context.getString(R.string.compose_show_dotfiles_and_hidden_folders),
-                        iconRes = R.drawable.directory_icon_white_24dp,
+                        icon = Icons.Filled.VisibilityOff,
                         kind = SettingsItemKind.SWITCH,
                         checked = showHidden ?: false,
                         enabled = showHidden != null
@@ -145,7 +163,7 @@ object SettingsStateBuilder {
                         key = "behavior_default_folder",
                         title = context.getString(R.string.settings_default_directory_title),
                         summary = context.getString(R.string.compose_choose_the_folder_that_opens_on_launch),
-                        iconRes = R.drawable.directory_icon_white_24dp,
+                        icon = Icons.Filled.FolderOpen,
                         kind = SettingsItemKind.ACTION,
                         valueLabel = defaultDirectory?.toString(),
                         enabled = defaultDirectory != null
@@ -156,7 +174,7 @@ object SettingsStateBuilder {
                         key = "behavior_storages",
                         title = context.getString(R.string.settings_storages_title),
                         summary = context.getString(R.string.compose_manage_storage_locations),
-                        iconRes = R.drawable.device_icon_white_24dp,
+                        icon = Icons.Filled.Storage,
                         kind = SettingsItemKind.ACTION,
                         valueLabel = storages?.size?.toString(),
                         enabled = storages != null
@@ -167,7 +185,7 @@ object SettingsStateBuilder {
                         key = "behavior_standard_dirs",
                         title = context.getString(R.string.settings_standard_directories_title),
                         summary = context.getString(R.string.compose_enable_or_disable_standard_folders),
-                        iconRes = R.drawable.directory_icon_white_24dp,
+                        icon = Icons.Filled.FolderCopy,
                         kind = SettingsItemKind.ACTION,
                         enabled = standardDirs != null
                     )
@@ -177,7 +195,7 @@ object SettingsStateBuilder {
                         key = "behavior_bookmarks",
                         title = context.getString(R.string.settings_bookmark_directories_title),
                         summary = context.getString(R.string.compose_manage_folders_pinned_to_the_drawer),
-                        iconRes = R.drawable.directory_icon_white_24dp,
+                        icon = Icons.Filled.Bookmark,
                         kind = SettingsItemKind.ACTION,
                         valueLabel = bookmarks?.size?.toString(),
                         enabled = bookmarks != null
@@ -188,7 +206,7 @@ object SettingsStateBuilder {
                         key = "behavior_root_strategy",
                         title = context.getString(R.string.settings_root_strategy_title),
                         summary = context.getString(R.string.compose_choose_how_root_file_access_is_requested),
-                        iconRes = R.drawable.settings_icon_white_24dp,
+                        icon = Icons.Filled.Key,
                         kind = SettingsItemKind.CHOICE,
                         valueLabel = rootStrategy?.let {
                             rootStrategyEntries(context).getOrNull(it.ordinal)
@@ -209,7 +227,7 @@ object SettingsStateBuilder {
                         key = "behavior_archive_encoding",
                         title = context.getString(R.string.settings_archive_file_name_encoding_title),
                         summary = context.getString(R.string.compose_encoding_used_for_archive_entry_names),
-                        iconRes = R.drawable.settings_icon_white_24dp,
+                        icon = Icons.Filled.Archive,
                         kind = SettingsItemKind.CHOICE,
                         valueLabel = archiveEncoding,
                         enabled = archiveEncoding != null,
@@ -226,7 +244,7 @@ object SettingsStateBuilder {
                     SettingsItemUi(
                         key = "behavior_open_apk",
                         title = context.getString(R.string.settings_open_apk_default_action_title),
-                        iconRes = R.drawable.settings_icon_white_24dp,
+                        icon = Icons.Filled.Android,
                         kind = SettingsItemKind.CHOICE,
                         valueLabel = openApk?.let {
                             openApkEntries(context).getOrNull(it.ordinal)
@@ -248,7 +266,7 @@ object SettingsStateBuilder {
                             key = "behavior_pdf_thumbnail",
                             title = context.getString(R.string.settings_show_pdf_thumbnail_pre_28_title),
                             summary = context.getString(R.string.settings_show_pdf_thumbnail_pre_28_summary),
-                            iconRes = R.drawable.settings_icon_white_24dp,
+                            icon = Icons.Filled.PictureAsPdf,
                             kind = SettingsItemKind.SWITCH,
                             checked = pdfThumbnail ?: false,
                             enabled = pdfThumbnail != null
@@ -259,7 +277,7 @@ object SettingsStateBuilder {
                     SettingsItemUi(
                         key = "behavior_remote_thumbnail",
                         title = context.getString(R.string.settings_read_remote_files_for_thumbnail_title),
-                        iconRes = R.drawable.settings_icon_white_24dp,
+                        icon = Icons.Filled.CloudOff,
                         kind = SettingsItemKind.SWITCH,
                         checked = remoteThumbnail ?: false,
                         enabled = remoteThumbnail != null
@@ -276,7 +294,7 @@ object SettingsStateBuilder {
                     key = "advanced_reset",
                     title = context.getString(R.string.compose_reset_preferences),
                     summary = context.getString(R.string.compose_restore_all_settings_to_their_defaults),
-                    iconRes = R.drawable.reset_icon_white_24dp,
+                    icon = Icons.Filled.SettingsBackupRestore,
                     kind = SettingsItemKind.ACTION
                 )
             )
@@ -298,7 +316,7 @@ object SettingsStateBuilder {
             SettingsItemUi(
                 key = "appearance_locale",
                 title = context.getString(R.string.settings_locale_title),
-                iconRes = R.drawable.settings_icon_white_24dp,
+                icon = Icons.Filled.Translate,
                 kind = SettingsItemKind.ACTION,
                 valueLabel = locale?.let { tag ->
                     supportedLocales?.find { it.first == tag }?.second ?: tag
@@ -325,7 +343,7 @@ object SettingsStateBuilder {
             SettingsItemUi(
                 key = "appearance_locale",
                 title = context.getString(R.string.settings_locale_title),
-                iconRes = R.drawable.settings_icon_white_24dp,
+                icon = Icons.Filled.Translate,
                 kind = SettingsItemKind.CHOICE,
                 valueLabel = options.find { it.selected }?.label,
                 enabled = locale != null,

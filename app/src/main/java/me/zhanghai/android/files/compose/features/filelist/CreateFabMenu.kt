@@ -51,12 +51,12 @@ import me.zhanghai.android.files.compose.theme.ExpressiveMotion
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
- * Compact create menu: an M3 Expressive circular action button with staggered menu items
- * above it. Positioning and the tap-outside scrim are owned by the caller so the button
- * can sit in a centered group; [expanded] is hoisted for the same reason.
+ * Compact create menu items with staggered entrances. Positioning is owned by the caller;
+ * pair with [CreateFabButton]. The tap-outside scrim is also the caller's job so the
+ * button can sit in a centered group while the items stay on screen.
  */
 @Composable
-fun CreateFabMenu(
+fun CreateFabMenuItems(
     canPaste: Boolean,
     onCreateFolder: () -> Unit,
     onCreateFile: () -> Unit,
@@ -142,10 +142,6 @@ fun CreateFabMenu(
                     Spacer(Modifier.height(12.dp))
                 }
             }
-        CreateFabButton(
-            expanded = expanded,
-            onClick = { onExpandedChange(!expanded) }
-        )
     }
 }
 
@@ -154,7 +150,7 @@ fun CreateFabMenu(
  * matching its elevation and geometry instead of the default FAB treatment.
  */
 @Composable
-private fun CreateFabButton(
+fun CreateFabButton(
     expanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier

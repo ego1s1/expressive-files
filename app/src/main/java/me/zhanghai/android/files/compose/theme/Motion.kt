@@ -45,6 +45,15 @@ object ExpressiveMotion {
         dampingRatio = 1f,
         stiffness = 1600f
     )
+
+    /**
+     * Settle motion for gesture-driven surfaces (predictive back commit/cancel).
+     * Critically damped: lands exactly, no overshoot bounce on full-window content.
+     */
+    fun <T> settle(): SpringSpec<T> = spring(
+        dampingRatio = 1f,
+        stiffness = 1000f
+    )
 }
 
 /**

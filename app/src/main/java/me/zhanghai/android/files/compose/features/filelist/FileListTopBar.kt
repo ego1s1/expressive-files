@@ -5,6 +5,11 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,12 +36,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.FileListUiState
+import me.zhanghai.android.files.compose.theme.ExpressiveAccelerateEasing
+import me.zhanghai.android.files.compose.theme.ExpressiveDecelerateEasing
 
 private val TOP_BAR_MIN_HEIGHT = 64.dp
 
 /**
- * Compact file-list header. It intentionally uses the same surface color as the list so the
- * header blends into the content instead of reading as a separate band.
+ * Compact file-list header. It uses the same surface color as the list so the header
+ * blends into the content instead of reading as a separate band.
  */
 @Composable
 fun FileListTopBar(
@@ -53,7 +60,7 @@ fun FileListTopBar(
 
     Surface(
         modifier = modifier.fillMaxWidth(),
-        color = colorScheme.surfaceContainer,
+        color = colorScheme.surface,
         contentColor = colorScheme.onSurface
     ) {
         Row(
@@ -81,21 +88,35 @@ fun FileListTopBar(
                     .weight(1f)
                     .padding(horizontal = 4.dp)
             ) {
-                Text(
-                    text = title,
-                    color = colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (!subtitle.isNullOrBlank()) {
-                    Text(
-                        text = subtitle,
-                        color = colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                // Crossfade the chrome on folder change: the title resolves from the
+                // breadcrumb trail while the list is still loading, so a hard swap flashed
+                // the old name over the new folder. A short fade keeps the header calm.
+                AnimatedContent(
+                    targetState = title to subtitle,
+                    transitionSpec = {
+                        fadeIn(tween(150, easing = ExpressiveDecelerateEasing)) togetherWith
+                            fadeOut(tween(120, easing = ExpressiveAccelerateEasing))
+                    },
+                    label = "fileListChrome"
+                ) { (animatedTitle, animatedSubtitle) ->
+                    Column {
+                        Text(
+                            text = animatedTitle,
+                            color = colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        if (!animatedSubtitle.isNullOrBlank()) {
+                            Text(
+                                text = animatedSubtitle,
+                                color = colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
                 }
             }
             IconButton(

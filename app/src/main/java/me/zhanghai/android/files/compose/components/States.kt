@@ -26,6 +26,11 @@ import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +38,30 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import me.zhanghai.android.files.R
+
+/**
+ * Debounces a loading flag: quick reloads (back navigation, keystroke refreshes)
+ * finish before the threshold, so a spinner that would flash for milliseconds is
+ * never shown. Returns true only while [loading] has held for [delayMillis].
+ */
+@Composable
+fun rememberDebouncedLoading(
+    loading: Boolean,
+    delayMillis: Long = 200L
+): Boolean {
+    var visible by remember { mutableStateOf(false) }
+    LaunchedEffect(loading) {
+        if (loading) {
+            delay(delayMillis)
+            visible = true
+        } else {
+            visible = false
+        }
+    }
+    return visible
+}
 
 /** Centered empty state with a large tonal icon, supporting copy, and an optional action. */
 @Composable

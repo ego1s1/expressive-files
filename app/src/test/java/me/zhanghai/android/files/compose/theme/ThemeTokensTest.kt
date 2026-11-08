@@ -48,4 +48,11 @@ class ThemeTokensTest {
         assertEquals(1f, spec.dampingRatio)
         assertEquals(1600f, spec.stiffness)
     }
+
+    @Test
+    fun settleMotion_isCriticallyDamped() {
+        // Gesture settles must land without overshoot bounce on full-window content.
+        val spec = ExpressiveMotion.settle<Float>()
+        assertEquals(1f, spec.dampingRatio)
+    }
 }

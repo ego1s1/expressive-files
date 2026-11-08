@@ -21,10 +21,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Search
@@ -34,6 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -185,9 +188,9 @@ internal fun SettingsSectionHeader(
 @Composable
 internal fun settingsRowShape(index: Int, count: Int): Shape {
     val outer = MaterialTheme.shapes.large.topStart
-    val inner = MaterialTheme.shapes.extraSmall.topStart
-    val top = if (index == 0) outer else inner
-    val bottom = if (index == count - 1) outer else inner
+    // Inner rows are square so grouped rows merge into one seamless card.
+    val top = if (index == 0) outer else ZeroCornerSize
+    val bottom = if (index == count - 1) outer else ZeroCornerSize
     return RoundedCornerShape(
         topStart = top,
         topEnd = top,
@@ -269,6 +272,17 @@ internal fun SettingsRow(
                     checked = item.checked == true,
                     onCheckedChange = null,
                     enabled = item.enabled,
+                    thumbContent = if (item.checked == true) {
+                        {
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null,
+                                modifier = Modifier.size(SwitchDefaults.IconSize)
+                            )
+                        }
+                    } else {
+                        null
+                    },
                     modifier = Modifier.clearAndSetSemantics {}
                 )
             } else {
@@ -299,25 +313,44 @@ private fun SettingsItemIcon(
     item: SettingsItemUi,
     enabled: Boolean
 ) {
-    val tint = if (enabled) {
-        MaterialTheme.colorScheme.primary
+    val containerColor = if (enabled) {
+        MaterialTheme.colorScheme.secondaryContainer
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerHighest
+    }
+    val contentColor = if (enabled) {
+        MaterialTheme.colorScheme.onSecondaryContainer
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
     }
-    if (item.iconRes != 0) {
-        Icon(
-            painter = painterResource(item.iconRes),
-            contentDescription = null,
-            tint = tint,
-            modifier = Modifier.size(24.dp)
-        )
-    } else {
-        Icon(
-            imageVector = Icons.Filled.Settings,
-            contentDescription = null,
-            tint = tint,
-            modifier = Modifier.size(24.dp)
-        )
+    val vector = item.icon
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = containerColor,
+        contentColor = contentColor,
+        modifier = Modifier.size(40.dp)
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            if (vector != null) {
+                Icon(
+                    imageVector = vector,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            } else if (item.iconRes != 0) {
+                Icon(
+                    painter = painterResource(item.iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
     }
 }
 

@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.compose.components.rememberDebouncedLoading
 import me.zhanghai.android.files.compose.model.BreadcrumbUi
 import me.zhanghai.android.files.compose.model.FileEntryUi
 import me.zhanghai.android.files.compose.model.FileLayoutMode
@@ -171,18 +172,41 @@ private fun FileListBody(
         gridState.scrollToItem(0)
     }
 
+    // Stale-while-revalidate: folder switches reload asynchronously and the fresh
+    // payload starts empty. Keep showing the previous list (with the top progress bar)
+    // instead of flashing "folder is empty" for a directory that simply hasn't
+    // arrived yet. A genuinely empty folder still shows the empty state, since the
+    // retained list is only used while a load is in flight.
+    var retainedEntries by remember { mutableStateOf(state.entries) }
+    LaunchedEffect(state.entries) {
+        if (state.entries.isNotEmpty()) {
+            retainedEntries = state.entries
+        }
+    }
+    val displayEntries = if (state.isLoading && state.entries.isEmpty()) {
+        retainedEntries
+    } else {
+        state.entries
+    }
+
+    // Debounce the full-screen spinner: slow loads still need it, but a spinner that
+    // flashes for milliseconds is worse than none.
+    val loadingVisible = rememberDebouncedLoading(
+        state.isLoading && displayEntries.isEmpty()
+    )
+
     when {
         error != null -> ErrorState(
             message = error,
             onRetry = onRefresh
         )
-        state.isLoading && state.entries.isEmpty() -> LoadingState()
-        state.entries.isEmpty() -> EmptyState(
+        state.isLoading && displayEntries.isEmpty() && loadingVisible -> LoadingState()
+        displayEntries.isEmpty() -> EmptyState(
             state = state,
             onCreateFolder = onCreateFolder
         )
         state.layoutMode == FileLayoutMode.GRID -> FileGrid(
-            entries = state.entries,
+            entries = displayEntries,
             onEntryClick = onEntryClick,
             onEntryLongClick = onEntryLongClick,
             onEntryMenu = onEntryMenu,
@@ -194,7 +218,7 @@ private fun FileListBody(
             contentPadding = PaddingValues(top = 4.dp, bottom = 112.dp)
         ) {
             items(
-                items = state.entries,
+                items = displayEntries,
                 key = { entry -> entry.path }
             ) { entry ->
                 FileRow(

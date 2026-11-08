@@ -118,4 +118,15 @@ class SettingsStateBuilderTest {
 
         assertTrue(state.sections.isEmpty())
     }
+
+    @Test
+    fun build_everyItemHasAnIcon() {
+        val state = SettingsStateBuilder.build(context)
+        val items = state.sections.flatMap { it.items }
+
+        assertTrue(items.isNotEmpty())
+        items.forEach { item ->
+            assertTrue(item.key, item.icon != null)
+        }
+    }
 }

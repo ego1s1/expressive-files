@@ -5,6 +5,7 @@
 
 package me.zhanghai.android.files.compose.features.filelist
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,14 +41,20 @@ class CreateFabMenuTest {
         composeRule.setContent {
             ExpressiveFilesTheme(dynamicColor = false) {
                 var expanded by remember { mutableStateOf(false) }
-                CreateFabMenu(
-                    canPaste = false,
-                    onCreateFolder = { createFolder = true },
-                    onCreateFile = {},
-                    onPaste = {},
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it }
-                )
+                Column {
+                    CreateFabMenuItems(
+                        canPaste = false,
+                        onCreateFolder = { createFolder = true },
+                        onCreateFile = {},
+                        onPaste = {},
+                        expanded = expanded,
+                        onExpandedChange = { expanded = it }
+                    )
+                    CreateFabButton(
+                        expanded = expanded,
+                        onClick = { expanded = !expanded }
+                    )
+                }
             }
         }
 

@@ -56,6 +56,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.compose.components.rememberDebouncedLoading
 import me.zhanghai.android.files.compose.features.filelist.FileRow
 import me.zhanghai.android.files.compose.model.FileEntryUi
 import me.zhanghai.android.files.compose.model.FileListUiState
@@ -218,9 +219,12 @@ private fun SearchBody(
     onEntryMenu: (FileEntryUi) -> Unit
 ) {
     val error = state.error
+    // Same flash guard as the file list: keystroke reloads finish faster than the
+    // spinner threshold, so typing never strobes.
+    val loadingVisible = rememberDebouncedLoading(state.isLoading)
     when {
         query.isBlank() -> SearchPrompt()
-        state.isLoading -> SearchLoading()
+        state.isLoading && loadingVisible -> SearchLoading()
         error != null -> SearchErrorMessage(message = error)
         state.entries.isEmpty() -> SearchNoResults()
         else -> LazyColumn(

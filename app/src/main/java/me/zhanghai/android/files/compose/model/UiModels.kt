@@ -6,6 +6,7 @@
 package me.zhanghai.android.files.compose.model
 
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class FileLayoutMode { LIST, GRID }
 
@@ -85,6 +86,7 @@ data class SettingsItemUi(
     val title: String,
     val summary: String? = null,
     @DrawableRes val iconRes: Int = 0,
+    val icon: ImageVector? = null,
     val kind: SettingsItemKind = SettingsItemKind.ACTION,
     val checked: Boolean? = null,
     val valueLabel: String? = null,

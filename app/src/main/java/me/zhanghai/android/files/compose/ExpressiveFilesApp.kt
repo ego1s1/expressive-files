@@ -23,6 +23,7 @@ import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
@@ -30,6 +31,8 @@ import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -93,7 +96,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compose.features.filelist.CreateFabMenu
+import me.zhanghai.android.files.compose.features.filelist.CreateFabButton
+import me.zhanghai.android.files.compose.features.filelist.CreateFabMenuItems
 import me.zhanghai.android.files.compose.features.filelist.FileListScreen
 import me.zhanghai.android.files.compose.features.filelist.FileSortBy
 import me.zhanghai.android.files.compose.features.filelist.SelectionOptionsSheet
@@ -254,8 +258,15 @@ fun ExpressiveFilesApp(
         hasStorageAccess = isStorageAccessGranted(context)
     }
 
+    // The file list live data loads itself whenever the trail changes, so an
+    // unconditional reload here duplicated the very first listing (double IO + flash).
+    // Only reload on a genuine permission transition, which is the one case where the
+    // existing listing could not have been produced.
+    var previousStorageAccess by remember { mutableStateOf<Boolean?>(null) }
     LaunchedEffect(hasStorageAccess) {
-        if (hasStorageAccess) {
+        val previous = previousStorageAccess
+        previousStorageAccess = hasStorageAccess
+        if (previous == false && hasStorageAccess) {
             viewModel.reload()
         }
     }
@@ -313,6 +324,12 @@ fun ExpressiveFilesApp(
     val files = fileListStateful.value.orEmpty()
     val filesByPath = remember(files) { files.associateBy { it.path.toString() } }
     val selectedCount = selectedFiles.size
+
+    // The create menu belongs to its folder: navigating away collapses it so it
+    // never lingers over a new directory.
+    LaunchedEffect(route, currentPath) {
+        createMenuExpanded = false
+    }
 
     LaunchedEffect(textEditorFile, textEditorReload) {
         val file = textEditorFile ?: return@LaunchedEffect
@@ -383,6 +400,19 @@ fun ExpressiveFilesApp(
         NavigationStateBuilder.build(context, currentPath)
     }
 
+    // Hoisted so settings sub-screens and the route transition can share one build.
+    val settingsState = remember(settingsTick, settingsQuery) {
+        SettingsStateBuilder.build(context, settingsQuery)
+    }
+
+    // The settings search is scoped to a visit: leaving the screen clears it so
+    // returning never lands on a stale "no settings found" filter.
+    LaunchedEffect(route) {
+        if (route == ROUTE_SETTINGS) {
+            settingsQuery = ""
+        }
+    }
+
     fun onSettingsItemClick(item: SettingsItemUi) {
         when (item.kind) {
             SettingsItemKind.SWITCH -> {
@@ -414,23 +444,19 @@ fun ExpressiveFilesApp(
         }
     }
 
-    val predictiveBackTarget = when (route) {
-        ROUTE_ABOUT -> ROUTE_SETTINGS
-        ROUTE_SETTINGS_STORAGES, ROUTE_SETTINGS_BOOKMARKS,
-        ROUTE_SETTINGS_STANDARD_DIRS -> ROUTE_SETTINGS
-        else -> ROUTE_FILES
-    }
-    val predictiveBackEnabled = imageViewerFile == null && propertiesFile == null &&
-        textEditorFile == null && selectedCount == 0 && route != ROUTE_FILES
+    val overlayOpen = imageViewerFile != null || propertiesFile != null ||
+        textEditorFile != null
+    val canNavigateUp = (breadcrumb?.selectedIndex ?: 0) > 0
+    // Folder-up joins the gesture too: the list persists through navigateUp's reload,
+    // so the parallax settles seamlessly onto the parent once it arrives.
+    val predictiveBackEnabled = selectedCount == 0 &&
+        (route != ROUTE_FILES || overlayOpen || canNavigateUp)
     val motionEnabled = rememberMotionEnabled()
     val layoutDirection = LocalLayoutDirection.current
     val backProgress = remember { Animatable(0f) }
     // Drag direction of the in-flight gesture: +1 follows the finger, derived from the
     // system swipe edge and mirrored in RTL so a right-edge swipe never looks opposed.
     var backDragSign by remember { mutableFloatStateOf(1f) }
-    // Set on gesture commit so the AnimatedContent route change below does not replay a
-    // second slide on top of the gesture-driven parallax that just ended.
-    var suppressRouteTransition by remember { mutableStateOf(false) }
     PredictiveBackHandler(enabled = predictiveBackEnabled) { progress ->
         try {
             progress.collect { event ->
@@ -438,17 +464,53 @@ fun ExpressiveFilesApp(
                     (if (layoutDirection == LayoutDirection.Rtl) -1f else 1f)
                 backProgress.snapTo(event.progress)
             }
-            if (route == ROUTE_SEARCH) {
-                searchQuery = ""
-                viewModel.stopSearching()
+            // Route-backed backs let the directional page transition be the reveal, so
+            // the parallax is released first. Folder-up has no route change (the list
+            // stays mounted), so it settles instead.
+            var releasedToTransition = true
+            when {
+                textEditorFile != null -> {
+                    releasedToTransition = false
+                    if (textEditorDirty) {
+                        showDiscardText = true
+                    } else {
+                        textEditorFile = null
+                    }
+                }
+
+                imageViewerFile != null -> {
+                    releasedToTransition = false
+                    imageViewerFile = null
+                }
+
+                propertiesFile != null -> {
+                    releasedToTransition = false
+                    propertiesFile = null
+                }
+
+                route == ROUTE_SEARCH -> {
+                    searchQuery = ""
+                    viewModel.stopSearching()
+                    route = ROUTE_FILES
+                }
+
+                route == ROUTE_ABOUT || route in SettingsSubRoutes -> route = ROUTE_SETTINGS
+                route != ROUTE_FILES -> route = ROUTE_FILES
+                canNavigateUp -> {
+                    releasedToTransition = false
+                    viewModel.navigateUp()
+                }
             }
-            suppressRouteTransition = true
-            route = predictiveBackTarget
-            backProgress.snapTo(0f)
+            if (releasedToTransition || !motionEnabled) {
+                backProgress.snapTo(0f)
+            } else {
+                // Critically damped: a full-window surface must land, not bounce.
+                backProgress.animateTo(0f, ExpressiveMotion.settle())
+            }
         } catch (e: CancellationException) {
             backProgress.animateTo(
                 targetValue = 0f,
-                animationSpec = if (motionEnabled) ExpressiveMotion.spatial() else snap()
+                animationSpec = if (motionEnabled) ExpressiveMotion.settle() else snap()
             )
             throw e
         }
@@ -533,6 +595,9 @@ fun ExpressiveFilesApp(
                         val scale = 1f - 0.02f * progress
                         scaleX = scale
                         scaleY = scale
+                        // Outgoing content fades as it leaves, so the revealed preview
+                        // reads as the next screen rather than a shifted screenshot.
+                        alpha = 1f - 0.25f * progress
                     }
                     .padding(
                         start = if (showNavigation && useNavigationRail) 88.dp else 0.dp
@@ -593,24 +658,21 @@ fun ExpressiveFilesApp(
         } else AnimatedContent(
             targetState = route,
             transitionSpec = {
-                if (suppressRouteTransition) {
-                    // The gesture-driven parallax just ended on the new route; replaying a
-                    // slide here reads as a jump, so land instantly this once.
-                    suppressRouteTransition = false
-                    EnterTransition.None togetherWith ExitTransition.None
-                } else if (motionEnabled) {
+                if (motionEnabled) {
                     val forward = isForwardRouteTransition(initialState, targetState)
                     // In LTR, forward content enters from the right; mirrored in RTL.
+                    // A /4 slide with a fade reads as a screen turn; the old /12 shift
+                    // was too subtle to register as motion.
                     val direction = (if (forward) 1 else -1) *
                         (if (layoutDirection == LayoutDirection.Rtl) -1 else 1)
                     (fadeIn(tween(300, easing = ExpressiveDecelerateEasing)) +
                         slideInHorizontally(tween(300, easing = ExpressiveDecelerateEasing)) {
-                            direction * it / 12
+                            direction * it / 4
                         }
                         ) togetherWith
                         (fadeOut(tween(200, easing = ExpressiveAccelerateEasing)) +
                             slideOutHorizontally(tween(200, easing = ExpressiveAccelerateEasing)) {
-                                -direction * it / 12
+                                -direction * it / 4
                             })
                 } else {
                     EnterTransition.None togetherWith ExitTransition.None
@@ -657,9 +719,6 @@ fun ExpressiveFilesApp(
             )
 
             ROUTE_SETTINGS -> {
-                val settingsState = remember(settingsTick, settingsQuery) {
-                    SettingsStateBuilder.build(context, settingsQuery)
-                }
                 SettingsScreen(
                     state = settingsState,
                     onQueryChange = { settingsQuery = it },
@@ -872,6 +931,23 @@ fun ExpressiveFilesApp(
                                     detectTapGestures { createMenuExpanded = false }
                                 }
                         )
+                        // The items live in their own bottom-end overlay so a wide menu
+                        // never stretches the centered row past the screen edge.
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(bottom = 88.dp, end = 16.dp),
+                            contentAlignment = Alignment.BottomEnd
+                        ) {
+                            CreateFabMenuItems(
+                                canPaste = uiState.canPaste,
+                                onCreateFolder = { createTarget = true },
+                                onCreateFile = { createTarget = false },
+                                onPaste = {},
+                                expanded = true,
+                                onExpandedChange = { createMenuExpanded = it }
+                            )
+                        }
                     }
                     Box(
                         modifier = Modifier
@@ -889,14 +965,16 @@ fun ExpressiveFilesApp(
                                 onNavigate = { route = it },
                                 showSelectedLabel = showNavLabels
                             )
-                            if (showFab) {
-                                CreateFabMenu(
-                                    canPaste = uiState.canPaste,
-                                    onCreateFolder = { createTarget = true },
-                                    onCreateFile = { createTarget = false },
-                                    onPaste = {},
+                            // Animated show/hide: navigate-up reloads flip isLoading, and
+                            // the button must fade through that instead of popping.
+                            AnimatedVisibility(
+                                visible = showFab,
+                                enter = fadeIn() + scaleIn(initialScale = 0.8f),
+                                exit = fadeOut() + scaleOut(targetScale = 0.8f)
+                            ) {
+                                CreateFabButton(
                                     expanded = createMenuExpanded,
-                                    onExpandedChange = { createMenuExpanded = it }
+                                    onClick = { createMenuExpanded = !createMenuExpanded }
                                 )
                             }
                         }

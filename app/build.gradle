@@ -222,6 +222,8 @@ dependencies {
     // 1.5.0 alpha), and the stable BOM 2026.09.00 remains the newest stable BOM.
     implementation 'androidx.compose.material3:material3:1.5.0-rc01'
     implementation 'androidx.compose.material:material-icons-core'
+    // Extended set for the settings iconography; R8 strips the unused vectors in release.
+    implementation 'androidx.compose.material:material-icons-extended'
     implementation 'androidx.compose.runtime:runtime-livedata'
     implementation 'androidx.activity:activity-compose:1.14.0-alpha03'
     implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.12.0-alpha05'
