@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d más</item>
         <item quantity="other">+%1$d más</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Gestionar las ubicaciones de almacenamiento conectadas</string>
+    <string name="compose_enable_or_disable_standard_folders">Activar o desactivar las carpetas estándar</string>
+    <string name="compose_add_current_folder">Añadir la carpeta actual</string>
+    <string name="compose_use_current_folder">Usar la carpeta actual</string>
+    <string name="compose_reset_to_default">Restablecer los valores predeterminados</string>
+    <string name="compose_enter_folder_path">Ruta de la carpeta</string>
+    <string name="compose_bookmark_name">Nombre del marcador</string>
+    <string name="compose_add_storage">Añadir almacenamiento</string>
+    <string name="compose_delete_storage">Eliminar almacenamiento?</string>
+    <string name="compose_add_bookmark">Añadir a favoritos</string>
 </resources>

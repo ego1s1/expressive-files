@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d 以上</item>
         <item quantity="other">+%1$d 以上</item>
     </plurals>
+    <string name="compose_manage_storage_locations">接続中のストレージの場所を管理</string>
+    <string name="compose_enable_or_disable_standard_folders">標準フォルダを有効または無効にする</string>
+    <string name="compose_add_current_folder">現在のフォルダを追加</string>
+    <string name="compose_use_current_folder">現在のフォルダを使用</string>
+    <string name="compose_reset_to_default">デフォルトにリセット</string>
+    <string name="compose_enter_folder_path">フォルダのパス</string>
+    <string name="compose_bookmark_name">ブックマーク名</string>
+    <string name="compose_add_storage">ストレージを追加</string>
+    <string name="compose_delete_storage">ストレージを削除しますか?</string>
+    <string name="compose_add_bookmark">ブックマークに追加</string>
 </resources>

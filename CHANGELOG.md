@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The fork starts from Material Files `1.7.5` (versionCode 40); release versions will be
 declared when the first standalone build is tagged.
 
+## [1.1.0-alpha02] - 2026-11-08
+
+### Added
+
+- Native settings sub-screens for storages, bookmarks and standard folders with
+  add/edit/delete and toggle support.
+- Choice dialogs for locale, theme color, night mode, file-name style, root
+  strategy, archive encoding and APK action; default-folder dialog with
+  current-folder and reset actions; reset-all confirmation.
+- Direction-aware pane transitions (forward/back, RTL-mirrored) and mirrored
+  predictive-back drag.
+
+### Changed
+
+- Every legacy settings row is wired natively; the legacy settings menu is
+  retired (`SettingsActivity` now redirects to the Compose settings screen) and
+  its fragments, preference classes and list activities are deleted.
+
+### Fixed
+
+- Breadcrumb no longer shows stale forward history after navigating up.
+- Empty-state and shortcut-row headlines now use theme colors in dark mode.
+
 ## [1.1.0-alpha01] - 2026-11-07
 
 ### Changed

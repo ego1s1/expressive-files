@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d máis</item>
         <item quantity="other">+%1$d máis</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Xestionar as localizacións de almacenamento conectadas</string>
+    <string name="compose_enable_or_disable_standard_folders">Activar ou desactivar os cartafoles estándar</string>
+    <string name="compose_add_current_folder">Engadir o cartafol actual</string>
+    <string name="compose_use_current_folder">Usar o cartafol actual</string>
+    <string name="compose_reset_to_default">Restablecer os valores predeterminados</string>
+    <string name="compose_enter_folder_path">Ruta do cartafol</string>
+    <string name="compose_bookmark_name">Nome do marcador</string>
+    <string name="compose_add_storage">Engadir almacenamento</string>
+    <string name="compose_delete_storage">Eliminar o almacenamento?</string>
+    <string name="compose_add_bookmark">Engadir marcador</string>
 </resources>

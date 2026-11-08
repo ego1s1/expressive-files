@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d lagi</item>
         <item quantity="other">+%1$d lagi</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Kelola lokasi penyimpanan yang terhubung</string>
+    <string name="compose_enable_or_disable_standard_folders">Aktifkan atau nonaktifkan folder standar</string>
+    <string name="compose_add_current_folder">Tambah folder saat ini</string>
+    <string name="compose_use_current_folder">Gunakan folder saat ini</string>
+    <string name="compose_reset_to_default">Kembalikan ke default</string>
+    <string name="compose_enter_folder_path">Path folder</string>
+    <string name="compose_bookmark_name">Nama bookmark</string>
+    <string name="compose_add_storage">Tambah penyimpanan</string>
+    <string name="compose_delete_storage">Hapus penyimpanan?</string>
+    <string name="compose_add_bookmark">Tambahkan bookmark</string>
 </resources>

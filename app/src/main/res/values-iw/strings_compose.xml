@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d נוספים</item>
         <item quantity="other">+%1$d נוספים</item>
     </plurals>
+    <string name="compose_manage_storage_locations">נהל מיקומי אחסון מחוברים</string>
+    <string name="compose_enable_or_disable_standard_folders">הפעל או השבת תיקיות סטנדרטיות</string>
+    <string name="compose_add_current_folder">הוסף את התיקייה הנוכחית</string>
+    <string name="compose_use_current_folder">השתמש בתיקייה הנוכחית</string>
+    <string name="compose_reset_to_default">אפס לברירת מחדל</string>
+    <string name="compose_enter_folder_path">נתיב התיקייה</string>
+    <string name="compose_bookmark_name">שם הסימנייה</string>
+    <string name="compose_add_storage">הוספת אחסון</string>
+    <string name="compose_delete_storage">למחוק את האחסון?</string>
+    <string name="compose_add_bookmark">הוספת סימנייה</string>
 </resources>

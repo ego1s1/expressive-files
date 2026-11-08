@@ -154,4 +154,14 @@
         <item quantity="many">+ %1$d încă</item>
         <item quantity="other">+ %1$d încă</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Gestionați locațiile de stocare conectate</string>
+    <string name="compose_enable_or_disable_standard_folders">Activați sau dezactivați dosarele standard</string>
+    <string name="compose_add_current_folder">Adăugați dosarul curent</string>
+    <string name="compose_use_current_folder">Utilizați dosarul curent</string>
+    <string name="compose_reset_to_default">Reveniți la valorile implicite</string>
+    <string name="compose_enter_folder_path">Calea dosarului</string>
+    <string name="compose_bookmark_name">Numele marcajului</string>
+    <string name="compose_add_storage">Adaugă stocare</string>
+    <string name="compose_delete_storage">Ștergeți stocarea?</string>
+    <string name="compose_add_bookmark">Adaugă marcaj</string>
 </resources>

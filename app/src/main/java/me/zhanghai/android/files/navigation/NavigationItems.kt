@@ -20,12 +20,12 @@ import me.zhanghai.android.files.about.AboutActivity
 import me.zhanghai.android.files.compat.getDescriptionCompat
 import me.zhanghai.android.files.compat.isPrimaryCompat
 import me.zhanghai.android.files.compat.pathCompat
+import me.zhanghai.android.files.compose.MainActivity
 import me.zhanghai.android.files.file.JavaFile
 import me.zhanghai.android.files.file.asFileSize
 import me.zhanghai.android.files.ftpserver.FtpServerActivity
 import me.zhanghai.android.files.settings.Settings
 import me.zhanghai.android.files.settings.SettingsActivity
-import me.zhanghai.android.files.settings.StandardDirectoryListActivity
 import me.zhanghai.android.files.storage.AddStorageDialogActivity
 import me.zhanghai.android.files.storage.FileSystemRoot
 import me.zhanghai.android.files.storage.Storage
@@ -224,7 +224,10 @@ private class StandardDirectoryItem(
     override fun getTitle(context: Context): String = standardDirectory.getTitle(context)
 
     override fun onLongClick(listener: Listener): Boolean {
-        listener.launchIntent(StandardDirectoryListActivity::class.createIntent())
+        listener.launchIntent(
+            MainActivity::class.createIntent()
+                .putExtra(MainActivity.EXTRA_ROUTE, "settings/standard-dirs")
+        )
         return true
     }
 }

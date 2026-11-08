@@ -68,8 +68,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
+import java.util.Locale
 import androidx.lifecycle.Observer
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.Lifecycle
@@ -98,6 +103,11 @@ import me.zhanghai.android.files.compose.features.operations.DeleteConfirmDialog
 import me.zhanghai.android.files.compose.features.operations.RenameDialog
 import me.zhanghai.android.files.compose.features.properties.PropertiesScreen
 import me.zhanghai.android.files.compose.features.settings.AboutScreen
+import me.zhanghai.android.files.compose.features.settings.BookmarkSettingsScreen
+import me.zhanghai.android.files.compose.features.settings.DefaultFolderDialog
+import me.zhanghai.android.files.compose.features.settings.SettingsChoiceDialog
+import me.zhanghai.android.files.compose.features.settings.StandardDirectorySettingsScreen
+import me.zhanghai.android.files.compose.features.settings.StorageSettingsScreen
 import me.zhanghai.android.files.compose.features.search.SearchScreen
 import me.zhanghai.android.files.compose.features.settings.SettingsScreen
 import me.zhanghai.android.files.compose.features.viewer.ImageViewerScreen
@@ -110,10 +120,17 @@ import me.zhanghai.android.files.compose.model.HomeUiState
 import me.zhanghai.android.files.compose.model.PropertiesUiState
 import me.zhanghai.android.files.compose.model.PropertyRowUi
 import me.zhanghai.android.files.compose.model.PropertySectionUi
+import me.zhanghai.android.files.compose.model.SettingsItemKind
+import me.zhanghai.android.files.compose.model.SettingsItemUi
 import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
+import me.zhanghai.android.files.compose.state.applySettingChoice
+import me.zhanghai.android.files.compose.state.applySettingSwitch
 import me.zhanghai.android.files.compose.state.mapFileListState
+import me.zhanghai.android.files.compose.state.putDefaultDirectory
+import me.zhanghai.android.files.compose.state.resetDefaultDirectory
+import me.zhanghai.android.files.compose.state.resetSettingsToDefaults
 import me.zhanghai.android.files.compose.theme.ExpressiveAccelerateEasing
 import me.zhanghai.android.files.compose.theme.ExpressiveDecelerateEasing
 import me.zhanghai.android.files.compose.theme.WindowSizes
@@ -133,11 +150,24 @@ import me.zhanghai.android.files.filelist.isListable
 import me.zhanghai.android.files.filelist.listablePath
 import me.zhanghai.android.files.filelist.name
 import me.zhanghai.android.files.filejob.FileJobService
+import me.zhanghai.android.files.navigation.BookmarkDirectories
+import me.zhanghai.android.files.navigation.BookmarkDirectory
+import me.zhanghai.android.files.navigation.StandardDirectoriesLiveData
+import me.zhanghai.android.files.navigation.StandardDirectory
 import me.zhanghai.android.files.provider.common.newInputStream
+import me.zhanghai.android.files.provider.root.RootStrategy
 import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.settings.SettingsActivity
+import me.zhanghai.android.files.storage.AddStorageDialogActivity
+import me.zhanghai.android.files.storage.Storage
+import me.zhanghai.android.files.storage.Storages
+import me.zhanghai.android.files.filelist.OpenApkDefaultAction
+import me.zhanghai.android.files.theme.custom.CustomThemeHelper
+import me.zhanghai.android.files.theme.custom.ThemeColor
+import me.zhanghai.android.files.theme.night.NightMode
+import me.zhanghai.android.files.theme.night.NightModeHelper
 import me.zhanghai.android.files.util.Loading
 import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.files.util.createIntent
 import me.zhanghai.android.files.util.createSendStreamIntent
 import me.zhanghai.android.files.util.valueCompat
 import me.zhanghai.android.files.util.withChooser
@@ -145,9 +175,48 @@ import me.zhanghai.android.files.util.withChooser
 private const val ROUTE_FILES = "files"
 private const val ROUTE_FAVORITES = "favorites"
 private const val ROUTE_SETTINGS = "settings"
+private const val ROUTE_SETTINGS_STORAGES = "settings/storages"
+private const val ROUTE_SETTINGS_BOOKMARKS = "settings/bookmarks"
+private const val ROUTE_SETTINGS_STANDARD_DIRS = "settings/standard-dirs"
 private const val ROUTE_ABOUT = "about"
 private const val ROUTE_LOCATIONS = "locations"
 private const val ROUTE_SEARCH = "search"
+
+/** Sibling order used to direct route transitions between peer destinations. */
+private val RouteTransitionOrder = listOf(
+    ROUTE_FILES,
+    ROUTE_FAVORITES,
+    ROUTE_LOCATIONS,
+    ROUTE_SETTINGS,
+    ROUTE_SETTINGS_STORAGES,
+    ROUTE_SETTINGS_BOOKMARKS,
+    ROUTE_SETTINGS_STANDARD_DIRS,
+    ROUTE_SEARCH,
+    ROUTE_ABOUT
+)
+
+/**
+ * Whether navigating from [from] to [to] moves forward. Leaving Files is forward,
+ * returning to Files is back, Search behaves as an overlay (in is forward, out is back),
+ * and About and the settings sub-screens are children of Settings.
+ */
+internal fun isForwardRouteTransition(from: String, to: String): Boolean = when {
+    to == ROUTE_SEARCH -> true
+    from == ROUTE_SEARCH -> false
+    to == ROUTE_FILES -> false
+    from == ROUTE_FILES -> true
+    to == ROUTE_ABOUT || to in SettingsSubRoutes -> true
+    from == ROUTE_ABOUT || from in SettingsSubRoutes -> false
+    else -> RouteTransitionOrder.indexOf(to) >= RouteTransitionOrder.indexOf(from)
+}
+
+private val SettingsSubRoutes = setOf(
+    ROUTE_SETTINGS_STORAGES,
+    ROUTE_SETTINGS_BOOKMARKS,
+    ROUTE_SETTINGS_STANDARD_DIRS
+)
+
+private val AllRoutes = RouteTransitionOrder.toSet()
 
 /**
  * Compose-first application shell.
@@ -157,8 +226,9 @@ private const val ROUTE_SEARCH = "search"
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpressiveFilesApp() {
-    val context = LocalContext.current
+fun ExpressiveFilesApp(
+    initialRoute: String? = null
+) {    val context = LocalContext.current
     val viewModel: FileListViewModel = viewModel()
     // The legacy LiveData graph requires a non-null trail before it is observed.
     // This must stay a synchronous remember: moving it to LaunchedEffect lets the
@@ -215,7 +285,9 @@ fun ExpressiveFilesApp() {
         onDispose { viewModel.selectedFilesLiveData.removeObserver(observer) }
     }
 
-    var route by rememberSaveable { mutableStateOf(ROUTE_FILES) }
+    var route by rememberSaveable {
+        mutableStateOf(initialRoute?.takeIf { it in AllRoutes } ?: ROUTE_FILES)
+    }
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var showSortSheet by remember { mutableStateOf(false) }
     var createTarget by remember { mutableStateOf<Boolean?>(null) }
@@ -232,6 +304,14 @@ fun ExpressiveFilesApp() {
     var showDiscardText by remember { mutableStateOf(false) }
     var settingsTick by remember { mutableIntStateOf(0) }
     var settingsQuery by remember { mutableStateOf("") }
+    var choiceTarget by remember { mutableStateOf<SettingsItemUi?>(null) }
+    var showDefaultFolder by remember { mutableStateOf(false) }
+    var showResetConfirm by remember { mutableStateOf(false) }
+    val localeSystemLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        settingsTick++
+    }
 
     val files = fileListStateful.value.orEmpty()
     val filesByPath = remember(files) { files.associateBy { it.path.toString() } }
@@ -306,13 +386,47 @@ fun ExpressiveFilesApp() {
         NavigationStateBuilder.build(context, currentPath)
     }
 
+    fun onSettingsItemClick(item: SettingsItemUi) {
+        when (item.kind) {
+            SettingsItemKind.SWITCH -> {
+                applySettingSwitch(item.key, item.checked == true)
+                settingsTick++
+            }
+            SettingsItemKind.CHOICE -> choiceTarget = item
+            SettingsItemKind.ACTION -> when (item.key) {
+                "appearance_locale" -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        runCatching {
+                            localeSystemLauncher.launch(
+                                Intent(
+                                    android.provider.Settings.ACTION_APP_LOCALE_SETTINGS,
+                                    Uri.parse("package:${context.packageName}")
+                                )
+                            )
+                        }
+                    }
+                }
+                "behavior_default_folder" -> showDefaultFolder = true
+                "behavior_storages" -> route = ROUTE_SETTINGS_STORAGES
+                "behavior_standard_dirs" -> route = ROUTE_SETTINGS_STANDARD_DIRS
+                "behavior_bookmarks" -> route = ROUTE_SETTINGS_BOOKMARKS
+                "advanced_reset" -> showResetConfirm = true
+                else -> {}
+            }
+            else -> {}
+        }
+    }
+
     val predictiveBackTarget = when (route) {
         ROUTE_ABOUT -> ROUTE_SETTINGS
+        ROUTE_SETTINGS_STORAGES, ROUTE_SETTINGS_BOOKMARKS,
+        ROUTE_SETTINGS_STANDARD_DIRS -> ROUTE_SETTINGS
         else -> ROUTE_FILES
     }
     val predictiveBackEnabled = imageViewerFile == null && propertiesFile == null &&
         textEditorFile == null && selectedCount == 0 && route != ROUTE_FILES
     val motionEnabled = rememberMotionEnabled()
+    val layoutDirection = LocalLayoutDirection.current
     val backProgress = remember { Animatable(0f) }
     PredictiveBackHandler(enabled = predictiveBackEnabled) { progress ->
         try {
@@ -354,7 +468,7 @@ fun ExpressiveFilesApp() {
             }
 
             selectedCount > 0 -> viewModel.clearSelectedFiles()
-            route == ROUTE_ABOUT -> route = ROUTE_SETTINGS
+            route == ROUTE_ABOUT || route in SettingsSubRoutes -> route = ROUTE_SETTINGS
             route != ROUTE_FILES -> route = ROUTE_FILES
             else -> viewModel.navigateUp()
         }
@@ -392,7 +506,8 @@ fun ExpressiveFilesApp() {
     }
 
     val showNavigation = selectedCount == 0 && imageViewerFile == null &&
-        propertiesFile == null && textEditorFile == null && route != ROUTE_SEARCH
+        propertiesFile == null && textEditorFile == null && route != ROUTE_SEARCH &&
+        route !in SettingsSubRoutes
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= WindowSizes.MediumMinWidth
@@ -404,7 +519,9 @@ fun ExpressiveFilesApp() {
                     .fillMaxSize()
                     .graphicsLayer {
                         val progress = backProgress.value
-                        translationX = progress * size.width * 0.08f
+                        // The back gesture travels right in LTR and left in RTL.
+                        val dragSign = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
+                        translationX = dragSign * progress * size.width * 0.08f
                         val scale = 1f - 0.02f * progress
                         scaleX = scale
                         scaleY = scale
@@ -469,11 +586,19 @@ fun ExpressiveFilesApp() {
             targetState = route,
             transitionSpec = {
                 if (motionEnabled) {
+                    val forward = isForwardRouteTransition(initialState, targetState)
+                    // In LTR, forward content enters from the right; mirrored in RTL.
+                    val direction = (if (forward) 1 else -1) *
+                        (if (layoutDirection == LayoutDirection.Rtl) -1 else 1)
                     (fadeIn(tween(300, easing = ExpressiveDecelerateEasing)) +
-                        slideInHorizontally(tween(300, easing = ExpressiveDecelerateEasing)) { it / 12 }
+                        slideInHorizontally(tween(300, easing = ExpressiveDecelerateEasing)) {
+                            direction * it / 12
+                        }
                         ) togetherWith
                         (fadeOut(tween(200, easing = ExpressiveAccelerateEasing)) +
-                            slideOutHorizontally(tween(200, easing = ExpressiveAccelerateEasing)) { -it / 12 })
+                            slideOutHorizontally(tween(200, easing = ExpressiveAccelerateEasing)) {
+                                -direction * it / 12
+                            })
                 } else {
                     EnterTransition.None togetherWith ExitTransition.None
                 }
@@ -543,15 +668,92 @@ fun ExpressiveFilesApp() {
                 SettingsScreen(
                     state = settingsState,
                     onQueryChange = { settingsQuery = it },
-                    onItemClick = { item ->
-                        applySetting(context, item.key, item.checked == true)
+                    onItemClick = { item -> onSettingsItemClick(item) },
+                    onBack = { route = ROUTE_FILES },
+                    onAbout = { route = ROUTE_ABOUT }
+                )
+            }
+
+            ROUTE_SETTINGS_STORAGES -> StorageSettingsScreen(
+                onBack = { route = ROUTE_SETTINGS },
+                onAdd = {
+                    runCatching {
+                        context.startActivity(AddStorageDialogActivity::class.createIntent())
+                    }
+                },
+                onEdit = { storage ->
+                    runCatching { context.startActivity(storage.createEditIntent()) }
+                },
+                onDelete = { storage ->
+                    runCatching { Storages.remove(storage) }
+                }
+            )
+
+            ROUTE_SETTINGS_BOOKMARKS -> BookmarkSettingsScreen(
+                onBack = { route = ROUTE_SETTINGS },
+                onOpen = { bookmark ->
+                    openPath(viewModel, bookmark.path.toString())
+                    route = ROUTE_FILES
+                },
+                onAddCurrent = {
+                    val path = currentPath ?: return@BookmarkSettingsScreen
+                    val displayName = breadcrumb?.let { data ->
+                        data.nameProducers.getOrNull(data.selectedIndex)?.invoke(context)
+                    } ?: path.name
+                    runCatching {
+                        BookmarkDirectories.add(BookmarkDirectory(displayName, path))
+                    }
+                    settingsTick++
+                },
+                onAddCustom = { name, pathString ->
+                    val path = runCatching { Paths.get(pathString) }.getOrNull()
+                        ?: return@BookmarkSettingsScreen
+                    runCatching {
+                        BookmarkDirectories.add(
+                            BookmarkDirectory(name.ifBlank { null }, path)
+                        )
+                    }
+                    settingsTick++
+                },
+                onRename = { bookmark, name ->
+                    runCatching {
+                        BookmarkDirectories.replace(
+                            bookmark.copy(customName = name.ifBlank { null })
+                        )
+                    }
+                    settingsTick++
+                },
+                onDelete = { bookmark ->
+                    runCatching { BookmarkDirectories.remove(bookmark) }
+                    settingsTick++
+                }
+            )
+
+            ROUTE_SETTINGS_STANDARD_DIRS -> {
+                val standardDirs by StandardDirectoriesLiveData.observeAsState(emptyList())
+                val standardSettings by Settings.STANDARD_DIRECTORY_SETTINGS.observeAsState(
+                    Settings.STANDARD_DIRECTORY_SETTINGS.valueCompat
+                )
+                StandardDirectorySettingsScreen(
+                    directories = standardDirs,
+                    isEnabled = { directory ->
+                        standardSettings.find { it.id == directory.key }?.isEnabled
+                            ?: directory.isEnabled
+                    },
+                    onToggle = { directory, enabled ->
+                        val settingsList = standardSettings.toMutableList()
+                        val index = settingsList.indexOfFirst { it.id == directory.key }
+                        if (index != -1) {
+                            settingsList[index] = settingsList[index].copy(isEnabled = enabled)
+                        } else {
+                            settingsList += directory.toSettings().copy(isEnabled = enabled)
+                        }
+                        runCatching {
+                            Settings.STANDARD_DIRECTORY_SETTINGS.putValue(settingsList)
+                        }
                         settingsTick++
                     },
-                    onBack = { route = ROUTE_FILES },
-                    onOpenLegacySettings = {
-                        context.startActivity(Intent(context, SettingsActivity::class.java))
-                    },
-                    onAbout = { route = ROUTE_ABOUT }
+                    onBack = { route = ROUTE_SETTINGS }
                 )
             }
 
@@ -819,6 +1021,61 @@ fun ExpressiveFilesApp() {
             onDismiss = { actionTarget = null }
         )
     }
+
+    choiceTarget?.let { item ->
+        SettingsChoiceDialog(
+            title = item.title,
+            options = item.options,
+            onSelect = { option ->
+                applySettingChoice(item.key, option.value)
+                choiceTarget = null
+                settingsTick++
+            },
+            onDismiss = { choiceTarget = null }
+        )
+    }
+
+    if (showDefaultFolder) {
+        DefaultFolderDialog(
+            initialPath = runCatching {
+                Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat.toString()
+            }.getOrDefault(""),
+            onConfirm = { pathString ->
+                runCatching { Paths.get(pathString) }.getOrNull()?.let(::putDefaultDirectory)
+                settingsTick++
+            },
+            onUseCurrentFolder = {
+                val directory = currentPath ?: runCatching {
+                    Settings.FILE_LIST_DEFAULT_DIRECTORY.valueCompat
+                }.getOrNull()
+                if (directory != null) {
+                    putDefaultDirectory(directory)
+                }
+                showDefaultFolder = false
+                settingsTick++
+            },
+            onReset = {
+                resetDefaultDirectory()
+                settingsTick++
+            },
+            onDismiss = { showDefaultFolder = false }
+        )
+    }
+
+    if (showResetConfirm) {
+        ConfirmDialog(
+            title = stringResource(R.string.compose_reset_preferences),
+            message = stringResource(R.string.compose_restore_all_settings_to_their_defaults),
+            confirmLabel = stringResource(R.string.compose_reset_to_default),
+            destructive = true,
+            onConfirm = {
+                resetSettingsToDefaults(context)
+                showResetConfirm = false
+                settingsTick++
+            },
+            onDismiss = { showResetConfirm = false }
+        )
+    }
 }
 
 /** Maximum preview dimension so large photos are downsampled instead of decoded at full size. */
@@ -1082,16 +1339,6 @@ private fun shareFiles(context: Context, files: List<FileItem>) {
         val uris = files.map { it.path.fileProviderUri }
         val mimeTypes = files.map { it.mimeType }
         context.startActivity(uris.createSendStreamIntent(mimeTypes).withChooser())
-    }
-}
-
-private fun applySetting(context: Context, key: String, checked: Boolean) {
-    when (key) {
-        "appearance_black_theme" -> Settings.BLACK_NIGHT_MODE.putValue(!checked)
-        "appearance_dynamic_color" -> Settings.DYNAMIC_COLOR.putValue(!checked)
-        "appearance_animations" -> Settings.FILE_LIST_ANIMATION.putValue(!checked)
-        "behavior_show_hidden" -> Settings.FILE_LIST_SHOW_HIDDEN_FILES.putValue(!checked)
-        else -> context.startActivity(Intent(context, SettingsActivity::class.java))
     }
 }
 

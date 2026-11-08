@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d ακόμη</item>
         <item quantity="other">+%1$d ακόμη</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Διαχείριση συνδεδεμένων αποθηκευτικών χώρων</string>
+    <string name="compose_enable_or_disable_standard_folders">Ενεργοποίηση ή απενεργοποίηση τυπικών φακέλων</string>
+    <string name="compose_add_current_folder">Προσθήκη τρέχοντος φακέλου</string>
+    <string name="compose_use_current_folder">Χρήση τρέχοντος φακέλου</string>
+    <string name="compose_reset_to_default">Επαναφορά στις προεπιλογές</string>
+    <string name="compose_enter_folder_path">Διαδρομή φακέλου</string>
+    <string name="compose_bookmark_name">Όνομα σελιδοδείκτη</string>
+    <string name="compose_add_storage">Προσθήκη χώρου αποθήκευσης</string>
+    <string name="compose_delete_storage">Διαγραφή χώρου αποθήκευσης?</string>
+    <string name="compose_add_bookmark">Προσθήκη σελιδοδείκτη</string>
 </resources>

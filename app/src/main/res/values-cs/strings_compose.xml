@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d další</item>
         <item quantity="other">+%1$d další</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Spravovat připojená úložiště</string>
+    <string name="compose_enable_or_disable_standard_folders">Povolit nebo zakázat standardní složky</string>
+    <string name="compose_add_current_folder">Přidat aktuální složku</string>
+    <string name="compose_use_current_folder">Použít aktuální složku</string>
+    <string name="compose_reset_to_default">Obnovit výchozí</string>
+    <string name="compose_enter_folder_path">Cesta ke složce</string>
+    <string name="compose_bookmark_name">Název záložky</string>
+    <string name="compose_add_storage">Přidat úložiště</string>
+    <string name="compose_delete_storage">Smazat úložiště?</string>
+    <string name="compose_add_bookmark">Přidat záložku</string>
 </resources>

@@ -143,4 +143,14 @@
         <item quantity="one">+%1$d weiteres</item>
         <item quantity="other">+%1$d weitere</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Verbundene Speicherorte verwalten</string>
+    <string name="compose_enable_or_disable_standard_folders">Standardordner aktivieren oder deaktivieren</string>
+    <string name="compose_add_current_folder">Aktuellen Ordner hinzufügen</string>
+    <string name="compose_use_current_folder">Aktuellen Ordner verwenden</string>
+    <string name="compose_reset_to_default">Auf Standard zurücksetzen</string>
+    <string name="compose_enter_folder_path">Ordnerpfad</string>
+    <string name="compose_bookmark_name">Lesezeichenname</string>
+    <string name="compose_add_storage">Speicher hinzufügen</string>
+    <string name="compose_delete_storage">Speicher löschen?</string>
+    <string name="compose_add_bookmark">Lesezeichen hinzufügen</string>
 </resources>

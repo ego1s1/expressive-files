@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d 更多</item>
         <item quantity="other">+%1$d 更多</item>
     </plurals>
+    <string name="compose_manage_storage_locations">管理已連線的儲存位置</string>
+    <string name="compose_enable_or_disable_standard_folders">啟用或停用標準資料夾</string>
+    <string name="compose_add_current_folder">新增目前的資料夾</string>
+    <string name="compose_use_current_folder">使用目前的資料夾</string>
+    <string name="compose_reset_to_default">重設為預設值</string>
+    <string name="compose_enter_folder_path">資料夾路徑</string>
+    <string name="compose_bookmark_name">書籤名稱</string>
+    <string name="compose_add_storage">新增儲存空間</string>
+    <string name="compose_delete_storage">刪除儲存空間？</string>
+    <string name="compose_add_bookmark">加入書籤</string>
 </resources>

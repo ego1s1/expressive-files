@@ -72,6 +72,7 @@ internal fun ShortcutRow(
             Text(
                 text = entry.name,
                 style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

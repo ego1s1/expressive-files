@@ -155,4 +155,14 @@
         <item quantity="many">+%1$d أخرى</item>
         <item quantity="other">+%1$d أخرى</item>
     </plurals>
+    <string name="compose_manage_storage_locations">إدارة مواقع التخزين المتصلة</string>
+    <string name="compose_enable_or_disable_standard_folders">تفعيل المجلدات القياسية أو تعطيلها</string>
+    <string name="compose_add_current_folder">إضافة المجلد الحالي</string>
+    <string name="compose_use_current_folder">استخدام المجلد الحالي</string>
+    <string name="compose_reset_to_default">إعادة التعيين إلى الافتراضي</string>
+    <string name="compose_enter_folder_path">مسار المجلد</string>
+    <string name="compose_bookmark_name">اسم الإشارة المرجعية</string>
+    <string name="compose_add_storage">إضافة تخزين</string>
+    <string name="compose_delete_storage">حذف التخزين؟</string>
+    <string name="compose_add_bookmark">إضافة إشارة مرجعية</string>
 </resources>

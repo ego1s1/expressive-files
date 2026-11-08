@@ -149,4 +149,14 @@
         <item quantity="other">+%1$d more</item>
     </plurals>
     <string name="compose_that_name_is_reserved">That name is reserved</string>
+    <string name="compose_manage_storage_locations">Manage connected storage locations</string>
+    <string name="compose_enable_or_disable_standard_folders">Enable or disable standard folders</string>
+    <string name="compose_add_current_folder">Add current folder</string>
+    <string name="compose_use_current_folder">Use current folder</string>
+    <string name="compose_reset_to_default">Reset to default</string>
+    <string name="compose_enter_folder_path">Folder path</string>
+    <string name="compose_bookmark_name">Bookmark name</string>
+    <string name="compose_add_storage">Add storage</string>
+    <string name="compose_delete_storage">Delete storage?</string>
+    <string name="compose_add_bookmark">Add bookmark</string>
 </resources>

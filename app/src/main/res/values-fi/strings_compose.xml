@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d lisää</item>
         <item quantity="other">+%1$d lisää</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Hallitse yhdistettyjä tallennussijainteja</string>
+    <string name="compose_enable_or_disable_standard_folders">Ota standardihakemistot käyttöön tai poista ne käytöstä</string>
+    <string name="compose_add_current_folder">Lisää nykyinen kansio</string>
+    <string name="compose_use_current_folder">Käytä nykyistä kansiota</string>
+    <string name="compose_reset_to_default">Palauta oletukset</string>
+    <string name="compose_enter_folder_path">Kansion polku</string>
+    <string name="compose_bookmark_name">Kirjanmerkin nimi</string>
+    <string name="compose_add_storage">Lisää tallennustila</string>
+    <string name="compose_delete_storage">Poista tallennustila?</string>
+    <string name="compose_add_bookmark">Lisää kirjanmerkki</string>
 </resources>

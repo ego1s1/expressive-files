@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d개 이상</item>
         <item quantity="other">+%1$d개 이상</item>
     </plurals>
+    <string name="compose_manage_storage_locations">연결된 저장소 위치 관리</string>
+    <string name="compose_enable_or_disable_standard_folders">주요 폴더 켜기 또는 끄기</string>
+    <string name="compose_add_current_folder">현재 폴더 추가</string>
+    <string name="compose_use_current_folder">현재 폴더 사용</string>
+    <string name="compose_reset_to_default">기본값으로 재설정</string>
+    <string name="compose_enter_folder_path">폴더 경로</string>
+    <string name="compose_bookmark_name">즐겨찾기 이름</string>
+    <string name="compose_add_storage">저장소 추가</string>
+    <string name="compose_delete_storage">저장소 삭제?</string>
+    <string name="compose_add_bookmark">즐겨찾기에 추가</string>
 </resources>

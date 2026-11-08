@@ -127,13 +127,29 @@ Local verification on 2026-11-07 (after the release-hardening pass):
   still recommended.
 - File-row screenshot goldens run in `:app:testDebugUnitTest`.
 
+Local verification on 2026-11-08 for 1.1.0-alpha02 (versionCode 3):
+
+- `:app:testDebugUnitTest` — 47 tests, 0 failures (added
+  `RouteTransitionDirectionTest` and `BreadcrumbMapperTest`; expanded
+  `SettingsStateBuilderTest`).
+- `:app:lintDebug` — 0 errors.
+- `:app:assembleDebug`, `:app:assembleRelease`, `:app:bundleRelease` — passed.
+- Release APK (`versionCode 3`, `1.1.0-alpha02`, 12 MB) V2-signed with the local
+  test key, verified with `apksigner`; AAB produced alongside.
+- All 33 locales carry the full `strings_compose` key set (140 strings each);
+  XML parses clean and `MissingTranslation` stays a warning-only fallback.
+- Fastlane changelogs added for versionCode 3 (`en-US`, `zh-CN`).
+- One environment note: a long-lived Gradle daemon hit heap OOM in
+  `:app:packageDebug`; a fresh daemon (`./gradlew --stop` first) builds clean on
+  the repo's 2 GB heap. Retry with a fresh daemon before touching heap settings.
+
 The local test key is not a store key. Replace it with the Play upload key before
 publishing.
 
 ## Known release constraints
 
 - Material3 `1.5.0-rc01` is a release candidate. Pin it, review the diff on each
-  upgrade, and keep the Compose BOM at 2026.09.00 until the next coordinated bump.
+  upgrade, and keep the Compose BOM at 2026.11.00 until the next coordinated bump.
 - All shipping Compose strings are externalized in
-  `app/src/main/res/values/strings_compose.xml`. Locale resources for the new keys are
-  still being translated; English is the fallback.
+  `app/src/main/res/values/strings_compose.xml`. All 33 locales carry the full
+  key set (draft translations; native review still recommended).

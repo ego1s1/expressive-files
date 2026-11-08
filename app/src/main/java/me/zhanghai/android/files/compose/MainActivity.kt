@@ -5,6 +5,8 @@
 
 package me.zhanghai.android.files.compose
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +27,7 @@ class MainActivity : AppActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val initialRoute = intent.getStringExtra(EXTRA_ROUTE)
         setContent {
             val blackTheme by Settings.BLACK_NIGHT_MODE.observeAsState(
                 Settings.BLACK_NIGHT_MODE.valueCompat
@@ -40,8 +43,16 @@ class MainActivity : AppActivity() {
                 dynamicColor = dynamicColor,
                 animationsEnabled = animationsEnabled
             ) {
-                ExpressiveFilesApp()
+                ExpressiveFilesApp(initialRoute = initialRoute)
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_ROUTE = "extra_route"
+
+        fun createSettingsIntent(context: Context, route: String = "settings"): Intent =
+            Intent(context, MainActivity::class.java)
+                .putExtra(EXTRA_ROUTE, route)
     }
 }

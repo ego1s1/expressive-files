@@ -129,6 +129,7 @@ private fun CenteredMessageState(
         Text(
             text = headline,
             modifier = Modifier.widthIn(max = 360.dp),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center
         )

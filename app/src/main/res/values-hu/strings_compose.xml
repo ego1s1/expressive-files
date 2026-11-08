@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d további</item>
         <item quantity="other">+%1$d további</item>
     </plurals>
+    <string name="compose_manage_storage_locations">A csatlakoztatott tárolóhelyek kezelése</string>
+    <string name="compose_enable_or_disable_standard_folders">A szokásos mappák engedélyezése vagy letiltása</string>
+    <string name="compose_add_current_folder">Az aktuális mappa hozzáadása</string>
+    <string name="compose_use_current_folder">Az aktuális mappa használata</string>
+    <string name="compose_reset_to_default">Visszaállítás alapértelmezettre</string>
+    <string name="compose_enter_folder_path">Mappaútvonal</string>
+    <string name="compose_bookmark_name">Könyvjelző neve</string>
+    <string name="compose_add_storage">Tároló hozzáadása</string>
+    <string name="compose_delete_storage">Tároló törlése?</string>
+    <string name="compose_add_bookmark">Könyvjelző hozzáadása</string>
 </resources>

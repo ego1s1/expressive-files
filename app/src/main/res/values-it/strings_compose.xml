@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d in più</item>
         <item quantity="other">+%1$d in più</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Gestisci le posizioni di archiviazione connesse</string>
+    <string name="compose_enable_or_disable_standard_folders">Abilita o disabilita le cartelle standard</string>
+    <string name="compose_add_current_folder">Aggiungi la cartella corrente</string>
+    <string name="compose_use_current_folder">Usa la cartella corrente</string>
+    <string name="compose_reset_to_default">Ripristina i valori predefiniti</string>
+    <string name="compose_enter_folder_path">Percorso della cartella</string>
+    <string name="compose_bookmark_name">Nome del segnalibro</string>
+    <string name="compose_add_storage">Aggiungi archiviazione</string>
+    <string name="compose_delete_storage">Elimina l\'archiviazione?</string>
+    <string name="compose_add_bookmark">Aggiungi segnalibro</string>
 </resources>

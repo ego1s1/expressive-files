@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d de plus</item>
         <item quantity="other">+%1$d de plus</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Gérer les emplacements de stockage connectés</string>
+    <string name="compose_enable_or_disable_standard_folders">Activer ou désactiver les dossiers standard</string>
+    <string name="compose_add_current_folder">Ajouter le dossier actuel</string>
+    <string name="compose_use_current_folder">Utiliser le dossier actuel</string>
+    <string name="compose_reset_to_default">Rétablir les valeurs par défaut</string>
+    <string name="compose_enter_folder_path">Chemin du dossier</string>
+    <string name="compose_bookmark_name">Nom du marque-page</string>
+    <string name="compose_add_storage">Ajouter un stockage</string>
+    <string name="compose_delete_storage">Supprimer le stockage ?</string>
+    <string name="compose_add_bookmark">Ajouter un marque-page</string>
 </resources>

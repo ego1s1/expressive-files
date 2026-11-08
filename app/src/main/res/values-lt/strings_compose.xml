@@ -154,4 +154,14 @@
         <item quantity="many">ir dar %1$d</item>
         <item quantity="other">ir dar %1$d</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Tvarkyti prijungtas saugyklos vietas</string>
+    <string name="compose_enable_or_disable_standard_folders">Įjungti arba išjungti standartinius aplankus</string>
+    <string name="compose_add_current_folder">Pridėti dabartinį aplanką</string>
+    <string name="compose_use_current_folder">Naudoti dabartinį aplanką</string>
+    <string name="compose_reset_to_default">Atstatyti numatytąsias</string>
+    <string name="compose_enter_folder_path">Aplanko kelias</string>
+    <string name="compose_bookmark_name">Žymės pavadinimas</string>
+    <string name="compose_add_storage">Pridėti saugyklą</string>
+    <string name="compose_delete_storage">Ištrinti saugyklą?</string>
+    <string name="compose_add_bookmark">Pridėti žymę</string>
 </resources>

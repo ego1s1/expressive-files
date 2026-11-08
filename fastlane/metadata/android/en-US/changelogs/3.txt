@@ -1,0 +1,4 @@
+- All settings are now native: storages, bookmarks, standard folders, theme, locale and root options
+- Legacy settings screens removed for a smaller app with no dead code paths
+- Direction-aware transitions with RTL support
+- Breadcrumb and dark-mode fixes, full locale coverage

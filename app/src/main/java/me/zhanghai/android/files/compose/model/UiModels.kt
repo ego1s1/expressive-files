@@ -101,7 +101,16 @@ data class SettingsItemUi(
     val kind: SettingsItemKind = SettingsItemKind.ACTION,
     val checked: Boolean? = null,
     val valueLabel: String? = null,
-    val enabled: Boolean = true
+    val enabled: Boolean = true,
+    val options: List<SettingsChoiceOptionUi> = emptyList()
+)
+
+/** A single option in a [SettingsItemKind.CHOICE] dialog. [value] is opaque to the UI. */
+data class SettingsChoiceOptionUi(
+    val value: String,
+    val label: String,
+    val selected: Boolean = false,
+    val colorArgb: Int? = null
 )
 
 data class SettingsSectionUi(

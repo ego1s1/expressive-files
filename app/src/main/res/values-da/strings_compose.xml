@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d mere</item>
         <item quantity="other">+%1$d mere</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Administrer tilsluttede lagre</string>
+    <string name="compose_enable_or_disable_standard_folders">Aktivér eller deaktiver standardmapper</string>
+    <string name="compose_add_current_folder">Tilføj aktuel mappe</string>
+    <string name="compose_use_current_folder">Brug aktuel mappe</string>
+    <string name="compose_reset_to_default">Nulstil til standard</string>
+    <string name="compose_enter_folder_path">Mappesti</string>
+    <string name="compose_bookmark_name">Bogmærkenavn</string>
+    <string name="compose_add_storage">Tilføj lager</string>
+    <string name="compose_delete_storage">Slet lager?</string>
+    <string name="compose_add_bookmark">Tilføj bogmærke</string>
 </resources>

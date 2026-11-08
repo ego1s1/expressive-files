@@ -53,4 +53,60 @@ class SettingsStateBuilderTest {
             assertTrue(haystack.contains("hidden", ignoreCase = true))
         }
     }
+
+    @Test
+    fun build_coversEveryLegacySettingsRow() {
+        val state = SettingsStateBuilder.build(context)
+        val keys = state.sections.flatMap { it.items }.map { it.key }.toSet()
+
+        assertTrue(
+            keys.containsAll(
+                setOf(
+                    "appearance_locale",
+                    "appearance_theme_color",
+                    "appearance_material3",
+                    "appearance_night_mode",
+                    "appearance_black_theme",
+                    "appearance_animations",
+                    "appearance_dynamic_color",
+                    "appearance_ellipsize",
+                    "behavior_show_hidden",
+                    "behavior_default_folder",
+                    "behavior_storages",
+                    "behavior_standard_dirs",
+                    "behavior_bookmarks",
+                    "behavior_root_strategy",
+                    "behavior_archive_encoding",
+                    "behavior_open_apk",
+                    "behavior_remote_thumbnail",
+                    "advanced_reset"
+                )
+            )
+        )
+    }
+
+    @Test
+    fun choiceRows_exposeOptions() {
+        // Option structure only: the Settings backend cannot initialize on the JVM
+        // (it needs the device filesystem provider), so selection state is covered
+        // on-device instead.
+        val state = SettingsStateBuilder.build(context)
+        val items = state.sections.flatMap { it.items }.associateBy { it.key }
+
+        val night = items.getValue("appearance_night_mode")
+        assertEquals(5, night.options.size)
+        assertEquals(setOf("0", "1", "2", "3", "4"), night.options.map { it.value }.toSet())
+
+        val root = items.getValue("behavior_root_strategy")
+        assertEquals(3, root.options.size)
+        assertEquals(setOf("0", "1", "2"), root.options.map { it.value }.toSet())
+
+        val theme = items.getValue("appearance_theme_color")
+        assertEquals(20, theme.options.size)
+        assertTrue(theme.options.all { it.colorArgb != null })
+
+        val encoding = items.getValue("behavior_archive_encoding")
+        assertTrue(encoding.options.isNotEmpty())
+        assertTrue(encoding.options.any { it.value.equals("UTF-8", ignoreCase = true) })
+    }
 }

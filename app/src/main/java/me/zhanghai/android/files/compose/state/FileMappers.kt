@@ -53,6 +53,10 @@ fun FileItem.toFileEntryUi(context: Context, selected: Boolean): FileEntryUi {
 /**
  * Maps the legacy breadcrumb data into Compose breadcrumb chips.
  *
+ * Only the trail up to and including the current folder is emitted: entries below the
+ * selection are forward history from [TrailData.navigateUp] and must not be presented as
+ * the current path.
+ *
  * [currentPath] is used as a fallback when [BreadcrumbData.selectedIndex] is out of range (for
  * example while a new trail is being resolved).
  */
@@ -61,6 +65,7 @@ fun BreadcrumbData.toBreadcrumbUi(context: Context, currentPath: Path): List<Bre
         return emptyList()
     }
     val currentIndex = selectedIndex.takeIf { it in paths.indices }
+        ?: paths.indexOfFirst { it == currentPath }.takeIf { it >= 0 }
     return paths.mapIndexed { index, path ->
         val label = nameProducers.getOrNull(index)?.invoke(context) ?: path.name
         BreadcrumbUi(
@@ -72,7 +77,7 @@ fun BreadcrumbData.toBreadcrumbUi(context: Context, currentPath: Path): List<Bre
                 path == currentPath
             }
         )
-    }
+    }.filterIndexed { index, _ -> currentIndex == null || index <= currentIndex }
 }
 
 /**

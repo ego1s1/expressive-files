@@ -154,4 +154,14 @@
         <item quantity="many">+ %1$d gehiago</item>
         <item quantity="other">+ %1$d gehiago</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Kudeatu konektatutako biltegiratze-kokapenak</string>
+    <string name="compose_enable_or_disable_standard_folders">Gaitu edo desgaitu karpeta estandarrak</string>
+    <string name="compose_add_current_folder">Gehitu uneko karpeta</string>
+    <string name="compose_use_current_folder">Erabili uneko karpeta</string>
+    <string name="compose_reset_to_default">Berrezarri lehenetsitako balioak</string>
+    <string name="compose_enter_folder_path">Karpetaren bidea</string>
+    <string name="compose_bookmark_name">Laster-markaren izena</string>
+    <string name="compose_add_storage">Gehitu biltegiratzea</string>
+    <string name="compose_delete_storage">Ezabatu biltegiratzea?</string>
+    <string name="compose_add_bookmark">Gehitu laster-marka</string>
 </resources>

@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d больше</item>
         <item quantity="other">+%1$d больше</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Управление подключенными хранилищами</string>
+    <string name="compose_enable_or_disable_standard_folders">Включение и отключение стандартных папок</string>
+    <string name="compose_add_current_folder">Добавить текущую папку</string>
+    <string name="compose_use_current_folder">Использовать текущую папку</string>
+    <string name="compose_reset_to_default">Сбросить по умолчанию</string>
+    <string name="compose_enter_folder_path">Путь к папке</string>
+    <string name="compose_bookmark_name">Название закладки</string>
+    <string name="compose_add_storage">Добавить накопитель</string>
+    <string name="compose_delete_storage">Удалить накопитель?</string>
+    <string name="compose_add_bookmark">Добавить закладку</string>
 </resources>

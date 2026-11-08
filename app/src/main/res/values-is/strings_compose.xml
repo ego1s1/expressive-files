@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d í viðbót</item>
         <item quantity="other">+%1$d í viðbót</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Stjórna tengdum geymslusvæðum</string>
+    <string name="compose_enable_or_disable_standard_folders">Virkja eða óvirkja staðlaðar möppur</string>
+    <string name="compose_add_current_folder">Bæta við núverandi möppu</string>
+    <string name="compose_use_current_folder">Nota núverandi möppu</string>
+    <string name="compose_reset_to_default">Endurstilla sjálfgefið</string>
+    <string name="compose_enter_folder_path">Möppuslóð</string>
+    <string name="compose_bookmark_name">Nafn bókamerkis</string>
+    <string name="compose_add_storage">Bæta við geymslurými</string>
+    <string name="compose_delete_storage">Eyða geymslurými?</string>
+    <string name="compose_add_bookmark">Bæta við bókamerki</string>
 </resources>

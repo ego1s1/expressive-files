@@ -154,4 +154,14 @@
         <item quantity="many">+%1$d więcej</item>
         <item quantity="other">+%1$d więcej</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Zarządzaj podłączonymi magazynami</string>
+    <string name="compose_enable_or_disable_standard_folders">Włącz lub wyłącz standardowe katalogi</string>
+    <string name="compose_add_current_folder">Dodaj bieżący katalog</string>
+    <string name="compose_use_current_folder">Użyj bieżącego katalogu</string>
+    <string name="compose_reset_to_default">Przywróć domyślne</string>
+    <string name="compose_enter_folder_path">Ścieżka katalogu</string>
+    <string name="compose_bookmark_name">Nazwa zakładki</string>
+    <string name="compose_add_storage">Dodaj nośnik</string>
+    <string name="compose_delete_storage">Usunąć nośnik?</string>
+    <string name="compose_add_bookmark">Dodaj zakładkę</string>
 </resources>

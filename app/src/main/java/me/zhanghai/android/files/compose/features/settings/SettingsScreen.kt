@@ -42,7 +42,6 @@ fun SettingsScreen(
     onQueryChange: (String) -> Unit,
     onItemClick: (SettingsItemUi) -> Unit,
     onBack: () -> Unit,
-    onOpenLegacySettings: () -> Unit,
     onAbout: () -> Unit
 ) {
     val query = state.query.trim()
@@ -111,9 +110,6 @@ fun SettingsScreen(
                         Text(stringResource(R.string.about_title))
                     }
                 }
-            }
-            item(key = "legacy-settings") {
-                OpenLegacySettingsButton(onClick = onOpenLegacySettings)
             }
         }
     }
@@ -209,7 +205,6 @@ private fun SettingsScreenPreview() {
             onQueryChange = {},
             onItemClick = {},
             onBack = {},
-            onOpenLegacySettings = {},
             onAbout = {}
         )
     }

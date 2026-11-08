@@ -154,4 +154,14 @@
         <item quantity="many">+ още %1$d</item>
         <item quantity="other">+ още %1$d</item>
     </plurals>
+    <string name="compose_manage_storage_locations">Управление на свързаните хранилища</string>
+    <string name="compose_enable_or_disable_standard_folders">Активиране или деактивиране на стандартните папки</string>
+    <string name="compose_add_current_folder">Добавяне на текущата папка</string>
+    <string name="compose_use_current_folder">Използване на текущата папка</string>
+    <string name="compose_reset_to_default">Нулиране до стандартните</string>
+    <string name="compose_enter_folder_path">Път на папката</string>
+    <string name="compose_bookmark_name">Име на отметката</string>
+    <string name="compose_add_storage">Добавяне на хранилище</string>
+    <string name="compose_delete_storage">Изтриване на хранилището?</string>
+    <string name="compose_add_bookmark">Добавяне на отметка</string>
 </resources>
