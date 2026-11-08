@@ -108,7 +108,7 @@ private fun TextEditorTopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surface)
             .windowInsetsPadding(WindowInsets.statusBars)
             .heightIn(min = 64.dp)
             .padding(horizontal = 4.dp),

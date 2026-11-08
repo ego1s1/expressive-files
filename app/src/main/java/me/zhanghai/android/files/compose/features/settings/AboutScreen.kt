@@ -163,7 +163,7 @@ private fun AboutTopBar(onBack: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surface)
             .statusBarsPadding()
             .heightIn(min = 64.dp)
             .padding(end = 16.dp),

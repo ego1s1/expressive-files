@@ -70,7 +70,7 @@ internal fun SettingsTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surface)
             .statusBarsPadding()
             .padding(horizontal = 4.dp)
             .heightIn(min = 64.dp),
