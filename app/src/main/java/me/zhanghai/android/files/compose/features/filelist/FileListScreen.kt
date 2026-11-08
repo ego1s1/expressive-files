@@ -10,14 +10,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
@@ -119,13 +115,10 @@ fun FileListScreen(
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
-                        )
-                ) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    // Deliberately no bottom inset: the list runs beneath the system
+                    // navigation bar (the 112dp content padding keeps rows clear of the
+                    // pill), matching the settings screen so the bar stays transparent.
                     FileListBody(
                         state = state,
                         onEntryClick = onEntryClick,
