@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 アイテム • 4.2 GB が無料</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">名前に / を含めることはできません</string>
-    <string name="compose_add_to_favorites">お気に入りに追加</string>
     <string name="compose_advanced">上級者向け</string>
     <string name="compose_allow_access_to_your_files">ファイルへのアクセスを許可する</string>
     <string name="compose_an_item_with_this_name_already_exists">この名前のアイテムはすでに存在します</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">選択を終了する</string>
     <string name="compose_exit_selection_mode">選択モードを終了する</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files では、このデバイス上のファイルを参照、コピー、整理するためにファイル アクセスが必要です。</string>
-    <string name="compose_favorites">お気に入り</string>
     <string name="compose_file_already_exists">ファイルはすでに存在します</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">開いたファイルとフォルダーがここに表示されます。</string>
-    <string name="compose_files_and_folders_you_starred">スターを付けたファイルとフォルダー</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">ストレージ全体でファイルとフォルダーを名前で検索します。</string>
     <string name="compose_folder_name">フォルダ名</string>
     <string name="compose_format">フォーマット</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">もっと見る</string>
     <string name="compose_more_selection_actions">その他の選択アクション</string>
     <string name="compose_navigate_up">上に移動</string>
-    <string name="compose_no_favorites_yet">まだお気に入りはありません</string>
     <string name="compose_no_matching_files">一致するファイルがありません</string>
     <string name="compose_no_properties_to_show">表示するプロパティがありません</string>
     <string name="compose_no_recents_yet">最近の情報はまだありません</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">オープンソースライセンス</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">ファイルを自由に整理、コピー、移動、削除</string>
     <string name="compose_recently_opened_files_and_folders">最近開いたファイルとフォルダー</string>
-    <string name="compose_remove_from_favorites">お気に入りから削除</string>
     <string name="compose_report_an_issue">問題を報告する</string>
     <string name="compose_reset_preferences">設定をリセットする</string>
     <string name="compose_restore_all_settings_to_their_defaults">すべての設定をデフォルトに戻す</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">並べ替えて表示する</string>
     <string name="compose_sort_by">並べ替え順</string>
     <string name="compose_source_code_and_releases">ソースコードとリリース</string>
-    <string name="compose_starred">スター付き</string>
     <string name="compose_storages">ストレージ</string>
     <string name="compose_storages_and_bookmarks">ストレージとブックマーク</string>
     <string name="compose_switch_to_grid">グリッドに切り替える</string>
     <string name="compose_switch_to_list">リストに切り替える</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">ファイルまたはフォルダーの星をタップして、ここに保存します。</string>
     <string name="compose_this_can_t_be_undone">これを元に戻すことはできません。</string>
     <string name="compose_this_folder_is_empty">このフォルダは空です</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">別の名前を試すか、スペルを確認してください。</string>

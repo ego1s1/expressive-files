@@ -13,7 +13,6 @@ import java.nio.charset.Charset
 import java8.nio.file.Path
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compat.LocaleConfigCompat
-import me.zhanghai.android.files.compat.getColorCompat
 import me.zhanghai.android.files.compose.model.SettingsChoiceOptionUi
 import me.zhanghai.android.files.compose.model.SettingsItemKind
 import me.zhanghai.android.files.compose.model.SettingsItemUi
@@ -22,7 +21,6 @@ import me.zhanghai.android.files.compose.model.SettingsUiState
 import me.zhanghai.android.files.filelist.OpenApkDefaultAction
 import me.zhanghai.android.files.provider.root.RootStrategy
 import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.theme.custom.ThemeColor
 import me.zhanghai.android.files.theme.night.NightMode
 import me.zhanghai.android.files.util.toList
 import me.zhanghai.android.files.util.valueCompat
@@ -39,8 +37,6 @@ object SettingsStateBuilder {
     fun build(context: Context, query: String = ""): SettingsUiState {
         val locale = readSetting { currentLocaleTag(context) }
         val supportedLocales = readSetting { supportedLocaleTags(context) }
-        val themeColor = readSetting { Settings.THEME_COLOR.valueCompat }
-        val material3 = readSetting { Settings.MATERIAL_DESIGN_3.valueCompat }
         val nightMode = readSetting { Settings.NIGHT_MODE.valueCompat }
         val blackTheme = readSetting { Settings.BLACK_NIGHT_MODE.valueCompat }
         val animations = readSetting { Settings.FILE_LIST_ANIMATION.valueCompat }
@@ -64,33 +60,6 @@ object SettingsStateBuilder {
             title = context.getString(R.string.compose_appearance),
             items = listOf(
                 localeItem(context, locale, supportedLocales),
-                SettingsItemUi(
-                    key = "appearance_theme_color",
-                    title = context.getString(R.string.settings_theme_color_title),
-                    summary = context.getString(R.string.settings_theme_color_summary),
-                    iconRes = R.drawable.settings_icon_white_24dp,
-                    kind = SettingsItemKind.CHOICE,
-                    valueLabel = themeColor?.let(::humanizeThemeColor),
-                    enabled = themeColor != null && material3 != false,
-                    options = ThemeColor.entries.map {
-                        SettingsChoiceOptionUi(
-                            value = it.ordinal.toString(),
-                            label = humanizeThemeColor(it),
-                            selected = it == themeColor,
-                            colorArgb = runCatching {
-                                context.getColorCompat(it.resourceId)
-                            }.getOrNull()
-                        )
-                    }
-                ),
-                SettingsItemUi(
-                    key = "appearance_material3",
-                    title = context.getString(R.string.settings_material_design_3_title),
-                    iconRes = R.drawable.settings_icon_white_24dp,
-                    kind = SettingsItemKind.SWITCH,
-                    checked = material3 ?: false,
-                    enabled = material3 != null
-                ),
                 SettingsItemUi(
                     key = "appearance_night_mode",
                     title = context.getString(R.string.settings_night_mode_title),
@@ -395,9 +364,6 @@ object SettingsStateBuilder {
     private fun openApkEntries(context: Context): List<String> = runCatching {
         context.resources.getStringArray(R.array.settings_open_apk_default_action_entries).toList()
     }.getOrDefault(emptyList())
-
-    private fun humanizeThemeColor(color: ThemeColor): String = color.name.split('_')
-        .joinToString(" ") { it.lowercase().replaceFirstChar(Char::titlecase) }
 
     const val SYSTEM_DEFAULT_LOCALE = "system"
 }

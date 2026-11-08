@@ -29,12 +29,6 @@ object AppIcons {
     val list = R.drawable.ic_expressive_list
 
     @DrawableRes
-    val star = R.drawable.ic_expressive_star
-
-    @DrawableRes
-    val starFilled = R.drawable.ic_expressive_star_filled
-
-    @DrawableRes
     val trash = R.drawable.ic_expressive_trash
 
     @DrawableRes

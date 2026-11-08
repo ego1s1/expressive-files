@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 elementer • 4,2 GB gratis</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Et navn kan ikke inneholde /</string>
-    <string name="compose_add_to_favorites">Legg til i favoritter</string>
     <string name="compose_advanced">Avansert</string>
     <string name="compose_allow_access_to_your_files">Gi tilgang til filene dine</string>
     <string name="compose_an_item_with_this_name_already_exists">Et element med dette navnet finnes allerede</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Avslutt valg</string>
     <string name="compose_exit_selection_mode">Avslutt valgmodus</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files trenger filtilgang for å bla gjennom, kopiere og organisere filer på denne enheten.</string>
-    <string name="compose_favorites">Favoritter</string>
     <string name="compose_file_already_exists">Filen eksisterer allerede</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Filer og mapper du åpner vises her.</string>
-    <string name="compose_files_and_folders_you_starred">Filer og mapper du har stjernemerket</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Finn filer og mapper etter navn på lagringsplassen din.</string>
     <string name="compose_folder_name">Mappenavn</string>
     <string name="compose_format">Format</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Mer</string>
     <string name="compose_more_selection_actions">Flere valghandlinger</string>
     <string name="compose_navigate_up">Naviger opp</string>
-    <string name="compose_no_favorites_yet">Ingen favoritter ennå</string>
     <string name="compose_no_matching_files">Ingen samsvarende filer</string>
     <string name="compose_no_properties_to_show">Ingen egenskaper å vise</string>
     <string name="compose_no_recents_yet">Ingen nyere ennå</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Åpen kildekode-lisenser</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organiser, kopier, flytt og slett filer fritt</string>
     <string name="compose_recently_opened_files_and_folders">Nylig åpnede filer og mapper</string>
-    <string name="compose_remove_from_favorites">Fjern fra favoritter</string>
     <string name="compose_report_an_issue">Rapporter et problem</string>
     <string name="compose_reset_preferences">Tilbakestill preferanser</string>
     <string name="compose_restore_all_settings_to_their_defaults">Gjenopprett alle innstillinger til standardinnstillingene</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Sorter og vis</string>
     <string name="compose_sort_by">Sorter etter</string>
     <string name="compose_source_code_and_releases">Kildekode og utgivelser</string>
-    <string name="compose_starred">Stjernemerket</string>
     <string name="compose_storages">Oppbevaring</string>
     <string name="compose_storages_and_bookmarks">Lagring og bokmerker</string>
     <string name="compose_switch_to_grid">Bytt til rutenett</string>
     <string name="compose_switch_to_list">Bytt til listen</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Trykk på stjernen på en fil eller mappe for å beholde den her.</string>
     <string name="compose_this_can_t_be_undone">Dette kan ikke angres.</string>
     <string name="compose_this_folder_is_empty">Denne mappen er tom</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Prøv et annet navn eller sjekk stavemåten.</string>

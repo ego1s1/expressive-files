@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The fork starts from Material Files `1.7.5` (versionCode 40); release versions will be
 declared when the first standalone build is tagged.
 
+## [Unreleased]
+
+### Removed
+
+- Favorites/home: `favorites` route, `HomeScreen`/`ShortcutRow`,
+  `FavoritesStore`, star drawables, favorite action-sheet rows and their
+  strings.
+- Settings theme-color / Material3 rows (`appearance_theme_color`,
+  `appearance_material3`) and `colorArgb` choice dots.
+
+### Changed
+
+- Breadcrumb is a full trail ending in the current folder (current crumb
+  highlighted, inert); row height minimum is 48dp.
+- Create menu state is hoisted: circular expressive button beside a centered
+  pill/FAB group with caller-owned tap-outside scrim; FAB shows on Files only
+  outside selection/search/loading/error.
+- Predictive back tracks the system swipe edge (RTL-aware), gates motion on the
+  animation setting, and suppresses the duplicate route slide on commit.
+
 ## [1.1.0-alpha02] - 2026-11-08
 
 ### Added

@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 elementos • 4,2 GB gratuítos</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Un nome non pode conter /</string>
-    <string name="compose_add_to_favorites">Engadir a favoritos</string>
     <string name="compose_advanced">Avanzado</string>
     <string name="compose_allow_access_to_your_files">Permite o acceso aos teus ficheiros</string>
     <string name="compose_an_item_with_this_name_already_exists">Xa existe un elemento con este nome</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Saír da selección</string>
     <string name="compose_exit_selection_mode">Saír do modo de selección</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files necesita acceso aos ficheiros para buscar, copiar e organizar ficheiros neste dispositivo.</string>
-    <string name="compose_favorites">Favoritos</string>
     <string name="compose_file_already_exists">O ficheiro xa existe</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Os ficheiros e cartafoles que abras aparecerán aquí.</string>
-    <string name="compose_files_and_folders_you_starred">Ficheiros e cartafoles que marcaches con estrela</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Busca ficheiros e cartafoles polo seu nome no teu almacenamento.</string>
     <string name="compose_folder_name">Nome do cartafol</string>
     <string name="compose_format">Formato</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Máis</string>
     <string name="compose_more_selection_actions">Máis accións de selección</string>
     <string name="compose_navigate_up">Navega cara arriba</string>
-    <string name="compose_no_favorites_yet">Aínda non hai favoritos</string>
     <string name="compose_no_matching_files">Non hai ficheiros coincidentes</string>
     <string name="compose_no_properties_to_show">Non hai propiedades que mostrar</string>
     <string name="compose_no_recents_yet">Aínda non hai noticias recentes</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Licenzas de código aberto</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organiza, copia, move e elimina ficheiros libremente</string>
     <string name="compose_recently_opened_files_and_folders">Ficheiros e cartafoles abertos recentemente</string>
-    <string name="compose_remove_from_favorites">Eliminar dos favoritos</string>
     <string name="compose_report_an_issue">Informar dun problema</string>
     <string name="compose_reset_preferences">Restablecer as preferencias</string>
     <string name="compose_restore_all_settings_to_their_defaults">Restaurar todos os axustes aos seus valores predeterminados</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Ordenar e ver</string>
     <string name="compose_sort_by">Ordenar por</string>
     <string name="compose_source_code_and_releases">Código fonte e versións</string>
-    <string name="compose_starred">Destacado</string>
     <string name="compose_storages">Almacenamentos</string>
     <string name="compose_storages_and_bookmarks">Almacenamentos e marcadores</string>
     <string name="compose_switch_to_grid">Cambiar á grella</string>
     <string name="compose_switch_to_list">Cambiar á lista</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Toca a estrela en calquera ficheiro ou cartafol para mantelo aquí.</string>
     <string name="compose_this_can_t_be_undone">Isto non se pode desfacer.</string>
     <string name="compose_this_folder_is_empty">Este cartafol está baleiro</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Proba cun nome diferente ou revisa a ortografía.</string>

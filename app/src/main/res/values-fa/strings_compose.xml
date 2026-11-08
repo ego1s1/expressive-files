@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 مورد • 4.2 گیگابایت رایگان</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">یک نام نمی تواند حاوی /</string>
-    <string name="compose_add_to_favorites">به علاقه مندی ها اضافه کنید</string>
     <string name="compose_advanced">پیشرفته</string>
     <string name="compose_allow_access_to_your_files">اجازه دسترسی به فایل های خود را بدهید</string>
     <string name="compose_an_item_with_this_name_already_exists">موردی با این نام از قبل وجود دارد</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">خروج از انتخاب</string>
     <string name="compose_exit_selection_mode">خروج از حالت انتخاب</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files برای مرور، کپی و سازماندهی فایل‌ها در این دستگاه به دسترسی به فایل نیاز دارد.</string>
-    <string name="compose_favorites">موارد دلخواه</string>
     <string name="compose_file_already_exists">فایل از قبل وجود دارد</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">فایل ها و پوشه هایی که باز می کنید در اینجا ظاهر می شوند.</string>
-    <string name="compose_files_and_folders_you_starred">فایل‌ها و پوشه‌هایی که ستاره‌گذاری کرده‌اید</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">فایل ها و پوشه ها را با نام در فضای ذخیره سازی خود پیدا کنید.</string>
     <string name="compose_folder_name">نام پوشه</string>
     <string name="compose_format">قالب</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">بیشتر</string>
     <string name="compose_more_selection_actions">اقدامات انتخاب بیشتر</string>
     <string name="compose_navigate_up">به بالا پیمایش کنید</string>
-    <string name="compose_no_favorites_yet">هنوز موارد دلخواه وجود ندارد</string>
     <string name="compose_no_matching_files">فایل منطبقی وجود ندارد</string>
     <string name="compose_no_properties_to_show">هیچ خاصیتی برای نمایش وجود ندارد</string>
     <string name="compose_no_recents_yet">هنوز خبری جدید نیست</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">مجوزهای منبع باز</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">سازماندهی، کپی، انتقال، و حذف آزادانه فایل ها</string>
     <string name="compose_recently_opened_files_and_folders">فایل‌ها و پوشه‌هایی که اخیراً باز شده‌اند</string>
-    <string name="compose_remove_from_favorites">حذف از موارد دلخواه</string>
     <string name="compose_report_an_issue">گزارش یک مشکل</string>
     <string name="compose_reset_preferences">تنظیمات برگزیده را بازنشانی کنید</string>
     <string name="compose_restore_all_settings_to_their_defaults">تمام تنظیمات را به حالت پیش فرض خود بازگردانید</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">مرتب سازی و مشاهده</string>
     <string name="compose_sort_by">مرتب سازی بر اساس</string>
     <string name="compose_source_code_and_releases">کد منبع و نسخه های منتشر شده</string>
-    <string name="compose_starred">ستاره دار</string>
     <string name="compose_storages">انبارها</string>
     <string name="compose_storages_and_bookmarks">ذخیره سازی ها و نشانک ها</string>
     <string name="compose_switch_to_grid">به شبکه تغییر دهید</string>
     <string name="compose_switch_to_list">به فهرست تغییر دهید</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">روی ستاره روی هر فایل یا پوشه ای ضربه بزنید تا آن را در اینجا نگه دارید.</string>
     <string name="compose_this_can_t_be_undone">این قابل واگرد نیست.</string>
     <string name="compose_this_folder_is_empty">این پوشه خالی است</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">نام دیگری را امتحان کنید یا املای آن را بررسی کنید.</string>

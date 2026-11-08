@@ -18,39 +18,31 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
@@ -59,8 +51,9 @@ import me.zhanghai.android.files.compose.theme.ExpressiveMotion
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
- * A compact, scrim-less create menu built from a [FloatingActionButton] and
- * [AnimatedVisibility], avoiding Material3 1.5-only FAB menu APIs.
+ * Compact create menu: an M3 Expressive circular action button with staggered menu items
+ * above it. Positioning and the tap-outside scrim are owned by the caller so the button
+ * can sit in a centered group; [expanded] is hoisted for the same reason.
  */
 @Composable
 fun CreateFabMenu(
@@ -68,38 +61,20 @@ fun CreateFabMenu(
     onCreateFolder: () -> Unit,
     onCreateFile: () -> Unit,
     onPaste: () -> Unit,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
     val motionEnabled = rememberMotionEnabled()
-    val iconRotation by animateFloatAsState(
-        targetValue = if (expanded) 45f else 0f,
-        animationSpec = if (motionEnabled) ExpressiveMotion.spatial() else snap(),
-        label = "createFabIconRotation"
-    )
 
     BackHandler(enabled = expanded) {
-        expanded = false
+        onExpandedChange(false)
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        if (expanded) {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .clearAndSetSemantics {}
-                    .pointerInput(Unit) {
-                        detectTapGestures { expanded = false }
-                    }
-            )
-        }
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .navigationBarsPadding()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.End
-        ) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.End
+    ) {
             AnimatedVisibility(
                 visible = expanded,
                 // The entrance is carried by the staggered items below, so the container
@@ -123,7 +98,7 @@ fun CreateFabMenu(
                         enterDelayMillis = 80,
                         label = stringResource(R.string.file_create_directory_title),
                         onClick = {
-                            expanded = false
+                            onExpandedChange(false)
                             onCreateFolder()
                         }
                     ) {
@@ -138,7 +113,7 @@ fun CreateFabMenu(
                         enterDelayMillis = 40,
                         label = stringResource(R.string.file_create_file_title),
                         onClick = {
-                            expanded = false
+                            onExpandedChange(false)
                             onCreateFile()
                         }
                     ) {
@@ -154,7 +129,7 @@ fun CreateFabMenu(
                         label = stringResource(R.string.paste),
                         enabled = canPaste,
                         onClick = {
-                            expanded = false
+                            onExpandedChange(false)
                             onPaste()
                         }
                     ) {
@@ -167,22 +142,51 @@ fun CreateFabMenu(
                     Spacer(Modifier.height(12.dp))
                 }
             }
-            FloatingActionButton(
-                onClick = { expanded = !expanded },
-                modifier = Modifier.size(56.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = if (expanded) {
-                        stringResource(R.string.compose_close_create_menu)
-                    } else {
-                        stringResource(R.string.compose_create_new_item)
-                    },
-                    modifier = Modifier.rotate(iconRotation)
-                )
-            }
+        CreateFabButton(
+            expanded = expanded,
+            onClick = { onExpandedChange(!expanded) }
+        )
+    }
+}
+
+/**
+ * M3 Expressive create button: a 56dp tonal circle riding beside the navigation pill,
+ * matching its elevation and geometry instead of the default FAB treatment.
+ */
+@Composable
+private fun CreateFabButton(
+    expanded: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val motionEnabled = rememberMotionEnabled()
+    val iconRotation by animateFloatAsState(
+        targetValue = if (expanded) 45f else 0f,
+        animationSpec = if (motionEnabled) ExpressiveMotion.spatial() else snap(),
+        label = "createFabIconRotation"
+    )
+
+    Surface(
+        onClick = onClick,
+        modifier = modifier.size(56.dp),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.tertiaryContainer,
+        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        tonalElevation = 0.dp,
+        shadowElevation = 3.dp
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = if (expanded) {
+                    stringResource(R.string.compose_close_create_menu)
+                } else {
+                    stringResource(R.string.compose_create_new_item)
+                },
+                modifier = Modifier
+                    .size(24.dp)
+                    .rotate(iconRotation)
+            )
         }
     }
 }

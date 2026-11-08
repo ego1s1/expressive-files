@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -32,12 +32,13 @@ import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.BreadcrumbUi
 
-private val BREADCRUMB_ROW_HEIGHT = 40.dp
+private val BREADCRUMB_ROW_MIN_HEIGHT = 48.dp
 private val BREADCRUMB_LABEL_MAX_WIDTH = 220.dp
 
 /**
- * Minimal ancestor trail. The current folder is owned by the app-bar title, so it is not
- * repeated here. Plain text and chevrons only — no chips, pills, or action buttons.
+ * Full ancestor trail ending in the current folder. The current crumb is highlighted and
+ * not clickable; the app-bar title still owns the accessible heading. Plain text and
+ * chevrons only — no chips, pills, or action buttons.
  */
 @Composable
 fun Breadcrumbs(
@@ -56,7 +57,7 @@ fun Breadcrumbs(
     LazyRow(
         modifier = modifier
             .fillMaxWidth()
-            .height(BREADCRUMB_ROW_HEIGHT),
+            .heightIn(min = BREADCRUMB_ROW_MIN_HEIGHT),
         state = listState,
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -65,6 +66,7 @@ fun Breadcrumbs(
             items = breadcrumbs,
             key = { _, crumb -> crumb.path }
         ) { index, crumb ->
+            val isCurrent = crumb.isCurrent
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -73,12 +75,28 @@ fun Breadcrumbs(
                     text = crumb.label,
                     modifier = Modifier
                         .widthIn(max = BREADCRUMB_LABEL_MAX_WIDTH)
-                        .clickable(onClickLabel = stringResource(R.string.compose_open_folder)) {
-                            onBreadcrumbClick(crumb)
-                        }
+                        .then(
+                            if (isCurrent) {
+                                Modifier
+                            } else {
+                                Modifier.clickable(
+                                    onClickLabel = stringResource(R.string.compose_open_folder)
+                                ) {
+                                    onBreadcrumbClick(crumb)
+                                }
+                            }
+                        )
                         .padding(horizontal = 4.dp, vertical = 12.dp),
-                    color = colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.labelLarge,
+                    color = if (isCurrent) {
+                        colorScheme.onSurface
+                    } else {
+                        colorScheme.onSurfaceVariant
+                    },
+                    style = if (isCurrent) {
+                        MaterialTheme.typography.titleSmall
+                    } else {
+                        MaterialTheme.typography.labelLarge
+                    },
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

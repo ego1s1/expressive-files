@@ -17,6 +17,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import androidx.activity.BackEventCompat
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -26,7 +27,6 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -35,6 +35,8 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -58,6 +60,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -67,8 +70,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.appcompat.app.AppCompatDelegate
@@ -79,7 +84,6 @@ import androidx.lifecycle.Observer
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import java8.nio.file.Path
 import java8.nio.file.Paths
@@ -89,11 +93,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.compose.features.filelist.CreateFabMenu
 import me.zhanghai.android.files.compose.features.filelist.FileListScreen
 import me.zhanghai.android.files.compose.features.filelist.FileSortBy
 import me.zhanghai.android.files.compose.features.filelist.SelectionOptionsSheet
 import me.zhanghai.android.files.compose.features.filelist.SortSheet
-import me.zhanghai.android.files.compose.features.home.HomeScreen
 import me.zhanghai.android.files.compose.features.navigation.BottomPillNav
 import me.zhanghai.android.files.compose.features.navigation.PillNavRail
 import me.zhanghai.android.files.compose.features.navigation.LocationsScreen
@@ -116,13 +120,11 @@ import me.zhanghai.android.files.compose.components.ConfirmDialog
 import me.zhanghai.android.files.compose.components.EmptyState
 import me.zhanghai.android.files.compose.components.LoadingState
 import me.zhanghai.android.files.compose.model.FileLayoutMode
-import me.zhanghai.android.files.compose.model.HomeUiState
 import me.zhanghai.android.files.compose.model.PropertiesUiState
 import me.zhanghai.android.files.compose.model.PropertyRowUi
 import me.zhanghai.android.files.compose.model.PropertySectionUi
 import me.zhanghai.android.files.compose.model.SettingsItemKind
 import me.zhanghai.android.files.compose.model.SettingsItemUi
-import me.zhanghai.android.files.compose.state.FavoritesStore
 import me.zhanghai.android.files.compose.state.NavigationStateBuilder
 import me.zhanghai.android.files.compose.state.SettingsStateBuilder
 import me.zhanghai.android.files.compose.state.applySettingChoice
@@ -133,6 +135,7 @@ import me.zhanghai.android.files.compose.state.resetDefaultDirectory
 import me.zhanghai.android.files.compose.state.resetSettingsToDefaults
 import me.zhanghai.android.files.compose.theme.ExpressiveAccelerateEasing
 import me.zhanghai.android.files.compose.theme.ExpressiveDecelerateEasing
+import me.zhanghai.android.files.compose.theme.ExpressiveMotion
 import me.zhanghai.android.files.compose.theme.WindowSizes
 import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 import me.zhanghai.android.files.file.FileItem
@@ -161,8 +164,6 @@ import me.zhanghai.android.files.storage.AddStorageDialogActivity
 import me.zhanghai.android.files.storage.Storage
 import me.zhanghai.android.files.storage.Storages
 import me.zhanghai.android.files.filelist.OpenApkDefaultAction
-import me.zhanghai.android.files.theme.custom.CustomThemeHelper
-import me.zhanghai.android.files.theme.custom.ThemeColor
 import me.zhanghai.android.files.theme.night.NightMode
 import me.zhanghai.android.files.theme.night.NightModeHelper
 import me.zhanghai.android.files.util.Loading
@@ -173,7 +174,6 @@ import me.zhanghai.android.files.util.valueCompat
 import me.zhanghai.android.files.util.withChooser
 
 private const val ROUTE_FILES = "files"
-private const val ROUTE_FAVORITES = "favorites"
 private const val ROUTE_SETTINGS = "settings"
 private const val ROUTE_SETTINGS_STORAGES = "settings/storages"
 private const val ROUTE_SETTINGS_BOOKMARKS = "settings/bookmarks"
@@ -185,7 +185,6 @@ private const val ROUTE_SEARCH = "search"
 /** Sibling order used to direct route transitions between peer destinations. */
 private val RouteTransitionOrder = listOf(
     ROUTE_FILES,
-    ROUTE_FAVORITES,
     ROUTE_LOCATIONS,
     ROUTE_SETTINGS,
     ROUTE_SETTINGS_STORAGES,
@@ -256,13 +255,10 @@ fun ExpressiveFilesApp(
     }
 
     LaunchedEffect(hasStorageAccess) {
-        FavoritesStore.initialize(context)
         if (hasStorageAccess) {
             viewModel.reload()
         }
     }
-
-    val favorites by FavoritesStore.favorites.collectAsStateWithLifecycle()
 
     val currentPath by viewModel.currentPathLiveData.observeAsState()
     val breadcrumb by viewModel.breadcrumbLiveData.observeAsState()
@@ -307,6 +303,7 @@ fun ExpressiveFilesApp(
     var choiceTarget by remember { mutableStateOf<SettingsItemUi?>(null) }
     var showDefaultFolder by remember { mutableStateOf(false) }
     var showResetConfirm by remember { mutableStateOf(false) }
+    var createMenuExpanded by rememberSaveable { mutableStateOf(false) }
     val localeSystemLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -382,7 +379,7 @@ fun ExpressiveFilesApp(
         )
     }
 
-    val navigationState = remember(route, currentPath, favorites) {
+    val navigationState = remember(route, currentPath) {
         NavigationStateBuilder.build(context, currentPath)
     }
 
@@ -428,19 +425,30 @@ fun ExpressiveFilesApp(
     val motionEnabled = rememberMotionEnabled()
     val layoutDirection = LocalLayoutDirection.current
     val backProgress = remember { Animatable(0f) }
+    // Drag direction of the in-flight gesture: +1 follows the finger, derived from the
+    // system swipe edge and mirrored in RTL so a right-edge swipe never looks opposed.
+    var backDragSign by remember { mutableFloatStateOf(1f) }
+    // Set on gesture commit so the AnimatedContent route change below does not replay a
+    // second slide on top of the gesture-driven parallax that just ended.
+    var suppressRouteTransition by remember { mutableStateOf(false) }
     PredictiveBackHandler(enabled = predictiveBackEnabled) { progress ->
         try {
-            progress.collect { backProgress.snapTo(it.progress) }
+            progress.collect { event ->
+                backDragSign = (if (event.swipeEdge == BackEventCompat.EDGE_LEFT) 1f else -1f) *
+                    (if (layoutDirection == LayoutDirection.Rtl) -1f else 1f)
+                backProgress.snapTo(event.progress)
+            }
             if (route == ROUTE_SEARCH) {
                 searchQuery = ""
                 viewModel.stopSearching()
             }
+            suppressRouteTransition = true
             route = predictiveBackTarget
             backProgress.snapTo(0f)
         } catch (e: CancellationException) {
             backProgress.animateTo(
                 targetValue = 0f,
-                animationSpec = if (motionEnabled) spring(stiffness = 700f) else snap()
+                animationSpec = if (motionEnabled) ExpressiveMotion.spatial() else snap()
             )
             throw e
         }
@@ -518,10 +526,10 @@ fun ExpressiveFilesApp(
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
-                        val progress = backProgress.value
-                        // The back gesture travels right in LTR and left in RTL.
-                        val dragSign = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
-                        translationX = dragSign * progress * size.width * 0.08f
+                        // Gated by the motion switch: with animations off the content must
+                        // land in its final state instead of tracking the finger.
+                        val progress = if (motionEnabled) backProgress.value else 0f
+                        translationX = backDragSign * progress * size.width * 0.08f
                         val scale = 1f - 0.02f * progress
                         scaleX = scale
                         scaleY = scale
@@ -585,7 +593,12 @@ fun ExpressiveFilesApp(
         } else AnimatedContent(
             targetState = route,
             transitionSpec = {
-                if (motionEnabled) {
+                if (suppressRouteTransition) {
+                    // The gesture-driven parallax just ended on the new route; replaying a
+                    // slide here reads as a jump, so land instantly this once.
+                    suppressRouteTransition = false
+                    EnterTransition.None togetherWith ExitTransition.None
+                } else if (motionEnabled) {
                     val forward = isForwardRouteTransition(initialState, targetState)
                     // In LTR, forward content enters from the right; mirrored in RTL.
                     val direction = (if (forward) 1 else -1) *
@@ -606,24 +619,6 @@ fun ExpressiveFilesApp(
             label = "route"
         ) { animatedRoute ->
             when (animatedRoute) {
-            ROUTE_FAVORITES -> HomeScreen(
-                title = stringResource(R.string.compose_favorites),
-                state = HomeUiState(favorites = favorites),
-                onOpen = { shortcut ->
-                    if (shortcut.isDirectory) {
-                        openPath(viewModel, shortcut.path)
-                    } else {
-                        openFileIntent(context, shortcut.path)
-                    }
-                    route = ROUTE_FILES
-                },
-                onToggleFavorite = { shortcut ->
-                    runCatching { Paths.get(shortcut.path) }
-                        .getOrNull()
-                        ?.let(FavoritesStore::remove)
-                },
-            )
-
             ROUTE_SEARCH -> SearchScreen(
                 query = searchQuery,
                 state = uiState,
@@ -814,8 +809,7 @@ fun ExpressiveFilesApp(
                 },
                 onSelectionDelete = { showDelete = true },
                 onSelectionClear = { viewModel.clearSelectedFiles() },
-                onSelectionMore = { showSelectionOptions = true },
-                bottomOverlayPadding = 0.dp
+                onSelectionMore = { showSelectionOptions = true }
                     )
                 }
                 if (useTwoPane) {
@@ -865,23 +859,48 @@ fun ExpressiveFilesApp(
                         )
                     }
                 } else {
-                    val fabVisible = route == ROUTE_FILES
-                    BottomPillNav(
-                        currentRoute = route,
-                        onNavigate = { route = it },
-                        showSelectedLabel = showNavLabels,
-                        modifier = if (fabVisible) {
-                            Modifier
-                                .align(Alignment.BottomEnd)
-                                .navigationBarsPadding()
-                                .padding(bottom = 16.dp, end = 84.dp)
-                        } else {
-                            Modifier
-                                .align(Alignment.BottomCenter)
-                                .navigationBarsPadding()
-                                .padding(bottom = 16.dp)
+                    // Pill and create button are centered together as one unit so the
+                    // group's centroid stays on screen center on every route.
+                    val showFab = route == ROUTE_FILES && uiState.selectedCount == 0 &&
+                        !uiState.isSearching && !uiState.isLoading && uiState.error == null
+                    if (showFab && createMenuExpanded) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clearAndSetSemantics {}
+                                .pointerInput(Unit) {
+                                    detectTapGestures { createMenuExpanded = false }
+                                }
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .navigationBarsPadding()
+                            .padding(bottom = 16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.align(Alignment.Center),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            BottomPillNav(
+                                currentRoute = route,
+                                onNavigate = { route = it },
+                                showSelectedLabel = showNavLabels
+                            )
+                            if (showFab) {
+                                CreateFabMenu(
+                                    canPaste = uiState.canPaste,
+                                    onCreateFolder = { createTarget = true },
+                                    onCreateFile = { createTarget = false },
+                                    onPaste = {},
+                                    expanded = createMenuExpanded,
+                                    onExpandedChange = { createMenuExpanded = it }
+                                )
+                            }
                         }
-                    )
+                    }
                 }
             }
         }
@@ -987,7 +1006,6 @@ fun ExpressiveFilesApp(
     actionTarget?.let { file ->
         FileActionSheet(
             file = file,
-            isFavorite = FavoritesStore.isFavorite(file.path),
             onOpen = {
                 openEntry(context, viewModel, file)
                 actionTarget = null
@@ -1003,10 +1021,6 @@ fun ExpressiveFilesApp(
             onDelete = {
                 viewModel.replaceSelectedFiles(fileItemSetOf(file))
                 showDelete = true
-                actionTarget = null
-            },
-            onToggleFavorite = {
-                FavoritesStore.toggle(file)
                 actionTarget = null
             },
             onCopyPath = {
@@ -1129,12 +1143,10 @@ private fun ComposeImageViewer(
 @Composable
 private fun FileActionSheet(
     file: FileItem,
-    isFavorite: Boolean,
     onOpen: () -> Unit,
     onRename: () -> Unit,
     onShare: () -> Unit,
     onDelete: () -> Unit,
-    onToggleFavorite: () -> Unit,
     onCopyPath: () -> Unit,
     onProperties: () -> Unit,
     onDismiss: () -> Unit
@@ -1154,14 +1166,6 @@ private fun FileActionSheet(
             ActionRow(stringResource(R.string.compose_open), onOpen)
             ActionRow(stringResource(R.string.rename), onRename)
             ActionRow(stringResource(R.string.share), onShare)
-            ActionRow(
-                if (isFavorite) {
-                    stringResource(R.string.compose_remove_from_favorites)
-                } else {
-                    stringResource(R.string.compose_add_to_favorites)
-                },
-                onToggleFavorite
-            )
             ActionRow(stringResource(R.string.file_list_action_copy_path), onCopyPath)
             ActionRow(stringResource(R.string.file_item_action_properties), onProperties)
             HorizontalDivider(

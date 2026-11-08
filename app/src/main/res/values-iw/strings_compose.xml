@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 פריטים • 4.2 GB בחינם</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">שם לא יכול להכיל /</string>
-    <string name="compose_add_to_favorites">הוסף למועדפים</string>
     <string name="compose_advanced">מתקדם</string>
     <string name="compose_allow_access_to_your_files">אפשר גישה לקבצים שלך</string>
     <string name="compose_an_item_with_this_name_already_exists">כבר קיים פריט בשם זה</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">צא מבחירה</string>
     <string name="compose_exit_selection_mode">צא ממצב בחירה</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files זקוק לגישה לקבצים כדי לעיין, להעתיק ולארגן קבצים במכשיר זה.</string>
-    <string name="compose_favorites">מועדפים</string>
     <string name="compose_file_already_exists">הקובץ כבר קיים</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">קבצים ותיקיות שאתה פותח יופיעו כאן.</string>
-    <string name="compose_files_and_folders_you_starred">קבצים ותיקיות שסימנת בכוכב</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">מצא קבצים ותיקיות לפי שם באחסון שלך.</string>
     <string name="compose_folder_name">שם התיקיה</string>
     <string name="compose_format">פורמט</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">עוד</string>
     <string name="compose_more_selection_actions">פעולות בחירה נוספות</string>
     <string name="compose_navigate_up">נווט למעלה</string>
-    <string name="compose_no_favorites_yet">עדיין אין מועדפים</string>
     <string name="compose_no_matching_files">אין קבצים תואמים</string>
     <string name="compose_no_properties_to_show">אין נכסים להצגה</string>
     <string name="compose_no_recents_yet">אין עדיין לאחרונה</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">רישיונות קוד פתוח</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">ארגן, העתק, העבר ומחק קבצים באופן חופשי</string>
     <string name="compose_recently_opened_files_and_folders">קבצים ותיקיות שנפתחו לאחרונה</string>
-    <string name="compose_remove_from_favorites">הסר מהמועדפים</string>
     <string name="compose_report_an_issue">דווח על בעיה</string>
     <string name="compose_reset_preferences">אפס העדפות</string>
     <string name="compose_restore_all_settings_to_their_defaults">שחזר את כל ההגדרות לברירות המחדל שלהן</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">מיין והצג</string>
     <string name="compose_sort_by">מיין לפי</string>
     <string name="compose_source_code_and_releases">קוד מקור וגרסאות</string>
-    <string name="compose_starred">מסומן בכוכב</string>
     <string name="compose_storages">מחסנים</string>
     <string name="compose_storages_and_bookmarks">אחסון וסימניות</string>
     <string name="compose_switch_to_grid">עבור לרשת</string>
     <string name="compose_switch_to_list">עבור לרשימה</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">הקש על הכוכב בכל קובץ או תיקיה כדי לשמור אותם כאן.</string>
     <string name="compose_this_can_t_be_undone">לא ניתן לבטל את זה.</string>
     <string name="compose_this_folder_is_empty">התיקיה הזו ריקה</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">נסה שם אחר או בדוק את האיות.</string>

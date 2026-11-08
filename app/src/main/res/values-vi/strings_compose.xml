@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 mục • 4,2 GB miễn phí</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Tên không thể chứa /</string>
-    <string name="compose_add_to_favorites">Thêm vào mục yêu thích</string>
     <string name="compose_advanced">Nâng cao</string>
     <string name="compose_allow_access_to_your_files">Cho phép truy cập vào tập tin của bạn</string>
     <string name="compose_an_item_with_this_name_already_exists">Một mục có tên này đã tồn tại</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Thoát khỏi lựa chọn</string>
     <string name="compose_exit_selection_mode">Thoát chế độ chọn</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Tệp biểu cảm cần quyền truy cập tệp để duyệt, sao chép và sắp xếp tệp trên thiết bị này.</string>
-    <string name="compose_favorites">Yêu thích</string>
     <string name="compose_file_already_exists">Tệp đã tồn tại</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Các tập tin và thư mục bạn mở sẽ xuất hiện ở đây.</string>
-    <string name="compose_files_and_folders_you_starred">Các tệp và thư mục bạn đã gắn dấu sao</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Tìm tệp và thư mục theo tên trên bộ nhớ của bạn.</string>
     <string name="compose_folder_name">Tên thư mục</string>
     <string name="compose_format">định dạng</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Thêm</string>
     <string name="compose_more_selection_actions">Thêm hành động lựa chọn</string>
     <string name="compose_navigate_up">Điều hướng lên</string>
-    <string name="compose_no_favorites_yet">Chưa có mục yêu thích nào</string>
     <string name="compose_no_matching_files">Không có tập tin phù hợp</string>
     <string name="compose_no_properties_to_show">Không có tài sản nào để hiển thị</string>
     <string name="compose_no_recents_yet">Chưa có thông tin gần đây</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Giấy phép nguồn mở</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Sắp xếp, sao chép, di chuyển và xóa tập tin một cách tự do</string>
     <string name="compose_recently_opened_files_and_folders">Các tập tin và thư mục đã mở gần đây</string>
-    <string name="compose_remove_from_favorites">Xóa khỏi mục yêu thích</string>
     <string name="compose_report_an_issue">Báo cáo sự cố</string>
     <string name="compose_reset_preferences">Đặt lại tùy chọn</string>
     <string name="compose_restore_all_settings_to_their_defaults">Khôi phục tất cả các cài đặt về mặc định</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Sắp xếp và xem</string>
     <string name="compose_sort_by">Sắp xếp theo</string>
     <string name="compose_source_code_and_releases">Mã nguồn và bản phát hành</string>
-    <string name="compose_starred">Được gắn dấu sao</string>
     <string name="compose_storages">Kho lưu trữ</string>
     <string name="compose_storages_and_bookmarks">Kho lưu trữ và dấu trang</string>
     <string name="compose_switch_to_grid">Chuyển sang lưới</string>
     <string name="compose_switch_to_list">Chuyển sang danh sách</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Nhấn vào ngôi sao trên bất kỳ tệp hoặc thư mục nào để giữ nó ở đây.</string>
     <string name="compose_this_can_t_be_undone">Không thể hoàn tác việc này.</string>
     <string name="compose_this_folder_is_empty">Thư mục này trống</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Hãy thử một tên khác hoặc kiểm tra chính tả.</string>

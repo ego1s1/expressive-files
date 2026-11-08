@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 项 • 4.2 GB 可用空间</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">名称不能包含 /</string>
-    <string name="compose_add_to_favorites">添加到收藏夹</string>
     <string name="compose_advanced">高级</string>
     <string name="compose_allow_access_to_your_files">允许访问您的文件</string>
     <string name="compose_an_item_with_this_name_already_exists">具有此名称的项目已存在</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">退出选择</string>
     <string name="compose_exit_selection_mode">退出选择模式</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files 需要文件访问权限才能浏览、复制和组织该设备上的文件。</string>
-    <string name="compose_favorites">收藏夹</string>
     <string name="compose_file_already_exists">文件已存在</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">您打开的文件和文件夹将显示在此处。</string>
-    <string name="compose_files_and_folders_you_starred">您加注星标的文件和文件夹</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">在存储空间中按名称查找文件和文件夹。</string>
     <string name="compose_folder_name">文件夹名称</string>
     <string name="compose_format">格式</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">更多</string>
     <string name="compose_more_selection_actions">更多选择动作</string>
     <string name="compose_navigate_up">向上导航</string>
-    <string name="compose_no_favorites_yet">还没有收藏夹</string>
     <string name="compose_no_matching_files">没有匹配的文件</string>
     <string name="compose_no_properties_to_show">没有可显示的属性</string>
     <string name="compose_no_recents_yet">还没有最近的内容</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">开源许可证</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">自由组织、复制、移动、删除文件</string>
     <string name="compose_recently_opened_files_and_folders">最近打开的文件和文件夹</string>
-    <string name="compose_remove_from_favorites">从收藏夹中删除</string>
     <string name="compose_report_an_issue">报告问题</string>
     <string name="compose_reset_preferences">重置偏好设置</string>
     <string name="compose_restore_all_settings_to_their_defaults">将所有设置恢复为默认值</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">排序并查看</string>
     <string name="compose_sort_by">排序依据</string>
     <string name="compose_source_code_and_releases">源代码和发布</string>
-    <string name="compose_starred">已加星标</string>
     <string name="compose_storages">存储</string>
     <string name="compose_storages_and_bookmarks">存储和书签</string>
     <string name="compose_switch_to_grid">切换到网格</string>
     <string name="compose_switch_to_list">切换到列表</string>
     <string name="compose_tar_xz">焦油XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">点击任意文件或文件夹上的星号即可将其保留在此处。</string>
     <string name="compose_this_can_t_be_undone">这无法撤消。</string>
     <string name="compose_this_folder_is_empty">该文件夹是空的</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">尝试使用不同的名称或检查拼写。</string>

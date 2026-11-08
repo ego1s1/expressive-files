@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 items • 4,2 GB gratis</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Een naam mag geen / bevatten</string>
-    <string name="compose_add_to_favorites">Toevoegen aan favorieten</string>
     <string name="compose_advanced">Geavanceerd</string>
     <string name="compose_allow_access_to_your_files">Geef toegang tot uw bestanden</string>
     <string name="compose_an_item_with_this_name_already_exists">Er bestaat al een item met deze naam</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Sluit de selectie af</string>
     <string name="compose_exit_selection_mode">Verlaat de selectiemodus</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files heeft bestandstoegang nodig om bestanden op dit apparaat te bladeren, te kopiëren en te ordenen.</string>
-    <string name="compose_favorites">Favorieten</string>
     <string name="compose_file_already_exists">Bestand bestaat al</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Bestanden en mappen die u opent, verschijnen hier.</string>
-    <string name="compose_files_and_folders_you_starred">Bestanden en mappen met een ster</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Vind bestanden en mappen op naam in uw opslag.</string>
     <string name="compose_folder_name">Mapnaam</string>
     <string name="compose_format">Formaat</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Meer</string>
     <string name="compose_more_selection_actions">Meer selectieacties</string>
     <string name="compose_navigate_up">Navigeer omhoog</string>
-    <string name="compose_no_favorites_yet">Nog geen favorieten</string>
     <string name="compose_no_matching_files">Geen overeenkomende bestanden</string>
     <string name="compose_no_properties_to_show">Er zijn geen eigenschappen om te tonen</string>
     <string name="compose_no_recents_yet">Nog geen recente berichten</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Open source-licenties</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organiseer, kopieer, verplaats en verwijder bestanden vrijelijk</string>
     <string name="compose_recently_opened_files_and_folders">Recent geopende bestanden en mappen</string>
-    <string name="compose_remove_from_favorites">Verwijderen uit favorieten</string>
     <string name="compose_report_an_issue">Rapporteer een probleem</string>
     <string name="compose_reset_preferences">Voorkeuren opnieuw instellen</string>
     <string name="compose_restore_all_settings_to_their_defaults">Herstel alle instellingen naar hun standaardwaarden</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Sorteren en bekijken</string>
     <string name="compose_sort_by">Sorteer op</string>
     <string name="compose_source_code_and_releases">Broncode en releases</string>
-    <string name="compose_starred">Met ster</string>
     <string name="compose_storages">Opslagplaatsen</string>
     <string name="compose_storages_and_bookmarks">Opslagruimtes en bladwijzers</string>
     <string name="compose_switch_to_grid">Schakel over naar raster</string>
     <string name="compose_switch_to_list">Schakel over naar lijst</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Tik op de ster in een bestand of map om deze hier te houden.</string>
     <string name="compose_this_can_t_be_undone">Dit kan niet ongedaan worden gemaakt.</string>
     <string name="compose_this_folder_is_empty">Deze map is leeg</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Probeer een andere naam of controleer de spelling.</string>

@@ -5,7 +5,6 @@
     <string name="compose_12_items_4_2_gb_free">12 Elemente • 4,2 GB frei</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Ein Name darf kein / enthalten</string>
-    <string name="compose_add_to_favorites">Zu Favoriten hinzufügen</string>
     <string name="compose_advanced">Erweitert</string>
     <string name="compose_allow_access_to_your_files">Zugriff auf deine Dateien erlauben</string>
     <string name="compose_already_exists">„%1$s“ existiert bereits</string>
@@ -49,10 +48,8 @@
     <string name="compose_exit_selection">Auswahl verlassen</string>
     <string name="compose_exit_selection_mode">Auswahlmodus verlassen</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files benötigt Dateizugriff, um Dateien auf diesem Gerät zu durchsuchen, zu kopieren und zu organisieren.</string>
-    <string name="compose_favorites">Favoriten</string>
     <string name="compose_file_already_exists">Datei existiert bereits</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Geöffnete Dateien und Ordner erscheinen hier.</string>
-    <string name="compose_files_and_folders_you_starred">Von dir markierte Dateien und Ordner</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Dateien und Ordner nach Namen im Speicher suchen.</string>
     <string name="compose_folder_name">Ordnername</string>
     <string name="compose_format">Format</string>
@@ -76,7 +73,6 @@
     <string name="compose_more_options_for">Weitere Optionen für %1$s</string>
     <string name="compose_more_selection_actions">Weitere Auswahlaktionen</string>
     <string name="compose_navigate_up">Nach oben</string>
-    <string name="compose_no_favorites_yet">Noch keine Favoriten</string>
     <string name="compose_no_matching_files">Keine passenden Dateien</string>
     <string name="compose_no_properties_to_show">Keine Eigenschaften vorhanden</string>
     <string name="compose_no_recents_yet">Noch keine zuletzt geöffneten Elemente</string>
@@ -93,7 +89,6 @@
     <string name="compose_progress">%1$d%%</string>
     <string name="compose_recently_opened">Zuletzt geöffnet</string>
     <string name="compose_recently_opened_files_and_folders">Zuletzt geöffnete Dateien und Ordner</string>
-    <string name="compose_remove_from_favorites">Aus Favoriten entfernen</string>
     <string name="compose_report_an_issue">Problem melden</string>
     <string name="compose_reset_preferences">Einstellungen zurücksetzen</string>
     <string name="compose_restore_all_settings_to_their_defaults">Alle Einstellungen auf Standardwerte zurücksetzen</string>
@@ -109,12 +104,10 @@
     <string name="compose_sort_and_view_sorted_by">Sortieren und anzeigen, sortiert nach %1$s</string>
     <string name="compose_sort_by">Sortieren nach</string>
     <string name="compose_source_code_and_releases">Quellcode und Veröffentlichungen</string>
-    <string name="compose_starred">Markiert</string>
     <string name="compose_storages">Speicher</string>
     <string name="compose_storages_and_bookmarks">Speicher und Lesezeichen</string>
     <string name="compose_switch_to_grid">Zur Rasteransicht wechseln</string>
     <string name="compose_switch_to_list">Zur Listenansicht wechseln</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Tippe auf den Stern einer Datei oder eines Ordners, um sie hier zu behalten.</string>
     <string name="compose_tar_xz">TAR.XZ</string>
     <string name="compose_that_name_is_reserved">Dieser Name ist reserviert</string>
     <string name="compose_this_can_t_be_undone">Dies kann nicht rückgängig gemacht werden.</string>

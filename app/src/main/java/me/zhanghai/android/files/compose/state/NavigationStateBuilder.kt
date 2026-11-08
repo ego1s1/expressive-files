@@ -11,7 +11,6 @@ import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.DrawerEntryUi
 import me.zhanghai.android.files.compose.model.DrawerSectionUi
 import me.zhanghai.android.files.compose.model.NavigationUiState
-import me.zhanghai.android.files.compose.model.ShortcutEntryUi
 import me.zhanghai.android.files.settings.Settings
 import me.zhanghai.android.files.util.valueCompat
 
@@ -23,25 +22,12 @@ import me.zhanghai.android.files.util.valueCompat
  */
 object NavigationStateBuilder {
     fun build(context: Context, currentPath: Path? = null): NavigationUiState {
-        FavoritesStore.initialize(context)
         val currentPathString = currentPath?.toString()
 
-        val favorites = FavoritesStore.favorites.value.map {
-            it.toDrawerEntryUi(currentPathString)
-        }
         val storages = loadStorages(context, currentPathString)
         val bookmarks = loadBookmarks(context, currentPathString)
 
         val sections = buildList {
-            if (favorites.isNotEmpty()) {
-                add(
-                    DrawerSectionUi(
-                        id = "favorites",
-                        title = context.getString(R.string.compose_favorites),
-                        entries = favorites
-                    )
-                )
-            }
             if (storages.isNotEmpty()) {
                 add(
                     DrawerSectionUi(
@@ -128,15 +114,6 @@ object NavigationStateBuilder {
     const val ACTION_SETTINGS = "action_settings"
     const val ACTION_ABOUT = "action_about"
 }
-
-private fun ShortcutEntryUi.toDrawerEntryUi(currentPathString: String?): DrawerEntryUi =
-    DrawerEntryUi(
-        id = path,
-        title = name,
-        subtitle = subtitle,
-        iconRes = iconRes,
-        selected = path == currentPathString
-    )
 
 /** Convenience alias for call sites that use function naming rather than the object. */
 fun buildNavigationUiState(

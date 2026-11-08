@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 articles • 4,2 Go gratuits</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Un nom ne peut pas contenir /</string>
-    <string name="compose_add_to_favorites">Ajouter aux favoris</string>
     <string name="compose_advanced">Avancé</string>
     <string name="compose_allow_access_to_your_files">Autoriser l\'accès à vos fichiers</string>
     <string name="compose_an_item_with_this_name_already_exists">Un élément portant ce nom existe déjà</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Quitter la sélection</string>
     <string name="compose_exit_selection_mode">Quitter le mode de sélection</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files a besoin d\'un accès aux fichiers pour parcourir, copier et organiser les fichiers sur cet appareil.</string>
-    <string name="compose_favorites">Favoris</string>
     <string name="compose_file_already_exists">Le fichier existe déjà</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Les fichiers et dossiers que vous ouvrez apparaîtront ici.</string>
-    <string name="compose_files_and_folders_you_starred">Fichiers et dossiers que vous avez mis en vedette</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Recherchez des fichiers et des dossiers par nom sur votre stockage.</string>
     <string name="compose_folder_name">Nom du dossier</string>
     <string name="compose_format">Formater</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Plus</string>
     <string name="compose_more_selection_actions">Plus d\'actions de sélection</string>
     <string name="compose_navigate_up">Naviguez vers le haut</string>
-    <string name="compose_no_favorites_yet">Pas encore de favoris</string>
     <string name="compose_no_matching_files">Aucun fichier correspondant</string>
     <string name="compose_no_properties_to_show">Aucune propriété à afficher</string>
     <string name="compose_no_recents_yet">Pas encore de récentes</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Licences open source</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organisez, copiez, déplacez et supprimez des fichiers librement</string>
     <string name="compose_recently_opened_files_and_folders">Fichiers et dossiers récemment ouverts</string>
-    <string name="compose_remove_from_favorites">Supprimer des favoris</string>
     <string name="compose_report_an_issue">Signaler un problème</string>
     <string name="compose_reset_preferences">Réinitialiser les préférences</string>
     <string name="compose_restore_all_settings_to_their_defaults">Restaurer tous les paramètres à leurs valeurs par défaut</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Trier et afficher</string>
     <string name="compose_sort_by">Trier par</string>
     <string name="compose_source_code_and_releases">Code source et versions</string>
-    <string name="compose_starred">Favoris</string>
     <string name="compose_storages">Stockages</string>
     <string name="compose_storages_and_bookmarks">Rangements et signets</string>
     <string name="compose_switch_to_grid">Passer à la grille</string>
     <string name="compose_switch_to_list">Passer à la liste</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Appuyez sur l\'étoile sur n\'importe quel fichier ou dossier pour le conserver ici.</string>
     <string name="compose_this_can_t_be_undone">Cela ne peut pas être annulé.</string>
     <string name="compose_this_folder_is_empty">Ce dossier est vide</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Essayez un autre nom ou vérifiez l\'orthographe.</string>

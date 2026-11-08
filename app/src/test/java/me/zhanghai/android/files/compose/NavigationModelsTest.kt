@@ -10,12 +10,9 @@ import me.zhanghai.android.files.compose.model.DrawerEntryUi
 import me.zhanghai.android.files.compose.model.DrawerSectionUi
 import me.zhanghai.android.files.compose.model.FileEntryUi
 import me.zhanghai.android.files.compose.model.FileListUiState
-import me.zhanghai.android.files.compose.model.HomeUiState
 import me.zhanghai.android.files.compose.model.NavigationUiState
-import me.zhanghai.android.files.compose.model.ShortcutEntryUi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -95,8 +92,6 @@ class NavigationModelsTest {
     @Test
     fun navigationUiState_preservesSectionDeclarationOrder() {
         val sections = listOf(
-            DrawerSectionUi(id = "favorites", title = "Favorites"),
-            DrawerSectionUi(id = "recents", title = "Recents"),
             DrawerSectionUi(id = "storages", title = "Storages"),
             DrawerSectionUi(id = "bookmarks", title = "Bookmarks"),
             DrawerSectionUi(
@@ -108,7 +103,7 @@ class NavigationModelsTest {
         val state = NavigationUiState(version = "0.1.0", sections = sections)
 
         assertEquals(
-            listOf("favorites", "recents", "storages", "bookmarks", "more"),
+            listOf("storages", "bookmarks", "more"),
             state.sections.map { it.id }
         )
         assertEquals(sections, state.sections)
@@ -177,31 +172,5 @@ class NavigationModelsTest {
         assertFalse(selectionMode)
         assertTrue(pillEligible)
         assertEquals(2, state.entries.size)
-    }
-
-    @Test
-    fun homeUiState_keepsRecentsAndFavoritesIndependent() {
-        val empty = HomeUiState()
-
-        assertTrue(empty.recents.isEmpty())
-        assertTrue(empty.favorites.isEmpty())
-        assertFalse(empty.isLoading)
-
-        val state = empty.copy(
-            recents = listOf(
-                ShortcutEntryUi(path = "/storage/emulated/0/Documents", name = "Documents")
-            ),
-            favorites = listOf(
-                ShortcutEntryUi(
-                    path = "/storage/emulated/0/Pictures",
-                    name = "Pictures",
-                    isFavorite = true
-                )
-            )
-        )
-
-        assertEquals(listOf("Documents"), state.recents.map { it.name })
-        assertEquals(listOf("Pictures"), state.favorites.map { it.name })
-        assertNotEquals(state.recents, state.favorites)
     }
 }

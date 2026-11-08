@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 prekių • 4,2 GB nemokama</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Varde negali būti /</string>
-    <string name="compose_add_to_favorites">Pridėti prie mėgstamiausių</string>
     <string name="compose_advanced">Išplėstinė</string>
     <string name="compose_allow_access_to_your_files">Suteikite prieigą prie failų</string>
     <string name="compose_an_item_with_this_name_already_exists">Elementas tokiu pavadinimu jau yra</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Išeiti iš pasirinkimo</string>
     <string name="compose_exit_selection_mode">Išeikite iš pasirinkimo režimo</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">„Expressive Files“ reikalinga prieiga prie failų, kad galėtų naršyti, kopijuoti ir tvarkyti failus šiame įrenginyje.</string>
-    <string name="compose_favorites">Mėgstamiausi</string>
     <string name="compose_file_already_exists">Failas jau yra</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Čia bus rodomi atidaryti failai ir aplankai.</string>
-    <string name="compose_files_and_folders_you_starred">Failai ir aplankai, kuriuos pažymėjote žvaigždute</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Raskite failus ir aplankus pagal pavadinimą saugykloje.</string>
     <string name="compose_folder_name">Aplanko pavadinimas</string>
     <string name="compose_format">Formatas</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Daugiau</string>
     <string name="compose_more_selection_actions">Daugiau pasirinkimo veiksmų</string>
     <string name="compose_navigate_up">Naršykite aukštyn</string>
-    <string name="compose_no_favorites_yet">Mėgstamiausių dar nėra</string>
     <string name="compose_no_matching_files">Nėra atitinkančių failų</string>
     <string name="compose_no_properties_to_show">Nėra savybių, kurias būtų galima rodyti</string>
     <string name="compose_no_recents_yet">Naujausių dar nėra</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Atvirojo kodo licencijos</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Laisvai tvarkykite, kopijuokite, perkelkite ir ištrinkite failus</string>
     <string name="compose_recently_opened_files_and_folders">Neseniai atidaryti failai ir aplankai</string>
-    <string name="compose_remove_from_favorites">Pašalinti iš mėgstamiausių</string>
     <string name="compose_report_an_issue">Pranešti apie problemą</string>
     <string name="compose_reset_preferences">Iš naujo nustatyti nuostatas</string>
     <string name="compose_restore_all_settings_to_their_defaults">Atkurkite visus numatytuosius nustatymus</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Rūšiuoti ir peržiūrėti</string>
     <string name="compose_sort_by">Rūšiuoti pagal</string>
     <string name="compose_source_code_and_releases">Šaltinio kodas ir leidimai</string>
-    <string name="compose_starred">Pažymėta žvaigždute</string>
     <string name="compose_storages">Saugyklos</string>
     <string name="compose_storages_and_bookmarks">Saugyklos ir žymės</string>
     <string name="compose_switch_to_grid">Perjungti į tinklelį</string>
     <string name="compose_switch_to_list">Perjungti į sąrašą</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Bakstelėkite žvaigždutę ant bet kurio failo ar aplanko, kad jis liktų čia.</string>
     <string name="compose_this_can_t_be_undone">To negalima anuliuoti.</string>
     <string name="compose_this_folder_is_empty">Šis aplankas tuščias</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Išbandykite kitą pavadinimą arba patikrinkite rašybą.</string>

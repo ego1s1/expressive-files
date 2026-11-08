@@ -6,13 +6,6 @@
 package me.zhanghai.android.files.compose.features.filelist
 
 import me.zhanghai.android.files.compose.theme.ExpressiveFilesPreview
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,14 +34,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.compose.model.BreadcrumbUi
 import me.zhanghai.android.files.compose.model.FileEntryUi
 import me.zhanghai.android.files.compose.model.FileLayoutMode
 import me.zhanghai.android.files.compose.model.FileListUiState
-import me.zhanghai.android.files.compose.theme.rememberMotionEnabled
 
 /**
  * The stateless Expressive Files file browser.
@@ -77,17 +68,11 @@ fun FileListScreen(
     onSelectionShare: () -> Unit,
     onSelectionDelete: () -> Unit,
     onSelectionClear: () -> Unit,
-    onSelectionMore: () -> Unit,
-    bottomOverlayPadding: Dp = 0.dp
+    onSelectionMore: () -> Unit
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    val motionEnabled = rememberMotionEnabled()
     var showListOptions by remember { mutableStateOf(false) }
     val selectionMode = state.selectedCount > 0
-    val showFab = !selectionMode &&
-        !state.isSearching &&
-        !state.isLoading &&
-        state.error == null
 
     Box(
         modifier = Modifier
@@ -112,10 +97,10 @@ fun FileListScreen(
                     onOptionsClick = { showListOptions = true }
                 )
             }
-            val ancestors = state.breadcrumbs.filterNot { it.isCurrent }
-            if (ancestors.isNotEmpty()) {
+            val breadcrumbs = state.breadcrumbs
+            if (breadcrumbs.isNotEmpty()) {
                 Breadcrumbs(
-                    breadcrumbs = ancestors,
+                    breadcrumbs = breadcrumbs,
                     onBreadcrumbClick = onBreadcrumbClick
                 )
             }
@@ -150,27 +135,6 @@ fun FileListScreen(
                     )
                 }
             }
-        }
-        AnimatedVisibility(
-            visible = showFab,
-            enter = if (motionEnabled) {
-                fadeIn() + scaleIn(initialScale = 0.8f)
-            } else {
-                EnterTransition.None
-            },
-            exit = if (motionEnabled) {
-                fadeOut() + scaleOut(targetScale = 0.8f)
-            } else {
-                ExitTransition.None
-            }
-        ) {
-            CreateFabMenu(
-                canPaste = state.canPaste,
-                onCreateFolder = onCreateFolder,
-                onCreateFile = onCreateFile,
-                onPaste = onPaste,
-                modifier = Modifier.padding(bottom = bottomOverlayPadding)
-            )
         }
     }
 

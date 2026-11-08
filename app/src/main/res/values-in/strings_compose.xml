@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 item • 4,2 GB gratis</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Sebuah nama tidak boleh berisi /</string>
-    <string name="compose_add_to_favorites">Tambahkan ke favorit</string>
     <string name="compose_advanced">Lanjutan</string>
     <string name="compose_allow_access_to_your_files">Izinkan akses ke file Anda</string>
     <string name="compose_an_item_with_this_name_already_exists">Item dengan nama ini sudah ada</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Keluar dari seleksi</string>
     <string name="compose_exit_selection_mode">Keluar dari mode pemilihan</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">File Ekspresif memerlukan akses file untuk menelusuri, menyalin, dan mengatur file di perangkat ini.</string>
-    <string name="compose_favorites">Favorit</string>
     <string name="compose_file_already_exists">Berkas sudah ada</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">File dan folder yang Anda buka akan muncul di sini.</string>
-    <string name="compose_files_and_folders_you_starred">File dan folder yang Anda bintangi</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Temukan file dan folder berdasarkan nama di seluruh penyimpanan Anda.</string>
     <string name="compose_folder_name">Nama folder</string>
     <string name="compose_format">Format</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Lebih lanjut</string>
     <string name="compose_more_selection_actions">Tindakan seleksi lainnya</string>
     <string name="compose_navigate_up">Navigasi ke atas</string>
-    <string name="compose_no_favorites_yet">Belum ada favorit</string>
     <string name="compose_no_matching_files">Tidak ada file yang cocok</string>
     <string name="compose_no_properties_to_show">Tidak ada properti untuk ditampilkan</string>
     <string name="compose_no_recents_yet">Belum ada yang terbaru</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Lisensi sumber terbuka</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Atur, salin, pindahkan, dan hapus file dengan bebas</string>
     <string name="compose_recently_opened_files_and_folders">File dan folder yang baru dibuka</string>
-    <string name="compose_remove_from_favorites">Hapus dari favorit</string>
     <string name="compose_report_an_issue">Laporkan masalah</string>
     <string name="compose_reset_preferences">Setel ulang preferensi</string>
     <string name="compose_restore_all_settings_to_their_defaults">Kembalikan semua pengaturan ke defaultnya</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Urutkan dan lihat</string>
     <string name="compose_sort_by">Urutkan berdasarkan</string>
     <string name="compose_source_code_and_releases">Kode sumber dan rilis</string>
-    <string name="compose_starred">Berbintang</string>
     <string name="compose_storages">Penyimpanan</string>
     <string name="compose_storages_and_bookmarks">Penyimpanan dan bookmark</string>
     <string name="compose_switch_to_grid">Beralih ke jaringan</string>
     <string name="compose_switch_to_list">Beralih ke daftar</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Ketuk bintang pada file atau folder mana pun untuk menyimpannya di sini.</string>
     <string name="compose_this_can_t_be_undone">Hal ini tidak dapat dibatalkan.</string>
     <string name="compose_this_folder_is_empty">Folder ini kosong</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Coba nama lain atau periksa ejaannya.</string>

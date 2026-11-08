@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 είδη • 4,2 GB δωρεάν</string>
     <string name="compose_7z">7Ζ</string>
     <string name="compose_a_name_can_t_contain">Ένα όνομα δεν μπορεί να περιέχει /</string>
-    <string name="compose_add_to_favorites">Προσθήκη στα αγαπημένα</string>
     <string name="compose_advanced">Προχωρημένο</string>
     <string name="compose_allow_access_to_your_files">Επιτρέψτε την πρόσβαση στα αρχεία σας</string>
     <string name="compose_an_item_with_this_name_already_exists">Υπάρχει ήδη ένα στοιχείο με αυτό το όνομα</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Έξοδος από την επιλογή</string>
     <string name="compose_exit_selection_mode">Έξοδος από τη λειτουργία επιλογής</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Το Expressive Files χρειάζεται πρόσβαση σε αρχείο για περιήγηση, αντιγραφή και οργάνωση αρχείων σε αυτήν τη συσκευή.</string>
-    <string name="compose_favorites">Αγαπημένα</string>
     <string name="compose_file_already_exists">Το αρχείο υπάρχει ήδη</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Τα αρχεία και οι φάκελοι που ανοίγετε θα εμφανίζονται εδώ.</string>
-    <string name="compose_files_and_folders_you_starred">Αρχεία και φάκελοι που επισημάνατε με αστέρι</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Βρείτε αρχεία και φακέλους με το όνομα στον αποθηκευτικό χώρο σας.</string>
     <string name="compose_folder_name">Όνομα φακέλου</string>
     <string name="compose_format">Μορφοποίηση</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Περισσότερα</string>
     <string name="compose_more_selection_actions">Περισσότερες ενέργειες επιλογής</string>
     <string name="compose_navigate_up">Πλοηγηθείτε προς τα πάνω</string>
-    <string name="compose_no_favorites_yet">Δεν υπάρχουν ακόμα αγαπημένα</string>
     <string name="compose_no_matching_files">Δεν υπάρχουν αρχεία που να ταιριάζουν</string>
     <string name="compose_no_properties_to_show">Δεν υπάρχουν ιδιότητες για εμφάνιση</string>
     <string name="compose_no_recents_yet">Δεν υπάρχουν πρόσφατα ακόμα</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Άδειες ανοιχτού κώδικα</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Οργανώστε, αντιγράψτε, μετακινήστε και διαγράψτε αρχεία ελεύθερα</string>
     <string name="compose_recently_opened_files_and_folders">Αρχεία και φάκελοι που άνοιξαν πρόσφατα</string>
-    <string name="compose_remove_from_favorites">Αφαίρεση από τα αγαπημένα</string>
     <string name="compose_report_an_issue">Αναφέρετε ένα πρόβλημα</string>
     <string name="compose_reset_preferences">Επαναφορά προτιμήσεων</string>
     <string name="compose_restore_all_settings_to_their_defaults">Επαναφέρετε όλες τις ρυθμίσεις στις προεπιλογές τους</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Ταξινόμηση και προβολή</string>
     <string name="compose_sort_by">Ταξινόμηση κατά</string>
     <string name="compose_source_code_and_releases">Πηγαίος κώδικας και εκδόσεις</string>
-    <string name="compose_starred">Με αστέρι</string>
     <string name="compose_storages">Αποθήκες</string>
     <string name="compose_storages_and_bookmarks">Αποθηκευτικοί χώροι και σελιδοδείκτες</string>
     <string name="compose_switch_to_grid">Μετάβαση στο πλέγμα</string>
     <string name="compose_switch_to_list">Μετάβαση στη λίστα</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Πατήστε το αστέρι σε οποιοδήποτε αρχείο ή φάκελο για να το διατηρήσετε εδώ.</string>
     <string name="compose_this_can_t_be_undone">Αυτό δεν μπορεί να αναιρεθεί.</string>
     <string name="compose_this_folder_is_empty">Αυτός ο φάκελος είναι κενός</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Δοκιμάστε ένα διαφορετικό όνομα ή ελέγξτε την ορθογραφία.</string>

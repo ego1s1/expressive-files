@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 artigos • 4,2 GB gratuitos</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Um nome não pode conter /</string>
-    <string name="compose_add_to_favorites">Adicionar aos favoritos</string>
     <string name="compose_advanced">Avançado</string>
     <string name="compose_allow_access_to_your_files">Permitir o acesso aos seus ficheiros</string>
     <string name="compose_an_item_with_this_name_already_exists">Já existe um item com este nome</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Sair da seleção</string>
     <string name="compose_exit_selection_mode">Sair do modo de seleção</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">O Expressive Files necessita de acesso a ficheiros para navegar, copiar e organizar ficheiros neste dispositivo.</string>
-    <string name="compose_favorites">Favoritos</string>
     <string name="compose_file_already_exists">O ficheiro já existe</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Os ficheiros e pastas que abrir aparecerão aqui.</string>
-    <string name="compose_files_and_folders_you_starred">Ficheiros e pastas que marcou com estrela</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Encontre ficheiros e pastas por nome no seu armazenamento.</string>
     <string name="compose_folder_name">Nome da pasta</string>
     <string name="compose_format">Formato</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Mais</string>
     <string name="compose_more_selection_actions">Mais ações de seleção</string>
     <string name="compose_navigate_up">Navegue para cima</string>
-    <string name="compose_no_favorites_yet">Ainda não há favoritos</string>
     <string name="compose_no_matching_files">Nenhum ficheiro correspondente</string>
     <string name="compose_no_properties_to_show">Nenhuma propriedade para mostrar</string>
     <string name="compose_no_recents_yet">Ainda não há novidades</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Licenças de código aberto</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organize, copie, mova e apague ficheiros livremente</string>
     <string name="compose_recently_opened_files_and_folders">Ficheiros e pastas abertos recentemente</string>
-    <string name="compose_remove_from_favorites">Remover dos favoritos</string>
     <string name="compose_report_an_issue">Informar um problema</string>
     <string name="compose_reset_preferences">Redefinir preferências</string>
     <string name="compose_restore_all_settings_to_their_defaults">Restaure todas as definições para os seus padrões</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Classificar e visualizar</string>
     <string name="compose_sort_by">Classificar por</string>
     <string name="compose_source_code_and_releases">Código-fonte e versões</string>
-    <string name="compose_starred">Com estrela</string>
     <string name="compose_storages">Armazenamentos</string>
     <string name="compose_storages_and_bookmarks">Armazenamentos e marcadores</string>
     <string name="compose_switch_to_grid">Mudar para grade</string>
     <string name="compose_switch_to_list">Mudar para lista</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Toque na estrela em qualquer ficheiro ou pasta para a manter aqui.</string>
     <string name="compose_this_can_t_be_undone">Isso não pode ser desfeito.</string>
     <string name="compose_this_folder_is_empty">Esta pasta está vazia</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Experimente um nome diferente ou verifique a ortografia.</string>

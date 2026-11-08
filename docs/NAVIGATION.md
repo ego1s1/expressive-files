@@ -4,11 +4,13 @@
 
 ## Model
 
-- **Phone:** floating pill navigation at the bottom with **Files · Favorites · Locations · Settings**.
+- **Phone:** floating pill navigation at the bottom with **Files · Locations · Settings**.
 - **Medium/expanded:** the same destinations become a vertical `PillNavRail` (≥600dp).
 - **Search** is not a destination. It lives behind the search icon in the file-list app bar.
 - **History/Recents page: removed.** There is no `recents` route and no recents store.
-- The **create FAB** sits to the right of the pill on the Files route and is hidden everywhere else.
+- **Favorites/home: removed.** There is no `favorites` route, no `FavoritesStore`,
+  no star drawables, and no favorite rows in the file action sheet or Locations.
+- The **create FAB** sits beside the pill in one centered bottom group on the Files route and is hidden everywhere else.
 - Selection mode keeps its contextual top bar and hides both the pill and FAB.
 
 ## Header rules
@@ -16,8 +18,9 @@
 - One owner for the current location: the **app-bar title**.
 - The header uses the same `surface` color as the list and stays 64dp tall.
 - **Root:** no breadcrumb row.
-- **Subfolder:** a 40dp plain-text ancestor trail appears under the header. It contains ancestors only
-  (never the current folder), with text + chevrons, no chips/pills.
+- **Subfolder:** a 48dp-min plain-text full trail appears under the header, ending
+  in the current folder. Ancestors are clickable; the current crumb is highlighted
+  and inert, with text + chevrons, no chips/pills.
 - Trailing header icons: **Search**, **Sort**, **View options**.
 - Refresh is a row inside the View options sheet, not a header icon.
 
@@ -36,6 +39,10 @@
 
 - `AppDrawer`, `AppNavigationRail`, `ModalNavigationDrawer`, drawer fallback flag.
 - `RecentsStore` and the Recents screen.
+- `FavoritesStore`, the Favorites/Home route and screens (`HomeScreen`,
+  `ShortcutRow`), star drawables, and favorite action-sheet rows.
+- Theme-color / Material3 settings rows (`appearance_theme_color`,
+  `appearance_material3`) and their `colorArgb` choice dots.
 - Search as a bottom destination.
 - Colored breadcrumb chips and breadcrumb-row action buttons.
 - The separate sort chip.

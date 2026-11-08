@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 tuotetta • 4,2 Gt ilmaiseksi</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Nimi ei voi sisältää /</string>
-    <string name="compose_add_to_favorites">Lisää suosikkeihin</string>
     <string name="compose_advanced">Edistynyt</string>
     <string name="compose_allow_access_to_your_files">Salli pääsy tiedostoihisi</string>
     <string name="compose_an_item_with_this_name_already_exists">Tämänniminen kohde on jo olemassa</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Poistu valinnasta</string>
     <string name="compose_exit_selection_mode">Poistu valintatilasta</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files tarvitsee tiedostojen käyttöoikeuden tämän laitteen tiedostojen selaamiseen, kopioimiseen ja järjestämiseen.</string>
-    <string name="compose_favorites">Suosikit</string>
     <string name="compose_file_already_exists">Tiedosto on jo olemassa</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Avaamasi tiedostot ja kansiot näkyvät täällä.</string>
-    <string name="compose_files_and_folders_you_starred">Tähdellä merkitsemäsi tiedostot ja kansiot</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Etsi tiedostoja ja kansioita nimen perusteella tallennustilasta.</string>
     <string name="compose_folder_name">Kansion nimi</string>
     <string name="compose_format">Muoto</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Lisää</string>
     <string name="compose_more_selection_actions">Lisää valintatoimintoja</string>
     <string name="compose_navigate_up">Navigoi ylös</string>
-    <string name="compose_no_favorites_yet">Ei vielä suosikkeja</string>
     <string name="compose_no_matching_files">Ei vastaavia tiedostoja</string>
     <string name="compose_no_properties_to_show">Ei näytettäviä ominaisuuksia</string>
     <string name="compose_no_recents_yet">Ei vielä tuoreita</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Avoimen lähdekoodin lisenssit</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Järjestä, kopioi, siirrä ja poista tiedostoja vapaasti</string>
     <string name="compose_recently_opened_files_and_folders">Äskettäin avatut tiedostot ja kansiot</string>
-    <string name="compose_remove_from_favorites">Poista suosikeista</string>
     <string name="compose_report_an_issue">Ilmoita ongelmasta</string>
     <string name="compose_reset_preferences">Palauta asetukset</string>
     <string name="compose_restore_all_settings_to_their_defaults">Palauta kaikki asetukset oletusasetuksiinsa</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Lajittele ja katso</string>
     <string name="compose_sort_by">Lajitteluperuste</string>
     <string name="compose_source_code_and_releases">Lähdekoodi ja julkaisut</string>
-    <string name="compose_starred">tähdellä merkitty</string>
     <string name="compose_storages">Varastot</string>
     <string name="compose_storages_and_bookmarks">Tallennustilat ja kirjanmerkit</string>
     <string name="compose_switch_to_grid">Vaihda verkkoon</string>
     <string name="compose_switch_to_list">Vaihda luetteloon</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Napauta minkä tahansa tiedoston tai kansion tähteä säilyttääksesi sen tässä.</string>
     <string name="compose_this_can_t_be_undone">Tätä ei voi kumota.</string>
     <string name="compose_this_folder_is_empty">Tämä kansio on tyhjä</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Kokeile toista nimeä tai tarkista oikeinkirjoitus.</string>

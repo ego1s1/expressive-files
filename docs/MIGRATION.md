@@ -24,12 +24,12 @@ Compose preview alone is not a migration.
 
 | Legacy surface | Current implementation | Compose target | Status | Notes |
 |---|---|---|---|---|
-| Launcher / app shell | `app/AppActivity`, `compose/MainActivity` | `compose/`, `compose/theme/` | **migrated** | Compose `MainActivity` is the launcher; theme, edge-to-edge, file list, bottom navigation, recents/favorites, settings, about and basic properties are routed. Legacy screens remain reachable where noted below. |
+| Launcher / app shell | `app/AppActivity`, `compose/MainActivity` | `compose/`, `compose/theme/` | **migrated** | Compose `MainActivity` is the launcher; theme, edge-to-edge, file list, bottom navigation, settings, about and basic properties are routed. Legacy screens remain reachable where noted below. |
 | File list | `filelist/FileListFragment`, `FileListAdapter`, `FileListViewModel` | `compose/features/filelist` | **migrated** | Compose list/grid, search, selection, FAB menu, create/rename/delete and breadcrumbs use the existing `FileListViewModel`. Phase 2 slims the top bar to back/title/subtitle only: search becomes a pill destination and sort, list/grid and refresh move to breadcrumb-row chips. Legacy `FileListActivity` stays exported only for external `VIEW`/picker intents. |
 | Breadcrumbs | `filelist/BreadcrumbLiveData` | `compose/features/filelist` | **migrated** | Compose breadcrumb rail with current pill and horizontal scroll; legacy layout remains for external legacy screens. Only the trail up to the current folder is shown — forward history left by navigate-up is dropped so the path is always correct. |
-| Drawer / navigation | retired | `compose/features/navigation/BottomPillNav.kt`, `PillNavRail` | **migrated** | Floating pill on phones (Files/Favorites/Locations/Settings) and a vertical pill rail at ≥600dp. Search moved to the app-bar; Recents/history removed. Drawer and related plumbing are removed. See [NAVIGATION.md](NAVIGATION.md). |
-| Bookmarks / favorites | legacy home section under `navigation/` | `compose/features/home` | **migrated** | Favorites uses the real `FavoritesStore` flow; storages and bookmarks live in Locations. The Recents/history page was removed. |
-| Settings | retired legacy menu (`SettingsActivity` now redirects) | `compose/features/settings` | **migrated** | Every legacy settings row is native: switches, choice dialogs (locale/theme/night/ellipsize/root/encoding/APK action), default-folder dialog, storages/bookmarks/standard-folder sub-screens and reset. Legacy `SettingsActivity` only survives as a redirect for the system preferences action; the preference fragments, `settings.xml` and the storage/bookmark/standard-directory list activities are deleted. Server credential editors stay legacy (see Servers row). |
+| Drawer / navigation | retired | `compose/features/navigation/BottomPillNav.kt`, `PillNavRail` | **migrated** | Floating pill on phones (Files/Locations/Settings) and a vertical pill rail at ≥600dp. Search moved to the app-bar; Recents/history and Favorites removed. Drawer and related plumbing are removed. See [NAVIGATION.md](NAVIGATION.md). |
+| Bookmarks | legacy home section under `navigation/` | `compose/features/navigation` + settings sub-screens | **migrated** | Storages and bookmarks live in Locations with native add/edit/delete/toggle sub-screens in settings. |
+| Settings | retired legacy menu (`SettingsActivity` now redirects) | `compose/features/settings` | **migrated** | Every legacy settings row is native: switches, choice dialogs (locale/night/ellipsize/root/encoding/APK action), default-folder dialog, storages/bookmarks/standard-folder sub-screens and reset. Legacy `SettingsActivity` only survives as a redirect for the system preferences action; the preference fragments, `settings.xml` and the storage/bookmark/standard-directory list activities are deleted. Server credential editors stay legacy (see Servers row). |
 | Onboarding / permissions | legacy first-run and rationale dialogs | `compose/features/onboarding` | **bridged** | A Compose rationale sheet exists but is not wired. Storage permission and SAF flows must keep the exact request/result contract. |
 | Properties | `fileproperties/` tabs | `compose/features/properties` | **bridged** | Basic file properties are routed from the file action sheet; checksum, permission, APK and media tabs still use the legacy dialog. |
 | Viewers (text / image / media / archive) | `viewer/` activities and fragments | `compose/features/viewer` | **bridged** | Image files open the Compose viewer; text, media, PDF and archive viewing still use legacy/external intents until parity and gestures are proven. |
@@ -45,7 +45,7 @@ adaptive rail. [`NAVIGATION.md`](NAVIGATION.md) owns the detailed destination ma
 geometry and component list; this tracker only records phase state.
 
 1. **Phase 1 — floating icon-only pill (shipped).** `BottomPillNav` owns
-   Files/Recents/Favorites/Locations with no persistent labels, ≥48dp targets,
+   Files/Locations/Settings with no persistent labels, ≥48dp targets,
    selected-state semantics and tooltips. It is the production navigation on phones;
    production path; the drawer remains behind the flag as the fallback. The pill is
    hidden during selection, search, viewers and properties.
@@ -58,7 +58,7 @@ geometry and component list; this tracker only records phase state.
    `FileListScreen` and the integrator-owned `ExpressiveFilesApp`.
 3. **Phase 3 — retire the drawer and enable the rail (done).** `AppDrawer`, the
    fallback flag and `onOpenDrawer` plumbing are deleted. Promote
-   `AppNavigationRail` at widths ≥600dp with Files/Search/Recents/Favorites/Locations
+   `AppNavigationRail` at widths ≥600dp with Files/Locations/Settings
    plus Settings/About; keep Locations as the storage/bookmark hub.
 4. **Phase 4 — polish.** Use the theme motion tokens for pill selection and route
    transitions, add predictive back in the existing back-priority order, and verify

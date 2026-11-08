@@ -75,20 +75,7 @@ data class ShortcutEntryUi(
     val name: String,
     val subtitle: String? = null,
     val isDirectory: Boolean = false,
-    val isFavorite: Boolean = false,
     @DrawableRes val iconRes: Int = 0
-)
-
-data class HomeUiState(
-    val recents: List<ShortcutEntryUi> = emptyList(),
-    val favorites: List<ShortcutEntryUi> = emptyList(),
-    val isLoading: Boolean = false
-)
-
-data class HomeSectionUi(
-    val id: String,
-    val title: String,
-    val entries: List<ShortcutEntryUi>
 )
 
 enum class SettingsItemKind { SWITCH, ACTION, CHOICE, SLIDER }
@@ -109,8 +96,7 @@ data class SettingsItemUi(
 data class SettingsChoiceOptionUi(
     val value: String,
     val label: String,
-    val selected: Boolean = false,
-    val colorArgb: Int? = null
+    val selected: Boolean = false
 )
 
 data class SettingsSectionUi(

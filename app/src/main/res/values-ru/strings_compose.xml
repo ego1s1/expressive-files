@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 предметов • 4,2 ГБ бесплатно</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Имя не может содержать /</string>
-    <string name="compose_add_to_favorites">Добавить в избранное</string>
     <string name="compose_advanced">Расширенный</string>
     <string name="compose_allow_access_to_your_files">Разрешить доступ к вашим файлам</string>
     <string name="compose_an_item_with_this_name_already_exists">Элемент с таким названием уже существует</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Выход из выбора</string>
     <string name="compose_exit_selection_mode">Выйти из режима выбора</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files необходим доступ к файлам для просмотра, копирования и систематизации файлов на этом устройстве.</string>
-    <string name="compose_favorites">Избранное</string>
     <string name="compose_file_already_exists">Файл уже существует</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Здесь будут отображаться файлы и папки, которые вы открываете.</string>
-    <string name="compose_files_and_folders_you_starred">Файлы и папки, которые вы пометили</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Находите файлы и папки по названию в вашем хранилище.</string>
     <string name="compose_folder_name">Имя папки</string>
     <string name="compose_format">Формат</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Подробнее</string>
     <string name="compose_more_selection_actions">Дополнительные действия по выбору</string>
     <string name="compose_navigate_up">Перейти вверх</string>
-    <string name="compose_no_favorites_yet">Пока нет избранных</string>
     <string name="compose_no_matching_files">Нет подходящих файлов</string>
     <string name="compose_no_properties_to_show">Нет свойств для отображения</string>
     <string name="compose_no_recents_yet">Недавних пока нет</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Лицензии с открытым исходным кодом</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Свободно систематизируйте, копируйте, перемещайте и удаляйте файлы.</string>
     <string name="compose_recently_opened_files_and_folders">Недавно открытые файлы и папки</string>
-    <string name="compose_remove_from_favorites">Удалить из избранного</string>
     <string name="compose_report_an_issue">Сообщить о проблеме</string>
     <string name="compose_reset_preferences">Сбросить настройки</string>
     <string name="compose_restore_all_settings_to_their_defaults">Восстановите все настройки к значениям по умолчанию</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Сортировать и просматривать</string>
     <string name="compose_sort_by">Сортировать по</string>
     <string name="compose_source_code_and_releases">Исходный код и выпуски</string>
-    <string name="compose_starred">Помечено</string>
     <string name="compose_storages">Хранилища</string>
     <string name="compose_storages_and_bookmarks">Хранилища и закладки</string>
     <string name="compose_switch_to_grid">Переключиться на сетку</string>
     <string name="compose_switch_to_list">Перейти к списку</string>
     <string name="compose_tar_xz">ТАР.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Нажмите звездочку на любом файле или папке, чтобы сохранить его здесь.</string>
     <string name="compose_this_can_t_be_undone">Это невозможно отменить.</string>
     <string name="compose_this_folder_is_empty">Эта папка пуста</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Попробуйте другое имя или проверьте написание.</string>

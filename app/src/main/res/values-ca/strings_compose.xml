@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 articles • 4,2 GB gratuïts</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Un nom no pot contenir /</string>
-    <string name="compose_add_to_favorites">Afegeix als preferits</string>
     <string name="compose_advanced">Avançat</string>
     <string name="compose_allow_access_to_your_files">Permet l\'accés als teus fitxers</string>
     <string name="compose_an_item_with_this_name_already_exists">Ja existeix un element amb aquest nom</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Sortir de la selecció</string>
     <string name="compose_exit_selection_mode">Sortir del mode de selecció</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files necessita accés a fitxers per navegar, copiar i organitzar fitxers en aquest dispositiu.</string>
-    <string name="compose_favorites">Preferits</string>
     <string name="compose_file_already_exists">El fitxer ja existeix</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Els fitxers i les carpetes que obriu apareixeran aquí.</string>
-    <string name="compose_files_and_folders_you_starred">Fitxers i carpetes que heu destacat</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Cerqueu fitxers i carpetes per nom al vostre emmagatzematge.</string>
     <string name="compose_folder_name">Nom de la carpeta</string>
     <string name="compose_format">Format</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Més</string>
     <string name="compose_more_selection_actions">Més accions de selecció</string>
     <string name="compose_navigate_up">Navegueu cap amunt</string>
-    <string name="compose_no_favorites_yet">Encara no hi ha cap favorit</string>
     <string name="compose_no_matching_files">No hi ha fitxers coincidents</string>
     <string name="compose_no_properties_to_show">No hi ha propietats per mostrar</string>
     <string name="compose_no_recents_yet">Encara no hi ha notícies recents</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Llicències de codi obert</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organitzeu, copieu, moveu i suprimiu fitxers lliurement</string>
     <string name="compose_recently_opened_files_and_folders">Fitxers i carpetes oberts recentment</string>
-    <string name="compose_remove_from_favorites">Elimina dels preferits</string>
     <string name="compose_report_an_issue">Informar d\'un problema</string>
     <string name="compose_reset_preferences">Restableix les preferències</string>
     <string name="compose_restore_all_settings_to_their_defaults">Restaura tota la configuració als seus valors predeterminats</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Ordena i visualitza</string>
     <string name="compose_sort_by">Ordena per</string>
     <string name="compose_source_code_and_releases">Codi font i versions</string>
-    <string name="compose_starred">Destacat</string>
     <string name="compose_storages">Magatzems</string>
     <string name="compose_storages_and_bookmarks">Emmagatzematges i punts d\'interès</string>
     <string name="compose_switch_to_grid">Canvia a la graella</string>
     <string name="compose_switch_to_list">Canvia a la llista</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Toqueu l\'estrella a qualsevol fitxer o carpeta per mantenir-lo aquí.</string>
     <string name="compose_this_can_t_be_undone">Això no es pot desfer.</string>
     <string name="compose_this_folder_is_empty">Aquesta carpeta està buida</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Prova un nom diferent o revisa l\'ortografia.</string>

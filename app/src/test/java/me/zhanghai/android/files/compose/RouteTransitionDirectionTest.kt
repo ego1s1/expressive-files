@@ -17,7 +17,6 @@ class RouteTransitionDirectionTest {
 
     @Test
     fun leavingFiles_isForward() {
-        assertTrue(isForwardRouteTransition("files", "favorites"))
         assertTrue(isForwardRouteTransition("files", "locations"))
         assertTrue(isForwardRouteTransition("files", "settings"))
         assertTrue(isForwardRouteTransition("files", "search"))
@@ -25,7 +24,6 @@ class RouteTransitionDirectionTest {
 
     @Test
     fun returningToFiles_isBackward() {
-        assertFalse(isForwardRouteTransition("favorites", "files"))
         assertFalse(isForwardRouteTransition("locations", "files"))
         assertFalse(isForwardRouteTransition("settings", "files"))
         assertFalse(isForwardRouteTransition("search", "files"))
@@ -45,9 +43,9 @@ class RouteTransitionDirectionTest {
 
     @Test
     fun siblingOrder_isStable() {
-        assertTrue(isForwardRouteTransition("favorites", "settings"))
-        assertFalse(isForwardRouteTransition("settings", "favorites"))
-        assertTrue(isForwardRouteTransition("favorites", "favorites"))
+        assertTrue(isForwardRouteTransition("locations", "settings"))
+        assertFalse(isForwardRouteTransition("settings", "locations"))
+        assertTrue(isForwardRouteTransition("locations", "locations"))
     }
 
     @Test

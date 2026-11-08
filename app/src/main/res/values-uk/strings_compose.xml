@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 елементів • 4,2 ГБ вільного</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Назва не може містити /</string>
-    <string name="compose_add_to_favorites">Додати в обране</string>
     <string name="compose_advanced">Просунутий</string>
     <string name="compose_allow_access_to_your_files">Дозвольте доступ до своїх файлів</string>
     <string name="compose_an_item_with_this_name_already_exists">Елемент із такою назвою вже існує</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Вийти з вибору</string>
     <string name="compose_exit_selection_mode">Вийти з режиму вибору</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files потрібен доступ до файлів, щоб переглядати, копіювати та впорядковувати файли на цьому пристрої.</string>
-    <string name="compose_favorites">Вибране</string>
     <string name="compose_file_already_exists">Файл уже існує</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Тут відображатимуться файли та папки, які ви відкриваєте.</string>
-    <string name="compose_files_and_folders_you_starred">Файли та папки, які ви позначили зірочкою</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Знаходьте файли та папки за іменем у своєму сховищі.</string>
     <string name="compose_folder_name">Назва папки</string>
     <string name="compose_format">Формат</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">більше</string>
     <string name="compose_more_selection_actions">Більше дій вибору</string>
     <string name="compose_navigate_up">Перейти вгору</string>
-    <string name="compose_no_favorites_yet">Вибраних ще немає</string>
     <string name="compose_no_matching_files">Немає відповідних файлів</string>
     <string name="compose_no_properties_to_show">Немає властивостей для показу</string>
     <string name="compose_no_recents_yet">Останніх ще немає</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Ліцензії з відкритим кодом</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Упорядковуйте, копіюйте, переміщуйте та видаляйте файли вільно</string>
     <string name="compose_recently_opened_files_and_folders">Нещодавно відкриті файли та папки</string>
-    <string name="compose_remove_from_favorites">Видалити з вибраного</string>
     <string name="compose_report_an_issue">Повідомити про проблему</string>
     <string name="compose_reset_preferences">Скинути налаштування</string>
     <string name="compose_restore_all_settings_to_their_defaults">Відновити всі параметри до значень за замовчуванням</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Сортувати та переглядати</string>
     <string name="compose_sort_by">Сортувати за</string>
     <string name="compose_source_code_and_releases">Вихідний код і випуски</string>
-    <string name="compose_starred">Позначено зірочкою</string>
     <string name="compose_storages">Сховища</string>
     <string name="compose_storages_and_bookmarks">Сховища та закладки</string>
     <string name="compose_switch_to_grid">Переключитися на сітку</string>
     <string name="compose_switch_to_list">Перейти до списку</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Торкніться зірочки на будь-якому файлі чи папці, щоб зберегти їх тут.</string>
     <string name="compose_this_can_t_be_undone">Цю дію не можна скасувати.</string>
     <string name="compose_this_folder_is_empty">Ця папка порожня</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Спробуйте інше ім’я або перевірте правильність написання.</string>

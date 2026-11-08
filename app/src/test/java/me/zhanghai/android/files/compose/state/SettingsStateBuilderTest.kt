@@ -63,8 +63,6 @@ class SettingsStateBuilderTest {
             keys.containsAll(
                 setOf(
                     "appearance_locale",
-                    "appearance_theme_color",
-                    "appearance_material3",
                     "appearance_night_mode",
                     "appearance_black_theme",
                     "appearance_animations",
@@ -101,12 +99,23 @@ class SettingsStateBuilderTest {
         assertEquals(3, root.options.size)
         assertEquals(setOf("0", "1", "2"), root.options.map { it.value }.toSet())
 
-        val theme = items.getValue("appearance_theme_color")
-        assertEquals(20, theme.options.size)
-        assertTrue(theme.options.all { it.colorArgb != null })
-
         val encoding = items.getValue("behavior_archive_encoding")
         assertTrue(encoding.options.isNotEmpty())
         assertTrue(encoding.options.any { it.value.equals("UTF-8", ignoreCase = true) })
+    }
+
+    @Test
+    fun build_doesNotContainRemovedRows() {
+        val state = SettingsStateBuilder.build(context)
+        val keys = state.sections.flatMap { it.items }.map { it.key }.toSet()
+
+        assertTrue(keys.intersect(setOf("appearance_theme_color", "appearance_material3")).isEmpty())
+    }
+
+    @Test
+    fun query_removedRow_returnsNoSections() {
+        val state = SettingsStateBuilder.build(context, "theme color")
+
+        assertTrue(state.sections.isEmpty())
     }
 }

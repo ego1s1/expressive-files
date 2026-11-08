@@ -34,7 +34,7 @@ Read this before writing code. This is a parallel build: **file ownership is str
    `Icons.Filled.*` from material-icons-core only:
    Add, ArrowBack, Check, Close, Delete, Edit, Folder, Home, Info,
    KeyboardArrowDown, KeyboardArrowRight, List, MoreVert, Person, Refresh,
-   Search, Settings, Share, Star, StarBorder, Warning.
+   Search, Settings, Share, Warning.
 7. Compose screens are **stateless**: `state` + lambda callbacks. No ViewModel,
    no LiveData, no Android `Context` beyond `LocalContext` for intents. The
    integrator wires real data.
@@ -52,9 +52,14 @@ Read this before writing code. This is a parallel build: **file ownership is str
 `me.zhanghai.android.files.compose.model` already contains:
 `FileEntryUi`, `BreadcrumbUi`, `FileListUiState`, `FileLayoutMode`,
 `DrawerEntryUi`, `DrawerSectionUi`, `NavigationUiState`, `ShortcutEntryUi`,
-`HomeUiState`, `HomeSectionUi`, `SettingsItemUi`, `SettingsSectionUi`,
+`SettingsItemUi`, `SettingsSectionUi`,
 `SettingsUiState`, `OperationUi`, `ConflictUi`, `PropertyRowUi`,
 `PropertySectionUi`, `PropertiesUiState`.
+
+Favorites/home models (`HomeUiState`, `HomeSectionUi`, favorite flags,
+star drawables, `FavoritesStore`) were removed; Locations is the hub for
+storages/bookmarks. Theme-color/material3 settings rows were removed with
+their `colorArgb` option dot.
 
 Do not modify `model/UiModels.kt`. If something is missing, keep the data
 inside your own package.

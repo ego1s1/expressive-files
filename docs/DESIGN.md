@@ -211,8 +211,8 @@ Adaptive rules:
   indicator spans the full row, not just the icon.
 - Drawer actions (settings, FTP, about) are visually distinct from destinations when
   they leave the navigation graph.
-- Home sections use `titleMedium` headers and `bodyMedium` supporting text; recents and
-  favorites are lists, not card carousels.
+- Home sections use `titleMedium` headers and `bodyMedium` supporting text; sections
+  are lists, not card carousels.
 
 ### Settings
 

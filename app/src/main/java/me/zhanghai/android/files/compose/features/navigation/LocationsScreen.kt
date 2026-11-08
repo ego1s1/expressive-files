@@ -49,7 +49,7 @@ fun LocationsScreen(
     modifier: Modifier = Modifier
 ) {
     val sections = state.sections.filter {
-        it.id != "favorites" && it.id != "recents" && it.id != "more"
+        it.id != "more"
     }
     Surface(
         modifier = modifier.fillMaxSize(),

@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 elementu • 4,2 GB doan</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Izen batek ezin du eduki /</string>
-    <string name="compose_add_to_favorites">Gehitu gogokoetara</string>
     <string name="compose_advanced">Aurreratua</string>
     <string name="compose_allow_access_to_your_files">Eman zure fitxategietarako sarbidea</string>
     <string name="compose_an_item_with_this_name_already_exists">Badago izen hau duen elementu bat</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Irten aukeraketa</string>
     <string name="compose_exit_selection_mode">Irten hautaketa modutik</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files-ek fitxategietarako sarbidea behar du gailu honetan fitxategiak arakatzeko, kopiatzeko eta antolatzeko.</string>
-    <string name="compose_favorites">Gogokoak</string>
     <string name="compose_file_already_exists">Fitxategia jada existitzen da</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Ireki dituzun fitxategiak eta karpetak hemen agertuko dira.</string>
-    <string name="compose_files_and_folders_you_starred">Izarrak jarri dituzun fitxategiak eta karpetak</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Bilatu fitxategiak eta karpetak izenaren arabera biltegian.</string>
     <string name="compose_folder_name">Karpeta izena</string>
     <string name="compose_format">Formatua</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Gehiago</string>
     <string name="compose_more_selection_actions">Hautaketa ekintza gehiago</string>
     <string name="compose_navigate_up">Nabigatu gora</string>
-    <string name="compose_no_favorites_yet">Oraindik ez dago gogokorik</string>
     <string name="compose_no_matching_files">Ez dago bat datorren fitxategirik</string>
     <string name="compose_no_properties_to_show">Ez dago propietaterik erakusteko</string>
     <string name="compose_no_recents_yet">Oraindik ez dago berririk</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Kode irekiko lizentziak</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Antolatu, kopiatu, mugitu eta ezabatu fitxategiak askatasunez</string>
     <string name="compose_recently_opened_files_and_folders">Duela gutxi irekitako fitxategiak eta karpetak</string>
-    <string name="compose_remove_from_favorites">Kendu gogokoetatik</string>
     <string name="compose_report_an_issue">Arazo baten berri eman</string>
     <string name="compose_reset_preferences">Berrezarri hobespenak</string>
     <string name="compose_restore_all_settings_to_their_defaults">Berrezarri ezarpen guztiak lehenespenetara</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Ordenatu eta ikusi</string>
     <string name="compose_sort_by">Ordenatu</string>
     <string name="compose_source_code_and_releases">Iturburu kodea eta argitalpenak</string>
-    <string name="compose_starred">Izarrak</string>
     <string name="compose_storages">Biltegiratzeak</string>
     <string name="compose_storages_and_bookmarks">Biltegiratzeak eta laster-markak</string>
     <string name="compose_switch_to_grid">Aldatu sarera</string>
     <string name="compose_switch_to_list">Aldatu zerrendara</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Sakatu izarra edozein fitxategi edo karpetan hemen mantentzeko.</string>
     <string name="compose_this_can_t_be_undone">Hau ezin da desegin.</string>
     <string name="compose_this_folder_is_empty">Karpeta hau hutsik dago</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Saiatu beste izen batekin edo egiaztatu ortografia.</string>

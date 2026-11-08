@@ -10,7 +10,6 @@
     <string name="compose_12_items_4_2_gb_free">12 items • 4.2 GB free</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">A name can\'t contain /</string>
-    <string name="compose_add_to_favorites">Add to favorites</string>
     <string name="compose_advanced">Advanced</string>
     <string name="compose_allow_access_to_your_files">Allow access to your files</string>
     <string name="compose_an_item_with_this_name_already_exists">An item with this name already exists</string>
@@ -51,10 +50,8 @@
     <string name="compose_exit_selection">Exit selection</string>
     <string name="compose_exit_selection_mode">Exit selection mode</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files needs file access to browse, copy, and organize files on this device.</string>
-    <string name="compose_favorites">Favorites</string>
     <string name="compose_file_already_exists">File already exists</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Files and folders you open will appear here.</string>
-    <string name="compose_files_and_folders_you_starred">Files and folders you starred</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Find files and folders by name across your storage.</string>
     <string name="compose_folder_name">Folder name</string>
     <string name="compose_format">Format</string>
@@ -76,7 +73,6 @@
     <string name="compose_more">More</string>
     <string name="compose_more_selection_actions">More selection actions</string>
     <string name="compose_navigate_up">Navigate up</string>
-    <string name="compose_no_favorites_yet">No favorites yet</string>
     <string name="compose_no_matching_files">No matching files</string>
     <string name="compose_no_properties_to_show">No properties to show</string>
     <string name="compose_no_recents_yet">No recents yet</string>
@@ -91,7 +87,6 @@
     <string name="compose_open_source_licenses">Open-source licenses</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organize, copy, move, and delete files freely</string>
     <string name="compose_recently_opened_files_and_folders">Recently opened files and folders</string>
-    <string name="compose_remove_from_favorites">Remove from favorites</string>
     <string name="compose_report_an_issue">Report an issue</string>
     <string name="compose_reset_preferences">Reset preferences</string>
     <string name="compose_restore_all_settings_to_their_defaults">Restore all settings to their defaults</string>
@@ -106,13 +101,11 @@
     <string name="compose_sort_and_view">Sort and view</string>
     <string name="compose_sort_by">Sort by</string>
     <string name="compose_source_code_and_releases">Source code and releases</string>
-    <string name="compose_starred">Starred</string>
     <string name="compose_storages">Storages</string>
     <string name="compose_storages_and_bookmarks">Storages and bookmarks</string>
     <string name="compose_switch_to_grid">Switch to grid</string>
     <string name="compose_switch_to_list">Switch to list</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Tap the star on any file or folder to keep it here.</string>
     <string name="compose_this_can_t_be_undone">This can\'t be undone.</string>
     <string name="compose_this_folder_is_empty">This folder is empty</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Try a different name or check the spelling.</string>

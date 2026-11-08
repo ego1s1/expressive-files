@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 öğe • 4,2 GB ücretsiz</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Bir ad şunu içeremez: /</string>
-    <string name="compose_add_to_favorites">Favorilere ekle</string>
     <string name="compose_advanced">Gelişmiş</string>
     <string name="compose_allow_access_to_your_files">Dosyalarınıza erişime izin verin</string>
     <string name="compose_an_item_with_this_name_already_exists">Bu ada sahip bir öğe zaten mevcut</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Seçimden çık</string>
     <string name="compose_exit_selection_mode">Seçim modundan çık</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files\'ın bu cihazdaki dosyalara göz atmak, kopyalamak ve düzenlemek için dosya erişimine ihtiyacı var.</string>
-    <string name="compose_favorites">Favoriler</string>
     <string name="compose_file_already_exists">Dosya zaten mevcut</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Açtığınız dosya ve klasörler burada görünecektir.</string>
-    <string name="compose_files_and_folders_you_starred">Yıldız eklediğiniz dosya ve klasörler</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Depolama alanınızdaki dosya ve klasörleri ada göre bulun.</string>
     <string name="compose_folder_name">Klasör adı</string>
     <string name="compose_format">Biçim</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Daha Fazla</string>
     <string name="compose_more_selection_actions">Daha fazla seçim eylemi</string>
     <string name="compose_navigate_up">Yukarı git</string>
-    <string name="compose_no_favorites_yet">Henüz favori yok</string>
     <string name="compose_no_matching_files">Eşleşen dosya yok</string>
     <string name="compose_no_properties_to_show">Gösterilecek mülk yok</string>
     <string name="compose_no_recents_yet">Henüz yeni içerik yok</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Açık kaynak lisansları</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Dosyaları özgürce düzenleyin, kopyalayın, taşıyın ve silin</string>
     <string name="compose_recently_opened_files_and_folders">Son açılan dosya ve klasörler</string>
-    <string name="compose_remove_from_favorites">Favorilerden kaldır</string>
     <string name="compose_report_an_issue">Bir sorunu bildirin</string>
     <string name="compose_reset_preferences">Tercihleri sıfırla</string>
     <string name="compose_restore_all_settings_to_their_defaults">Tüm ayarları varsayılan değerlerine geri yükleyin</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Sırala ve görüntüle</string>
     <string name="compose_sort_by">Sırala</string>
     <string name="compose_source_code_and_releases">Kaynak kodu ve sürümler</string>
-    <string name="compose_starred">Yıldızlı</string>
     <string name="compose_storages">Depolar</string>
     <string name="compose_storages_and_bookmarks">Depolama alanları ve yer imleri</string>
     <string name="compose_switch_to_grid">Izgaraya geç</string>
     <string name="compose_switch_to_list">Listeye geç</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Burada tutmak için herhangi bir dosya veya klasördeki yıldıza dokunun.</string>
     <string name="compose_this_can_t_be_undone">Bu geri alınamaz.</string>
     <string name="compose_this_folder_is_empty">Bu klasör boş</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Farklı bir ad deneyin veya yazımı kontrol edin.</string>

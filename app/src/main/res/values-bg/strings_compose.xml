@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 елемента • 4,2 GB безплатно</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Името не може да съдържа /</string>
-    <string name="compose_add_to_favorites">Добавяне към любими</string>
     <string name="compose_advanced">Разширено</string>
     <string name="compose_allow_access_to_your_files">Разрешете достъп до вашите файлове</string>
     <string name="compose_an_item_with_this_name_already_exists">Елемент с това име вече съществува</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Изход от избора</string>
     <string name="compose_exit_selection_mode">Изход от режима на избор</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files се нуждае от достъп до файлове, за да преглежда, копира и организира файлове на това устройство.</string>
-    <string name="compose_favorites">Любими</string>
     <string name="compose_file_already_exists">Файлът вече съществува</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Файловете и папките, които отваряте, ще се показват тук.</string>
-    <string name="compose_files_and_folders_you_starred">Файлове и папки, които сте отбелязали със звезда</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Намерете файлове и папки по име във вашето хранилище.</string>
     <string name="compose_folder_name">Име на папка</string>
     <string name="compose_format">формат</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">повече</string>
     <string name="compose_more_selection_actions">Още действия за избор</string>
     <string name="compose_navigate_up">Навигирайте нагоре</string>
-    <string name="compose_no_favorites_yet">Все още няма любими</string>
     <string name="compose_no_matching_files">Няма съответстващи файлове</string>
     <string name="compose_no_properties_to_show">Няма имоти за показване</string>
     <string name="compose_no_recents_yet">Все още няма скорошни</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Лицензи с отворен код</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Организирайте, копирайте, премествайте и изтривайте файлове свободно</string>
     <string name="compose_recently_opened_files_and_folders">Наскоро отворени файлове и папки</string>
-    <string name="compose_remove_from_favorites">Премахване от любими</string>
     <string name="compose_report_an_issue">Докладвайте за проблем</string>
     <string name="compose_reset_preferences">Нулиране на предпочитанията</string>
     <string name="compose_restore_all_settings_to_their_defaults">Възстановете всички настройки до техните настройки по подразбиране</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Сортиране и преглед</string>
     <string name="compose_sort_by">Сортирай по</string>
     <string name="compose_source_code_and_releases">Изходен код и версии</string>
-    <string name="compose_starred">Със звезда</string>
     <string name="compose_storages">Складове</string>
     <string name="compose_storages_and_bookmarks">Хранилища и отметки</string>
     <string name="compose_switch_to_grid">Превключване към решетка</string>
     <string name="compose_switch_to_list">Превключване към списък</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Докоснете звездата върху всеки файл или папка, за да ги запазите тук.</string>
     <string name="compose_this_can_t_be_undone">Това не може да бъде отменено.</string>
     <string name="compose_this_folder_is_empty">Тази папка е празна</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Опитайте с друго име или проверете правописа.</string>

@@ -18,7 +18,6 @@ import me.zhanghai.android.files.filelist.OpenApkDefaultAction
 import me.zhanghai.android.files.provider.root.RootStrategy
 import me.zhanghai.android.files.settings.Settings
 import me.zhanghai.android.files.theme.custom.CustomThemeHelper
-import me.zhanghai.android.files.theme.custom.ThemeColor
 import me.zhanghai.android.files.theme.night.NightMode
 import me.zhanghai.android.files.theme.night.NightModeHelper
 
@@ -26,11 +25,6 @@ import me.zhanghai.android.files.theme.night.NightModeHelper
 fun applySettingChoice(key: String, value: String) {
     runCatching {
         when (key) {
-            "appearance_theme_color" -> {
-                val color = ThemeColor.entries.getOrNull(value.toIntOrNull() ?: -1) ?: return
-                Settings.THEME_COLOR.putValue(color)
-                CustomThemeHelper.sync()
-            }
             "appearance_night_mode" -> {
                 val mode = NightMode.entries.getOrNull(value.toIntOrNull() ?: -1) ?: return
                 Settings.NIGHT_MODE.putValue(mode)
@@ -71,10 +65,6 @@ fun applySettingSwitch(key: String, checked: Boolean) {
             }
             "appearance_dynamic_color" -> Settings.DYNAMIC_COLOR.putValue(newValue)
             "appearance_animations" -> Settings.FILE_LIST_ANIMATION.putValue(newValue)
-            "appearance_material3" -> {
-                Settings.MATERIAL_DESIGN_3.putValue(newValue)
-                CustomThemeHelper.sync()
-            }
             "behavior_show_hidden" -> Settings.FILE_LIST_SHOW_HIDDEN_FILES.putValue(newValue)
             "behavior_pdf_thumbnail" -> Settings.SHOW_PDF_THUMBNAIL_PRE_28.putValue(newValue)
             "behavior_remote_thumbnail" ->
@@ -118,14 +108,6 @@ fun resetSettingsToDefaults(context: Context) {
     fun booleanDefault(resId: Int): Boolean =
         runCatching { resources.getBoolean(resId) }.getOrDefault(false)
     runCatching {
-        Settings.THEME_COLOR.putValue(
-            ThemeColor.entries[
-                resources.getString(R.string.pref_default_value_theme_color).toInt()
-            ]
-        )
-        Settings.MATERIAL_DESIGN_3.putValue(
-            booleanDefault(R.bool.pref_default_value_material_design_3)
-        )
         Settings.NIGHT_MODE.putValue(
             NightMode.entries[
                 resources.getString(R.string.pref_default_value_night_mode).toInt()

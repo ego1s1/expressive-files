@@ -257,11 +257,6 @@ private val BottomNavDestinations = listOf(
         icon = ExpressiveIcons.Folder
     ),
     BottomNavDestination(
-        route = "favorites",
-        labelRes = R.string.compose_favorites,
-        iconRes = R.drawable.ic_expressive_star_filled
-    ),
-    BottomNavDestination(
         route = "locations",
         labelRes = R.string.compose_locations,
         iconRes = R.drawable.device_icon_white_24dp

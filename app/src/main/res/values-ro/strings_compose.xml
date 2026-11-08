@@ -4,7 +4,6 @@
     <string name="compose_12_items_4_2_gb_free">12 articole • 4,2 GB gratuit</string>
     <string name="compose_7z">7Z</string>
     <string name="compose_a_name_can_t_contain">Un nume nu poate conține /</string>
-    <string name="compose_add_to_favorites">Adăugați la favorite</string>
     <string name="compose_advanced">Avansat</string>
     <string name="compose_allow_access_to_your_files">Permiteți accesul la fișierele dvs</string>
     <string name="compose_an_item_with_this_name_already_exists">Un articol cu acest nume există deja</string>
@@ -45,10 +44,8 @@
     <string name="compose_exit_selection">Ieșiți din selecție</string>
     <string name="compose_exit_selection_mode">Ieșiți din modul de selecție</string>
     <string name="compose_expressive_files_needs_file_access_to_browse_copy_an">Expressive Files are nevoie de acces la fișiere pentru a naviga, copia și organiza fișiere pe acest dispozitiv.</string>
-    <string name="compose_favorites">Favorite</string>
     <string name="compose_file_already_exists">Fișierul există deja</string>
     <string name="compose_files_and_folders_you_open_will_appear_here">Fișierele și folderele pe care le deschideți vor apărea aici.</string>
-    <string name="compose_files_and_folders_you_starred">Fișierele și folderele pe care le-ați marcat cu stea</string>
     <string name="compose_find_files_and_folders_by_name_across_your_storage">Găsiți fișiere și foldere după nume în spațiul de stocare.</string>
     <string name="compose_folder_name">Numele dosarului</string>
     <string name="compose_format">Format</string>
@@ -70,7 +67,6 @@
     <string name="compose_more">Mai mult</string>
     <string name="compose_more_selection_actions">Mai multe acțiuni de selecție</string>
     <string name="compose_navigate_up">Navigați în sus</string>
-    <string name="compose_no_favorites_yet">Încă nu sunt favorite</string>
     <string name="compose_no_matching_files">Niciun fișier care se potrivește</string>
     <string name="compose_no_properties_to_show">Nu există proprietăți de afișat</string>
     <string name="compose_no_recents_yet">Încă nu sunt recente</string>
@@ -85,7 +81,6 @@
     <string name="compose_open_source_licenses">Licențe open-source</string>
     <string name="compose_organize_copy_move_and_delete_files_freely">Organizați, copiați, mutați și ștergeți liber fișierele</string>
     <string name="compose_recently_opened_files_and_folders">Fișiere și foldere deschise recent</string>
-    <string name="compose_remove_from_favorites">Eliminați din favorite</string>
     <string name="compose_report_an_issue">Raportați o problemă</string>
     <string name="compose_reset_preferences">Resetați preferințele</string>
     <string name="compose_restore_all_settings_to_their_defaults">Restabiliți toate setările la valorile implicite</string>
@@ -100,13 +95,11 @@
     <string name="compose_sort_and_view">Sortați și vizualizați</string>
     <string name="compose_sort_by">Sortați după</string>
     <string name="compose_source_code_and_releases">Cod sursă și versiuni</string>
-    <string name="compose_starred">Cu stea</string>
     <string name="compose_storages">Depozite</string>
     <string name="compose_storages_and_bookmarks">Depozite și marcaje</string>
     <string name="compose_switch_to_grid">Comutați la grilă</string>
     <string name="compose_switch_to_list">Comutați la listă</string>
     <string name="compose_tar_xz">TAR.XZ</string>
-    <string name="compose_tap_the_star_on_any_file_or_folder_to_keep_it_here">Atingeți steaua pe orice fișier sau folder pentru a-l păstra aici.</string>
     <string name="compose_this_can_t_be_undone">Acest lucru nu poate fi anulat.</string>
     <string name="compose_this_folder_is_empty">Acest folder este gol</string>
     <string name="compose_try_a_different_name_or_check_the_spelling">Încercați un alt nume sau verificați ortografia.</string>
