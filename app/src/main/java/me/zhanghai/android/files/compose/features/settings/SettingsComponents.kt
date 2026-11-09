@@ -35,6 +35,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -54,6 +57,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.compose.model.SettingsChoiceOptionUi
 import me.zhanghai.android.files.compose.model.SettingsItemKind
 import me.zhanghai.android.files.compose.model.SettingsItemUi
 
@@ -64,7 +68,6 @@ import me.zhanghai.android.files.compose.model.SettingsItemUi
 internal fun SettingsTopBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -76,13 +79,7 @@ internal fun SettingsTopBar(
             .heightIn(min = 64.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onBack) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.compose_back),
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-        }
+        Spacer(Modifier.width(12.dp))
         SettingsSearchField(
             query = query,
             onQueryChange = onQueryChange,
@@ -204,10 +201,21 @@ internal fun SettingsRow(
     item: SettingsItemUi,
     shape: Shape,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onOptionSelected: (SettingsChoiceOptionUi) -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val isSwitch = item.kind == SettingsItemKind.SWITCH
+    // Short choice lists render inline as an expressive segmented control instead of
+    // opening a dialog; only long lists (locales, charsets) still need a picker.
+    val inlineOptions = if (
+        item.kind == SettingsItemKind.CHOICE && item.enabled &&
+        item.options.size in 2..4
+    ) {
+        item.options
+    } else {
+        null
+    }
     val contentColor = if (item.enabled) {
         colorScheme.onSurface
     } else {
@@ -228,7 +236,9 @@ internal fun SettingsRow(
                 .fillMaxWidth()
                 .heightIn(min = 56.dp)
                 .then(
-                    if (isSwitch) {
+                    if (inlineOptions != null) {
+                        Modifier
+                    } else if (isSwitch) {
                         Modifier.toggleable(
                             value = item.checked == true,
                             role = Role.Switch,
@@ -265,6 +275,30 @@ internal fun SettingsRow(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
+                if (inlineOptions != null) {
+                    Spacer(Modifier.height(8.dp))
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                        inlineOptions.forEachIndexed { index, option ->
+                            SegmentedButton(
+                                selected = option.selected,
+                                onClick = { onOptionSelected(option) },
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = inlineOptions.size
+                                ),
+                                modifier = Modifier.weight(1f),
+                                label = {
+                                    Text(
+                                        text = option.label,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(4.dp))
+                }
             }
             if (isSwitch) {
                 Spacer(Modifier.width(8.dp))
@@ -285,7 +319,7 @@ internal fun SettingsRow(
                     },
                     modifier = Modifier.clearAndSetSemantics {}
                 )
-            } else {
+            } else if (inlineOptions == null) {
                 item.valueLabel?.let { value ->
                     Spacer(Modifier.width(8.dp))
                     Text(

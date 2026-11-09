@@ -29,10 +29,12 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -49,6 +51,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -70,10 +73,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -472,6 +477,13 @@ fun ExpressiveFilesApp(
     val motionEnabled = rememberMotionEnabled()
     val layoutDirection = LocalLayoutDirection.current
     val backProgress = remember { Animatable(0f) }
+    // 0 while the finger is down, animated to 1 after a committed gesture so the parent
+    // preview can grow to full size instead of snapping when the card leaves.
+    val revealSettle = remember { Animatable(0f) }
+    val revealScope = rememberCoroutineScope()
+    // The preview has to survive the route/trail change that the commit performs,
+    // otherwise the layer is removed the instant the gesture ends and never grows.
+    var settlingPreview by remember { mutableStateOf<FileListUiState?>(null) }
     // Drag direction of the in-flight gesture: +1 follows the finger, derived from the
     // system swipe edge and mirrored in RTL so a right-edge swipe never looks opposed.
     var backDragSign by remember { mutableFloatStateOf(1f) }
@@ -521,7 +533,19 @@ fun ExpressiveFilesApp(
                 }
             }
             if (releasedToTransition || !motionEnabled) {
-                backProgress.snapTo(0f)
+                if (motionEnabled) {
+                    // Parent preview rises to full size, then hands over to the real
+                    // screen once it is indistinguishable from it.
+                    settlingPreview = listHistory.lastOrNull() ?: settlingPreview
+                    revealScope.launch {
+                        revealSettle.animateTo(1f, ExpressiveMotion.bouncy())
+                        revealSettle.snapTo(0f)
+                        settlingPreview = null
+                    }
+                    backProgress.animateTo(0f, ExpressiveMotion.bouncy())
+                } else {
+                    backProgress.snapTo(0f)
+                }
             } else {
                 // Critically damped: a full-window surface must land, not bounce.
                 backProgress.animateTo(0f, ExpressiveMotion.bouncy())
@@ -609,7 +633,7 @@ fun ExpressiveFilesApp(
             // Real reveal preview during a back gesture: the parent folder's last known
             // listing for folder-up, or the target screen for route backs. Without this
             // the drag only shifted the current screen, which read as "no preview".
-            val revealPreview: FileListUiState? =
+            val livePreview: FileListUiState? =
                 if (motionEnabled && predictiveBackEnabled && backProgress.value > 0.001f) {
                     when {
                         route == ROUTE_FILES && canNavigateUp -> listHistory.lastOrNull()
@@ -618,10 +642,22 @@ fun ExpressiveFilesApp(
                 } else {
                     null
                 }
+            val revealPreview = livePreview ?: settlingPreview
+            // The preview sits slightly scaled behind the card and grows to exactly 1f as
+            // it takes over, so the commit reads as the parent rising to full screen.
+            val revealAmount =
+                maxOf(backProgress.value, revealSettle.value).coerceIn(0f, 1f)
             if (revealPreview != null) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .graphicsLayer {
+                            // Starts clearly scaled back and grows to full size as the
+                            // card leaves, so the preview reads as rising into place.
+                            val grow = 0.82f + 0.18f * revealAmount
+                            scaleX = grow
+                            scaleY = grow
+                        }
                         .padding(
                             start = if (showNavigation && useNavigationRail) 88.dp else 0.dp
                         )
@@ -648,6 +684,15 @@ fun ExpressiveFilesApp(
                         onSelectionMore = {}
                     )
                 }
+                // Dim the revealed parent, matching the scrim the reference puts between
+                // the shrinking window and the screen behind it.
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Color.Black.copy(alpha = 0.45f * (1f - revealAmount))
+                        )
+                )
             }
             Box(
                 modifier = Modifier
@@ -657,11 +702,14 @@ fun ExpressiveFilesApp(
                     // symmetric shrink would only reveal the parent's blank margin).
                     .graphicsLayer {
                         val progress = if (motionEnabled) backProgress.value else 0f
-                        translationX = backDragSign * progress * size.width * 0.22f
-                        val scale = 1f - 0.06f * progress
+                        // The reference scales the leaving window down into a rounded card
+                        // rather than sliding it far across the screen; only a small
+                        // edge-dependent drift keeps it tied to the gesture.
+                        translationX = backDragSign * progress * size.width * 0.06f
+                        val scale = 1f - 0.22f * progress
                         scaleX = scale
                         scaleY = scale
-                        shape = RoundedCornerShape((28.dp * progress).coerceAtLeast(0.dp))
+                        shape = RoundedCornerShape((36.dp * progress).coerceAtLeast(0.dp))
                         clip = progress > 0f
                     }
                     .padding(
@@ -790,7 +838,10 @@ fun ExpressiveFilesApp(
                     state = settingsState,
                     onQueryChange = { settingsQuery = it },
                     onItemClick = { item -> onSettingsItemClick(item) },
-                    onBack = { route = ROUTE_FILES },
+                    onChoiceSelected = { item, option ->
+                        applySettingChoice(item.key, option.value)
+                        settingsTick++
+                    },
                     onAbout = { route = ROUTE_ABOUT }
                 )
             }
@@ -1027,25 +1078,35 @@ fun ExpressiveFilesApp(
                     ) {
                         Row(
                             modifier = Modifier.align(Alignment.Center),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             BottomPillNav(
                                 currentRoute = route,
                                 onNavigate = { route = it },
                                 showSelectedLabel = showNavLabels
                             )
-                            // Animated show/hide: navigate-up reloads flip isLoading, and
-                            // the button must fade through that instead of popping.
+                            // Width-animated, not just faded: the group is centred, so the
+                            // button and its gap have to shrink to zero for the pill to
+                            // glide into the centre instead of jumping once the FAB is
+                            // removed from layout.
                             AnimatedVisibility(
                                 visible = showFab,
-                                enter = fadeIn() + scaleIn(initialScale = 0.8f),
-                                exit = fadeOut() + scaleOut(targetScale = 0.8f)
-                            ) {
-                                CreateFabButton(
-                                    expanded = createMenuExpanded,
-                                    onClick = { createMenuExpanded = !createMenuExpanded }
+                                enter = fadeIn() + expandHorizontally(
+                                    animationSpec = ExpressiveMotion.spatial(),
+                                    expandFrom = Alignment.Start
+                                ),
+                                exit = fadeOut() + shrinkHorizontally(
+                                    animationSpec = ExpressiveMotion.spatial(),
+                                    shrinkTowards = Alignment.Start
                                 )
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Spacer(Modifier.width(12.dp))
+                                    CreateFabButton(
+                                        expanded = createMenuExpanded,
+                                        onClick = { createMenuExpanded = !createMenuExpanded }
+                                    )
+                                }
                             }
                         }
                     }

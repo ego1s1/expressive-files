@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.zhanghai.android.files.compose.model.SettingsChoiceOptionUi
 import me.zhanghai.android.files.compose.model.SettingsItemKind
 import me.zhanghai.android.files.compose.model.SettingsItemUi
 import me.zhanghai.android.files.compose.model.SettingsSectionUi
@@ -43,7 +44,7 @@ fun SettingsScreen(
     state: SettingsUiState,
     onQueryChange: (String) -> Unit,
     onItemClick: (SettingsItemUi) -> Unit,
-    onBack: () -> Unit,
+    onChoiceSelected: (SettingsItemUi, SettingsChoiceOptionUi) -> Unit,
     onAbout: () -> Unit
 ) {
     val query = state.query.trim()
@@ -61,8 +62,7 @@ fun SettingsScreen(
     ) {
         SettingsTopBar(
             query = state.query,
-            onQueryChange = onQueryChange,
-            onBack = onBack
+            onQueryChange = onQueryChange
         )
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -94,7 +94,8 @@ fun SettingsScreen(
                             SettingsRow(
                                 item = item,
                                 shape = settingsRowShape(index, section.items.size),
-                                onClick = { onItemClick(item) }
+                                onClick = { onItemClick(item) },
+                                onOptionSelected = { option -> onChoiceSelected(item, option) }
                             )
                         }
                     }
@@ -208,7 +209,7 @@ private fun SettingsScreenPreview() {
             state = PreviewSettingsState,
             onQueryChange = {},
             onItemClick = {},
-            onBack = {},
+            onChoiceSelected = { _, _ -> },
             onAbout = {}
         )
     }

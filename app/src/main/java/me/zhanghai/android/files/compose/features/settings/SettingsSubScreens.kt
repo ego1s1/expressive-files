@@ -85,9 +85,11 @@ fun StorageSettingsScreen(
                 )
             }
         }
-    ) { _ ->
+    ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             contentPadding = PaddingValues(
                 start = 16.dp,
                 end = 16.dp,
@@ -204,9 +206,11 @@ fun BookmarkSettingsScreen(
                 )
             }
         }
-    ) { _ ->
+    ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             contentPadding = PaddingValues(
                 start = 16.dp,
                 end = 16.dp,
@@ -346,9 +350,11 @@ fun StandardDirectorySettingsScreen(
     ExpressiveScaffold(
         title = stringResource(R.string.settings_standard_directories_title),
         onNavigateUp = onBack
-    ) { _ ->
+    ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             contentPadding = PaddingValues(
                 start = 16.dp,
                 end = 16.dp,
