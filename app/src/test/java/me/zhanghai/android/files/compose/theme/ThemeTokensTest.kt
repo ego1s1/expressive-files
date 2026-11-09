@@ -8,6 +8,7 @@ package me.zhanghai.android.files.compose.theme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -51,8 +52,15 @@ class ThemeTokensTest {
 
     @Test
     fun settleMotion_isCriticallyDamped() {
-        // Gesture settles must land without overshoot bounce on full-window content.
+        // Content that must not wobble still lands exactly.
         val spec = ExpressiveMotion.settle<Float>()
         assertEquals(1f, spec.dampingRatio)
+    }
+
+    @Test
+    fun bouncyMotion_overshootsWithinExpressiveRange() {
+        // Expressive guidance: damping below 1 so a release feels alive.
+        val spec = ExpressiveMotion.bouncy<Float>()
+        assertTrue(spec.dampingRatio < 1f)
     }
 }

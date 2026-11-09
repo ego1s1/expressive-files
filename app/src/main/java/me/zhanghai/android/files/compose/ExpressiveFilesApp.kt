@@ -524,12 +524,12 @@ fun ExpressiveFilesApp(
                 backProgress.snapTo(0f)
             } else {
                 // Critically damped: a full-window surface must land, not bounce.
-                backProgress.animateTo(0f, ExpressiveMotion.settle())
+                backProgress.animateTo(0f, ExpressiveMotion.bouncy())
             }
         } catch (e: CancellationException) {
             backProgress.animateTo(
                 targetValue = 0f,
-                animationSpec = if (motionEnabled) ExpressiveMotion.settle() else snap()
+                animationSpec = if (motionEnabled) ExpressiveMotion.bouncy() else snap()
             )
             throw e
         }
@@ -730,13 +730,15 @@ fun ExpressiveFilesApp(
                     // was too subtle to register as motion.
                     val direction = (if (forward) 1 else -1) *
                         (if (layoutDirection == LayoutDirection.Rtl) -1 else 1)
-                    (fadeIn(tween(300, easing = ExpressiveDecelerateEasing)) +
-                        slideInHorizontally(tween(300, easing = ExpressiveDecelerateEasing)) {
+                    // Spring-based page motion per the expressive guidance: spatial specs
+                    // carry the slide (with slight overshoot), effects specs carry the fade.
+                    (fadeIn(ExpressiveMotion.effects()) +
+                        slideInHorizontally(ExpressiveMotion.spatial()) {
                             direction * it / 4
                         }
                         ) togetherWith
-                        (fadeOut(tween(200, easing = ExpressiveAccelerateEasing)) +
-                            slideOutHorizontally(tween(200, easing = ExpressiveAccelerateEasing)) {
+                        (fadeOut(ExpressiveMotion.effects()) +
+                            slideOutHorizontally(ExpressiveMotion.spatialFast()) {
                                 -direction * it / 4
                             })
                 } else {

@@ -47,9 +47,16 @@ object ExpressiveMotion {
     )
 
     /**
-     * Settle motion for gesture-driven surfaces (predictive back commit/cancel).
-     * Critically damped: lands exactly, no overshoot bounce on full-window content.
+     * Bouncy spatial motion for gesture settle, following the expressive guidance:
+     * damping below 1 deliberately overshoots so a release feels alive instead of
+     * snapping to rest.
      */
+    fun <T> bouncy(): SpringSpec<T> = spring(
+        dampingRatio = 0.6f,
+        stiffness = 400f
+    )
+
+    /** Settle motion that lands exactly, for content that must not wobble. */
     fun <T> settle(): SpringSpec<T> = spring(
         dampingRatio = 1f,
         stiffness = 1000f
