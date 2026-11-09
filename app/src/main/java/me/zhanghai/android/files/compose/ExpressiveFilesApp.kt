@@ -50,6 +50,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -651,17 +652,17 @@ fun ExpressiveFilesApp(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    // Card-style dismissal: the screen slides right and shrinks into a
+                    // rounded, opaque card, uncovering the parent list on the left (a
+                    // symmetric shrink would only reveal the parent's blank margin).
                     .graphicsLayer {
-                        // Gated by the motion switch: with animations off the content must
-                        // land in its final state instead of tracking the finger.
                         val progress = if (motionEnabled) backProgress.value else 0f
-                        translationX = backDragSign * progress * size.width * 0.08f
-                        val scale = 1f - 0.02f * progress
+                        translationX = backDragSign * progress * size.width * 0.22f
+                        val scale = 1f - 0.06f * progress
                         scaleX = scale
                         scaleY = scale
-                        // Outgoing content fades as it leaves, revealing the parent list
-                        // underneath instead of just shifting the same screen.
-                        alpha = 1f - 0.35f * progress
+                        shape = RoundedCornerShape((28.dp * progress).coerceAtLeast(0.dp))
+                        clip = progress > 0f
                     }
                     .padding(
                         start = if (showNavigation && useNavigationRail) 88.dp else 0.dp
