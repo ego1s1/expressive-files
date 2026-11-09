@@ -22,8 +22,8 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -178,6 +178,7 @@ fun SettingActionRow(
 
 /** Horizontally scrolling single-select filter chips. Selection state is exposed to a11y. */
 @Composable
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 fun FilterChipRow(
     options: List<String>,
     selected: Set<String>,
@@ -190,28 +191,19 @@ fun FilterChipRow(
     ) {
         items(options) { option ->
             val isSelected = option in selected
-            FilterChip(
-                selected = isSelected,
-                onClick = { onToggle(option) },
-                label = {
-                    Text(
-                        text = option,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                leadingIcon = if (isSelected) {
-                    {
-                        Icon(
-                            imageVector = Icons.Filled.Check,
-                            contentDescription = null,
-                            modifier = Modifier.size(FilterChipDefaults.IconSize)
-                        )
-                    }
-                } else {
-                    null
-                }
-            )
+            // Expressive toggle rather than the legacy filter chip: the checked state
+            // carries the shape/colour morph the new design system expects.
+            ToggleButton(
+                checked = isSelected,
+                onCheckedChange = { onToggle(option) },
+                modifier = Modifier.heightIn(min = 40.dp)
+            ) {
+                Text(
+                    text = option,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }
