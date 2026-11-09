@@ -65,6 +65,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -124,6 +125,7 @@ import me.zhanghai.android.files.compose.components.ConfirmDialog
 import me.zhanghai.android.files.compose.components.EmptyState
 import me.zhanghai.android.files.compose.components.LoadingState
 import me.zhanghai.android.files.compose.model.FileLayoutMode
+import me.zhanghai.android.files.compose.model.FileListUiState
 import me.zhanghai.android.files.compose.model.PropertiesUiState
 import me.zhanghai.android.files.compose.model.PropertyRowUi
 import me.zhanghai.android.files.compose.model.PropertySectionUi
@@ -396,6 +398,21 @@ fun ExpressiveFilesApp(
         )
     }
 
+    // Snapshot stack of the lists we descended from. A folder-up gesture has no route
+    // change and the folder we leave is still the mounted one, so this is the only
+    // source of a real "reveal the parent" preview during the drag.
+    val listHistory = remember { mutableStateListOf<FileListUiState>() }
+
+    fun pushListSnapshot() {
+        listHistory.add(uiState)
+    }
+
+    fun popListSnapshot() {
+        if (listHistory.isNotEmpty()) {
+            listHistory.removeAt(listHistory.lastIndex)
+        }
+    }
+
     val navigationState = remember(route, currentPath) {
         NavigationStateBuilder.build(context, currentPath)
     }
@@ -498,6 +515,7 @@ fun ExpressiveFilesApp(
                 route != ROUTE_FILES -> route = ROUTE_FILES
                 canNavigateUp -> {
                     releasedToTransition = false
+                    popListSnapshot()
                     viewModel.navigateUp()
                 }
             }
@@ -540,7 +558,10 @@ fun ExpressiveFilesApp(
             selectedCount > 0 -> viewModel.clearSelectedFiles()
             route == ROUTE_ABOUT || route in SettingsSubRoutes -> route = ROUTE_SETTINGS
             route != ROUTE_FILES -> route = ROUTE_FILES
-            else -> viewModel.navigateUp()
+            else -> {
+                popListSnapshot()
+                viewModel.navigateUp()
+            }
         }
     }
 
@@ -584,6 +605,49 @@ fun ExpressiveFilesApp(
         val showNavLabels = maxWidth >= WindowSizes.PillLabelMinWidth
         val useTwoPane = maxWidth >= WindowSizes.ExpandedMinWidth
         Box(modifier = Modifier.fillMaxSize()) {
+            // Real reveal preview during a back gesture: the parent folder's last known
+            // listing for folder-up, or the target screen for route backs. Without this
+            // the drag only shifted the current screen, which read as "no preview".
+            val revealPreview: FileListUiState? =
+                if (motionEnabled && predictiveBackEnabled && backProgress.value > 0.001f) {
+                    when {
+                        route == ROUTE_FILES && canNavigateUp -> listHistory.lastOrNull()
+                        else -> null
+                    }
+                } else {
+                    null
+                }
+            if (revealPreview != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            start = if (showNavigation && useNavigationRail) 88.dp else 0.dp
+                        )
+                        .clearAndSetSemantics {}
+                ) {
+                    FileListScreen(
+                        state = revealPreview,
+                        onNavigateUp = {},
+                        onBreadcrumbClick = {},
+                        onEntryClick = {},
+                        onEntryLongClick = {},
+                        onEntryMenu = {},
+                        onSearchClick = {},
+                        onSortClick = {},
+                        onLayoutToggle = {},
+                        onRefresh = {},
+                        onSelectAll = {},
+                        onCreateFolder = {},
+                        onCreateFile = {},
+                        onPaste = {},
+                        onSelectionShare = {},
+                        onSelectionDelete = {},
+                        onSelectionClear = {},
+                        onSelectionMore = {}
+                    )
+                }
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -595,9 +659,9 @@ fun ExpressiveFilesApp(
                         val scale = 1f - 0.02f * progress
                         scaleX = scale
                         scaleY = scale
-                        // Outgoing content fades as it leaves, so the revealed preview
-                        // reads as the next screen rather than a shifted screenshot.
-                        alpha = 1f - 0.25f * progress
+                        // Outgoing content fades as it leaves, revealing the parent list
+                        // underneath instead of just shifting the same screen.
+                        alpha = 1f - 0.35f * progress
                     }
                     .padding(
                         start = if (showNavigation && useNavigationRail) 88.dp else 0.dp
@@ -694,7 +758,7 @@ fun ExpressiveFilesApp(
                     val file = filesByPath[entry.path] ?: return@SearchScreen
                     when {
                         file.isListable -> {
-                            openEntry(context, viewModel, file)
+                            openEntry(context, viewModel, file, onDescend = { pushListSnapshot() })
                             searchQuery = ""
                             route = ROUTE_FILES
                         }
@@ -703,7 +767,7 @@ fun ExpressiveFilesApp(
 
                         file.isEditableText() -> textEditorFile = file
 
-                        else -> openEntry(context, viewModel, file)
+                        else -> openEntry(context, viewModel, file, onDescend = { pushListSnapshot() })
                     }
                 },
                 onEntryLongClick = {},
@@ -713,7 +777,7 @@ fun ExpressiveFilesApp(
             ROUTE_LOCATIONS -> LocationsScreen(
                 state = navigationState,
                 onEntryClick = { entry ->
-                    openPath(viewModel, entry.id)
+                    openPath(viewModel, entry.id, onDescend = { pushListSnapshot() })
                     route = ROUTE_FILES
                 }
             )
@@ -746,7 +810,7 @@ fun ExpressiveFilesApp(
             ROUTE_SETTINGS_BOOKMARKS -> BookmarkSettingsScreen(
                 onBack = { route = ROUTE_SETTINGS },
                 onOpen = { bookmark ->
-                    openPath(viewModel, bookmark.path.toString())
+                    openPath(viewModel, bookmark.path.toString(), onDescend = { pushListSnapshot() })
                     route = ROUTE_FILES
                 },
                 onAddCurrent = {
@@ -826,8 +890,11 @@ fun ExpressiveFilesApp(
                 val fileList: @Composable () -> Unit = {
                     FileListScreen(
                 state = uiState,
-                onNavigateUp = { viewModel.navigateUp() },
-                onBreadcrumbClick = { crumb -> openPath(viewModel, crumb.path) },
+                onNavigateUp = {
+                    popListSnapshot()
+                    viewModel.navigateUp()
+                },
+                onBreadcrumbClick = { crumb -> openPath(viewModel, crumb.path, onDescend = { pushListSnapshot() }) },
                 onEntryClick = { entry ->
                     val file = filesByPath[entry.path] ?: return@FileListScreen
                     if (selectedCount > 0) {
@@ -837,7 +904,7 @@ fun ExpressiveFilesApp(
                     } else if (file.isEditableText()) {
                         textEditorFile = file
                     } else {
-                        openEntry(context, viewModel, file)
+                        openEntry(context, viewModel, file, onDescend = { pushListSnapshot() })
                     }
                 },
                 onEntryLongClick = { entry ->
@@ -1085,7 +1152,7 @@ fun ExpressiveFilesApp(
         FileActionSheet(
             file = file,
             onOpen = {
-                openEntry(context, viewModel, file)
+                openEntry(context, viewModel, file, onDescend = { pushListSnapshot() })
                 actionTarget = null
             },
             onRename = {
@@ -1385,9 +1452,15 @@ private fun defaultPath(): Path = runCatching {
     Paths.get(Environment.getExternalStorageDirectory().absolutePath)
 }
 
-private fun openEntry(context: Context, viewModel: FileListViewModel, file: FileItem) {
+private fun openEntry(
+    context: Context,
+    viewModel: FileListViewModel,
+    file: FileItem,
+    onDescend: () -> Unit = {}
+) {
     viewModel.clearSelectedFiles()
     if (file.isListable) {
+        onDescend()
         viewModel.navigateTo(Bundle(), file.listablePath)
     } else {
         runCatching {
@@ -1396,8 +1469,13 @@ private fun openEntry(context: Context, viewModel: FileListViewModel, file: File
     }
 }
 
-private fun openPath(viewModel: FileListViewModel, pathString: String) {
+private fun openPath(
+    viewModel: FileListViewModel,
+    pathString: String,
+    onDescend: () -> Unit = {}
+) {
     val path = runCatching { Paths.get(pathString) }.getOrNull() ?: return
+    onDescend()
     viewModel.clearSelectedFiles()
     viewModel.navigateTo(Bundle(), path)
 }
